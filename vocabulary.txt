@@ -1,0 +1,78 @@
+# ============================================================
+# WordQuest - File Kosakata Bahasa Inggris
+# ============================================================
+# Format setiap baris:
+#   LEVEL | EMOJI | English | /fonetik/ | Bahasa Indonesia
+#
+# Level yang tersedia:
+#   easy   = Umur 4-5 tahun
+#   medium = Umur 6-7 tahun
+#   hard   = Umur 8-10 tahun
+#
+# Aturan penulisan:
+#   - Gunakan tanda | sebagai pemisah kolom
+#   - Baris yang diawali # adalah komentar (diabaikan)
+#   - Baris kosong diabaikan
+#   - Emoji harus berupa karakter Unicode (copy-paste langsung)
+#   - Minimal 9 kata per level agar permainan bisa berjalan
+# ============================================================
+
+
+# ------------------------------------------------------------
+# EASY — Umur 4-5 tahun
+# ------------------------------------------------------------
+easy | 🍎 | Apple      | /ˈæp.əl/       | Apel
+easy | 🐱 | Cat        | /kæt/           | Kucing
+easy | 🐶 | Dog        | /dɒɡ/           | Anjing
+easy | 🌸 | Flower     | /ˈflaʊ.ər/      | Bunga
+easy | 🌙 | Moon       | /muːn/          | Bulan
+easy | ☀️ | Sun        | /sʌn/           | Matahari
+easy | 🐟 | Fish       | /fɪʃ/           | Ikan
+easy | 🌳 | Tree       | /triː/          | Pohon
+easy | 🍌 | Banana     | /bəˈnɑː.nə/     | Pisang
+easy | 🎈 | Balloon    | /bəˈluːn/       | Balon
+easy | 📚 | Book       | /bʊk/           | Buku
+easy | 🎨 | Color      | /ˈkʌl.ər/       | Warna
+easy | 🏠 | House      | /haʊs/          | Rumah
+easy | 🚗 | Car        | /kɑːr/          | Mobil
+easy | 🍦 | Ice Cream  | /ˈaɪs kriːm/    | Es Krim
+
+
+# ------------------------------------------------------------
+# MEDIUM — Umur 6-7 tahun
+# ------------------------------------------------------------
+medium | 🦋 | Butterfly  | /ˈbʌt.ə.flaɪ/   | Kupu-kupu
+medium | 🌈 | Rainbow    | /ˈreɪn.bəʊ/     | Pelangi
+medium | ✈️ | Airplane   | /ˈeər.pleɪn/    | Pesawat
+medium | 🏖️ | Beach      | /biːtʃ/          | Pantai
+medium | 🦁 | Lion       | /ˈlaɪ.ən/       | Singa
+medium | 🐘 | Elephant   | /ˈel.ɪ.fənt/    | Gajah
+medium | ⭐ | Star       | /stɑːr/          | Bintang
+medium | 🏔️ | Mountain   | /ˈmaʊn.tɪn/     | Gunung
+medium | 🍓 | Strawberry | /ˈstrɔː.bər.i/  | Stroberi
+medium | 🎵 | Music      | /ˈmjuː.zɪk/     | Musik
+medium | 🚀 | Rocket     | /ˈrɒk.ɪt/       | Roket
+medium | 🌊 | Ocean      | /ˈoʊ.ʃən/       | Samudra
+medium | 🦜 | Parrot     | /ˈpær.ət/       | Burung Beo
+medium | 🍕 | Pizza      | /ˈpiːt.sə/      | Pizza
+medium | 🌵 | Cactus     | /ˈkæk.təs/      | Kaktus
+
+
+# ------------------------------------------------------------
+# HARD — Umur 8-10 tahun
+# ------------------------------------------------------------
+hard | 🔭 | Telescope  | /ˈtel.ɪ.skəʊp/  | Teleskop
+hard | 🌋 | Volcano    | /vɒlˈkeɪ.nəʊ/   | Gunung Berapi
+hard | 🦊 | Fox        | /fɒks/           | Rubah
+hard | 🧲 | Magnet     | /ˈmæɡ.nɪt/      | Magnet
+hard | 🌿 | Forest     | /ˈfɒr.ɪst/       | Hutan
+hard | 💎 | Diamond    | /ˈdaɪ.ə.mənd/   | Berlian
+hard | 🦅 | Eagle      | /ˈiː.ɡəl/        | Elang
+hard | 🌍 | Earth      | /ɜːrθ/           | Bumi
+hard | 🎭 | Theater    | /ˈθɪə.tər/       | Teater
+hard | 🧬 | Science    | /ˈsaɪ.əns/       | Sains
+hard | 🏛️ | Museum     | /mjuːˈziː.əm/    | Museum
+hard | 🦒 | Giraffe    | /dʒɪˈrɑːf/       | Jerapah
+hard | 🧪 | Experiment | /ɪkˈsper.ɪ.mənt/ | Eksperimen
+hard | 🌐 | Geography  | /dʒiˈɒɡ.rə.fi/  | Geografi
+hard | 🦈 | Shark      | /ʃɑːrk/          | Ikan Hiu
