@@ -1,0 +1,1379 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>WordQuest - Belajar Bahasa Inggris!</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Bubblegum+Sans&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --pink: #FF6EB4;
+    --yellow: #FFD93D;
+    --mint: #6BCFB5;
+    --purple: #9B5DE5;
+    --sky: #4CC9F0;
+    --orange: #FF9A3C;
+    --red: #FF4757;
+    --bg: #FFF5F9;
+    --card-w: min(140px, 28vw);
+    --card-h: min(190px, 38vw);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--bg);
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+  }
+
+  /* === FLOATING STARS BG === */
+  .bg-stars {
+    position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden;
+  }
+  .star {
+    position: absolute;
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    animation: float-star 6s infinite ease-in-out;
+    opacity: 0.4;
+  }
+  @keyframes float-star {
+    0%, 100% { transform: translateY(0) scale(1); opacity: 0.4; }
+    50% { transform: translateY(-20px) scale(1.3); opacity: 0.7; }
+  }
+
+  /* === SCREENS === */
+  .screen {
+    position: relative; z-index: 1;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    min-height: 100vh;
+    padding: 20px 16px 40px;
+    animation: fadeIn 0.5s ease;
+  }
+  .screen.active { display: flex; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: none; } }
+
+  /* === LOGO / TITLE === */
+  .logo {
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(2.4rem, 10vw, 4rem);
+    color: var(--purple);
+    text-shadow: 4px 4px 0 var(--pink), 8px 8px 0 rgba(155,93,229,0.15);
+    letter-spacing: 2px;
+    text-align: center;
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+  .logo-sub {
+    font-size: clamp(0.85rem, 3vw, 1.1rem);
+    color: var(--pink);
+    font-weight: 800;
+    letter-spacing: 1px;
+    margin-bottom: 28px;
+  }
+
+  /* === CARD UI === */
+  .ui-card {
+    background: white;
+    border-radius: 24px;
+    padding: 28px 24px;
+    box-shadow: 0 8px 32px rgba(155,93,229,0.12), 0 2px 8px rgba(0,0,0,0.06);
+    width: 100%;
+    max-width: 480px;
+    margin-bottom: 20px;
+  }
+  .ui-card h2 {
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: 1.4rem;
+    color: var(--purple);
+    margin-bottom: 18px;
+    text-align: center;
+  }
+
+  /* === BUTTONS === */
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800;
+    font-size: clamp(0.95rem, 3.5vw, 1.1rem);
+    padding: 14px 28px;
+    border-radius: 50px;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .btn:active { transform: scale(0.95) !important; }
+  .btn-primary {
+    background: linear-gradient(135deg, var(--purple), var(--pink));
+    color: white;
+    box-shadow: 0 6px 20px rgba(155,93,229,0.4);
+  }
+  .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 10px 28px rgba(155,93,229,0.5); }
+  .btn-secondary {
+    background: white;
+    color: var(--purple);
+    border: 3px solid var(--purple);
+    box-shadow: 0 4px 12px rgba(155,93,229,0.15);
+  }
+  .btn-secondary:hover { background: var(--purple); color: white; transform: translateY(-2px); }
+  .btn-mint {
+    background: linear-gradient(135deg, var(--mint), var(--sky));
+    color: white;
+    box-shadow: 0 6px 20px rgba(107,207,181,0.4);
+  }
+  .btn-mint:hover { transform: translateY(-3px); }
+  .btn-yellow {
+    background: linear-gradient(135deg, var(--yellow), var(--orange));
+    color: #6B3D00;
+    box-shadow: 0 6px 20px rgba(255,217,61,0.4);
+  }
+  .btn-yellow:hover { transform: translateY(-3px); }
+  .btn-block { width: 100%; }
+
+  /* === FORM ELEMENTS === */
+  .form-group { margin-bottom: 20px; }
+  .form-label {
+    display: block;
+    font-weight: 800;
+    color: #555;
+    margin-bottom: 8px;
+    font-size: 0.95rem;
+  }
+  .form-input {
+    width: 100%;
+    padding: 14px 18px;
+    border: 3px solid #E8D5F5;
+    border-radius: 16px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    color: #333;
+    outline: none;
+    transition: border-color 0.2s;
+    appearance: none;
+    background: #FAFAFA;
+  }
+  .form-input:focus { border-color: var(--purple); background: white; }
+
+  /* === GENDER TOGGLE === */
+  .gender-toggle { display: flex; gap: 12px; }
+  .gender-btn {
+    flex: 1; padding: 16px 10px;
+    border: 3px solid #E8D5F5;
+    border-radius: 16px;
+    background: #FAFAFA;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.2s;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800;
+    font-size: 0.9rem;
+    color: #777;
+  }
+  .gender-btn .emoji { font-size: 2rem; display: block; margin-bottom: 6px; }
+  .gender-btn.active { border-color: var(--purple); background: #F3E8FF; color: var(--purple); }
+
+  /* === AGE SLIDER === */
+  .age-display {
+    text-align: center;
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: 2.5rem;
+    color: var(--purple);
+    margin-bottom: 8px;
+  }
+  input[type=range] {
+    width: 100%; height: 8px;
+    border-radius: 4px;
+    background: linear-gradient(to right, var(--purple) 0%, var(--purple) var(--val, 50%), #E8D5F5 var(--val, 50%));
+    outline: none;
+    appearance: none;
+    cursor: pointer;
+  }
+  input[type=range]::-webkit-slider-thumb {
+    appearance: none;
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: var(--purple);
+    box-shadow: 0 4px 12px rgba(155,93,229,0.5);
+    border: 3px solid white;
+    cursor: pointer;
+  }
+
+  /* === COVER SELECTION === */
+  .cover-options {
+    display: flex; gap: 14px; justify-content: center; flex-wrap: wrap;
+  }
+  .cover-option {
+    flex: 1; min-width: 120px; max-width: 160px;
+    border: 4px solid #E8D5F5;
+    border-radius: 20px;
+    padding: 16px 10px;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.2s;
+    background: #FAFAFA;
+  }
+  .cover-option .cover-icon { font-size: 2.5rem; display: block; margin-bottom: 8px; }
+  .cover-option .cover-name {
+    font-weight: 800; font-size: 0.9rem; color: #555;
+    display: block; margin-bottom: 4px;
+  }
+  .cover-option .cover-desc { font-size: 0.75rem; color: #888; }
+  .cover-option.active { border-color: var(--purple); background: #F3E8FF; }
+  .cover-option.sanrio.active { border-color: var(--pink); background: #FFF0F8; }
+  .cover-option.hp.active { border-color: #7B2D8B; background: #F5EEFF; }
+
+  /* === GAME AREA === */
+  #game-screen {
+    background: linear-gradient(160deg, #FFF5F9 0%, #F0EAFF 100%);
+  }
+
+  .game-header {
+    width: 100%; max-width: 700px;
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 16px;
+    gap: 12px;
+  }
+  .game-title {
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(1.1rem, 4vw, 1.5rem);
+    color: var(--purple);
+  }
+
+  /* === TIMER === */
+  .timer-wrap {
+    display: flex; align-items: center; gap: 8px;
+    background: white;
+    border-radius: 50px;
+    padding: 8px 16px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  }
+  .timer-icon { font-size: 1.2rem; }
+  .timer-text {
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: 1.4rem;
+    color: var(--purple);
+    min-width: 32px;
+    text-align: center;
+  }
+  .timer-text.danger { color: var(--red); animation: pulse-timer 0.5s infinite alternate; }
+  @keyframes pulse-timer { to { transform: scale(1.2); } }
+
+  .progress-bar-wrap {
+    width: 100%; max-width: 700px;
+    height: 10px;
+    background: #E8D5F5;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    overflow: hidden;
+  }
+  .progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--purple), var(--pink));
+    border-radius: 5px;
+    transition: width 1s linear;
+  }
+
+  /* === CARDS GRID === */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(3, var(--card-w));
+    gap: clamp(10px, 2vw, 18px);
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+
+  /* === FLIP CARD === */
+  .card-wrap {
+    width: var(--card-w);
+    height: var(--card-h);
+    perspective: 800px;
+    cursor: pointer;
+  }
+  .card-inner {
+    width: 100%; height: 100%;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.6s cubic-bezier(0.4,0,0.2,1);
+  }
+  .card-wrap.flipped .card-inner { transform: rotateY(180deg); }
+  .card-front, .card-back {
+    position: absolute; inset: 0;
+    border-radius: 18px;
+    backface-visibility: hidden;
+    overflow: hidden;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+  }
+  .card-back { transform: rotateY(180deg); background: white; }
+
+  /* Card fronts by theme */
+  .card-front { display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; }
+  .card-front .char-emoji { font-size: clamp(2.5rem, 8vw, 3.5rem); filter: drop-shadow(0 4px 8px rgba(0,0,0,0.15)); z-index: 1; }
+  .card-front .char-name {
+    font-weight: 800; font-size: clamp(0.55rem, 2vw, 0.7rem);
+    color: rgba(255,255,255,0.9);
+    text-align: center; z-index: 1;
+    text-shadow: 0 1px 4px rgba(0,0,0,0.3);
+    padding: 0 8px;
+  }
+  .card-front::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: inherit;
+    opacity: 0.9;
+  }
+  .card-front .shimmer {
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.3) 0%, transparent 50%, rgba(255,255,255,0.1) 100%);
+  }
+
+  /* === CARD BACK CONTENT === */
+  .card-back {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    padding: 10px 8px; gap: 5px;
+  }
+  .word-image {
+    font-size: clamp(2.2rem, 8vw, 3rem);
+    line-height: 1;
+  }
+  .word-english {
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(0.9rem, 3.5vw, 1.1rem);
+    color: var(--purple);
+    text-align: center;
+    line-height: 1.2;
+  }
+  .word-phonetic {
+    font-size: clamp(0.6rem, 2vw, 0.72rem);
+    color: var(--mint);
+    text-align: center;
+    font-weight: 700;
+    font-style: italic;
+  }
+  .word-divider { width: 40px; height: 2px; background: #EEE; border-radius: 1px; }
+  .word-indonesia {
+    font-size: clamp(0.7rem, 2.5vw, 0.85rem);
+    color: #888;
+    font-weight: 700;
+    text-align: center;
+  }
+
+  /* === TICK COUNTER ON CARD === */
+  .card-tick {
+    position: absolute; top: 6px; right: 6px;
+    background: rgba(0,0,0,0.5);
+    color: white;
+    border-radius: 50%;
+    width: 24px; height: 24px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.7rem; font-weight: 800;
+    z-index: 10;
+  }
+  .card-tick.tick-anim { animation: tick-pulse 1s linear; }
+  @keyframes tick-pulse { 0%{transform:scale(1.5);background:rgba(255,71,87,0.8)} 100%{transform:scale(1);} }
+
+  /* === GUESS PHASE === */
+  .guess-label {
+    font-weight: 800; color: #555; font-size: 0.95rem;
+    margin-bottom: 8px; text-align: center;
+  }
+  .guess-instruction {
+    font-size: 0.85rem; color: #888; font-weight: 700;
+    text-align: center; margin-bottom: 10px;
+  }
+
+  /* Selected card highlight */
+  .card-wrap.selected .card-inner {
+    outline: 4px solid var(--yellow);
+    border-radius: 18px;
+    box-shadow: 0 0 0 6px rgba(255,217,61,0.35), 0 8px 24px rgba(0,0,0,0.18);
+  }
+  .card-wrap.selected { animation: selected-bounce 0.4s cubic-bezier(0.34,1.56,0.64,1); }
+  @keyframes selected-bounce { 0%{transform:scale(1)} 50%{transform:scale(1.1)} 100%{transform:scale(1.04)} }
+
+  /* Type-in answer box */
+  .type-answer-box {
+    width: 100%; max-width: 480px;
+    background: white;
+    border-radius: 20px;
+    padding: 16px 18px;
+    box-shadow: 0 6px 24px rgba(155,93,229,0.14);
+    display: flex; flex-direction: column; align-items: center; gap: 10px;
+    margin-bottom: 8px;
+  }
+  .type-answer-label {
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(1rem, 4vw, 1.3rem);
+    color: var(--purple);
+    text-align: center;
+  }
+  .type-answer-char {
+    font-size: clamp(1.6rem, 6vw, 2.2rem);
+    text-align: center;
+  }
+  .type-answer-input-row {
+    display: flex; gap: 8px; width: 100%;
+  }
+  .type-answer-input {
+    flex: 1;
+    padding: 12px 16px;
+    border: 3px solid #E8D5F5;
+    border-radius: 50px;
+    font-family: 'Nunito', sans-serif;
+    font-size: clamp(1rem, 4vw, 1.1rem);
+    font-weight: 800;
+    color: #333;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    text-align: center;
+    letter-spacing: 1px;
+  }
+  .type-answer-input:focus { border-color: var(--purple); box-shadow: 0 0 0 3px rgba(155,93,229,0.15); }
+  .type-answer-input.shake { animation: wrong-shake 0.4s ease; border-color: var(--red); }
+  .type-answer-submit {
+    padding: 12px 20px;
+    border-radius: 50px;
+    border: none;
+    background: linear-gradient(135deg, var(--purple), var(--pink));
+    color: white;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s;
+    box-shadow: 0 4px 14px rgba(155,93,229,0.4);
+    white-space: nowrap;
+  }
+  .type-answer-submit:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(155,93,229,0.5); }
+  .type-answer-submit:active { transform: scale(0.95); }
+  .type-answer-hint {
+    font-size: 0.8rem; color: #BBB; font-weight: 700; text-align: center;
+  }
+  .type-answer-hint b { color: var(--purple); }
+
+  /* === SCORE SCREEN === */
+  #score-screen {
+    background: linear-gradient(160deg, #F0EAFF 0%, #FFF5F9 100%);
+  }
+  .score-character {
+    font-size: clamp(5rem, 20vw, 8rem);
+    filter: drop-shadow(0 8px 24px rgba(155,93,229,0.3));
+    animation: bounce-char 1s ease infinite alternate;
+  }
+  @keyframes bounce-char { to { transform: translateY(-16px) scale(1.05); } }
+
+  .score-grade {
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(3rem, 14vw, 5rem);
+    background: linear-gradient(135deg, var(--purple), var(--pink));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    line-height: 1;
+    margin: 8px 0;
+    text-align: center;
+  }
+  .score-number {
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(1.5rem, 6vw, 2rem);
+    color: var(--orange);
+    text-align: center;
+  }
+  .score-message {
+    font-size: clamp(0.85rem, 3vw, 1rem);
+    color: #777;
+    font-weight: 700;
+    text-align: center;
+    max-width: 320px;
+    margin: 10px auto;
+  }
+  .share-card {
+    background: white;
+    border-radius: 24px;
+    padding: 24px;
+    box-shadow: 0 8px 32px rgba(155,93,229,0.15);
+    width: 100%; max-width: 360px;
+    text-align: center;
+    margin: 16px 0;
+  }
+  .share-app-link {
+    font-size: 0.8rem; color: var(--purple);
+    font-weight: 800; margin-top: 8px;
+    word-break: break-all;
+  }
+
+  /* === CONFETTI === */
+  .confetti-piece {
+    position: fixed;
+    width: 10px; height: 10px;
+    border-radius: 2px;
+    animation: confetti-fall 3s linear forwards;
+    z-index: 100;
+    pointer-events: none;
+  }
+  @keyframes confetti-fall {
+    0% { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+  }
+
+  /* === PHASE BANNER === */
+  .phase-banner {
+    background: linear-gradient(135deg, var(--purple), var(--pink));
+    color: white;
+    border-radius: 50px;
+    padding: 10px 24px;
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: 1rem;
+    text-align: center;
+    margin-bottom: 16px;
+    box-shadow: 0 4px 16px rgba(155,93,229,0.3);
+    max-width: 480px;
+    width: 100%;
+  }
+
+  /* === SCORE HISTORY === */
+  .score-history {
+    width: 100%; max-width: 480px;
+    background: white;
+    border-radius: 16px;
+    padding: 16px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+    margin-top: 16px;
+  }
+  .score-history h3 {
+    font-family: 'Bubblegum Sans', cursive;
+    color: var(--purple); font-size: 1.1rem;
+    margin-bottom: 10px; text-align: center;
+  }
+  .history-item {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 6px 0; border-bottom: 1px dashed #F0E8FF;
+    font-size: 0.85rem; font-weight: 700; color: #666;
+  }
+  .history-item:last-child { border-bottom: none; }
+  .history-score { color: var(--purple); font-family: 'Bubblegum Sans', cursive; font-size: 1rem; }
+
+  /* === RESPONSIVE === */
+  @media (max-width: 400px) {
+    :root { --card-w: 100px; --card-h: 136px; }
+    .cards-grid { gap: 8px; }
+  }
+  @media (min-width: 600px) {
+    :root { --card-w: 160px; --card-h: 216px; }
+  }
+
+  /* === OVERLAY === */
+  .overlay {
+    position: fixed; inset: 0; z-index: 50;
+    background: rgba(0,0,0,0.5);
+    display: flex; align-items: center; justify-content: center;
+    animation: fadeIn 0.3s ease;
+  }
+  .overlay-box {
+    background: white; border-radius: 28px;
+    padding: 32px 28px; max-width: 360px; width: 90%;
+    text-align: center;
+    animation: pop-in 0.4s cubic-bezier(0.34,1.56,0.64,1);
+  }
+  @keyframes pop-in { from { transform: scale(0.6); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+  .overlay-icon { font-size: 3.5rem; margin-bottom: 12px; display: block; }
+  .overlay-title { font-family: 'Bubblegum Sans', cursive; font-size: 1.6rem; color: var(--purple); margin-bottom: 8px; }
+  .overlay-text { font-size: 0.9rem; color: #777; font-weight: 700; margin-bottom: 20px; line-height: 1.6; }
+
+  .hidden { display: none !important; }
+
+  /* === STAR RATING === */
+  .stars-row { display: flex; justify-content: center; gap: 4px; font-size: 1.5rem; margin: 8px 0; }
+
+  /* Bounce anim for correct/wrong */
+  @keyframes correct-bounce {
+    0%{transform:scale(1)} 30%{transform:scale(1.2)} 60%{transform:scale(0.95)} 100%{transform:scale(1)}
+  }
+  @keyframes wrong-shake {
+    0%,100%{transform:translateX(0)} 20%,60%{transform:translateX(-8px)} 40%,80%{transform:translateX(8px)}
+  }
+  .card-correct { animation: correct-bounce 0.5s ease; border: 4px solid var(--mint) !important; }
+  .card-wrong { animation: wrong-shake 0.4s ease; border: 4px solid var(--red) !important; }
+
+  .result-chips { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; margin-top: 8px; }
+  .chip {
+    padding: 4px 12px; border-radius: 50px; font-size: 0.8rem; font-weight: 800;
+  }
+  .chip-correct { background: #E8FFF5; color: var(--mint); border: 2px solid var(--mint); }
+  .chip-wrong { background: #FFF0F0; color: var(--red); border: 2px solid var(--red); }
+</style>
+</head>
+<body>
+
+<!-- BG Stars -->
+<div class="bg-stars" id="bgStars"></div>
+
+<!-- ======================== SCREEN 1: INTRO ======================== -->
+<div class="screen active" id="intro-screen">
+  <div class="logo">🌟 WordQuest</div>
+  <div class="logo-sub">✨ Belajar Kosakata Bahasa Inggris ✨</div>
+
+  <div class="ui-card">
+    <h2>👋 Halo! Siapa kamu?</h2>
+    <div class="form-group">
+      <label class="form-label">📝 Nama kamu</label>
+      <input class="form-input" id="input-name" type="text" placeholder="Tulis nama kamu di sini..." maxlength="20">
+    </div>
+    <div class="form-group">
+      <label class="form-label">🎂 Umur kamu</label>
+      <div class="age-display" id="age-display">6 tahun</div>
+      <input type="range" id="age-slider" min="4" max="10" value="6" style="--val:33%">
+    </div>
+    <div class="form-group">
+      <label class="form-label">💫 Kamu seorang...</label>
+      <div class="gender-toggle">
+        <div class="gender-btn active" data-gender="girl" onclick="selectGender(this)">
+          <span class="emoji">👧</span>Perempuan
+        </div>
+        <div class="gender-btn" data-gender="boy" onclick="selectGender(this)">
+          <span class="emoji">👦</span>Laki-laki
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <button class="btn btn-primary btn-block" style="max-width:480px" onclick="goToTheme()">
+    Lanjut → Pilih Tema 🎴
+  </button>
+</div>
+
+<!-- ======================== SCREEN 2: THEME ======================== -->
+<div class="screen" id="theme-screen">
+  <div class="logo" style="font-size:clamp(1.8rem,7vw,3rem)">🎴 Pilih Desain Kartu</div>
+  <div class="logo-sub">Desain kartu yang kamu suka!</div>
+
+  <div class="ui-card">
+    <h2>✨ Mau kartu bergambar apa?</h2>
+    <div class="cover-options">
+      <div class="cover-option sanrio active" data-theme="sanrio" onclick="selectTheme(this)">
+        <span class="cover-icon">🌸</span>
+        <span class="cover-name">Sanrio</span>
+        <span class="cover-desc">Hello Kitty & Friends</span>
+      </div>
+      <div class="cover-option hp" data-theme="hp" onclick="selectTheme(this)">
+        <span class="cover-icon">⚡</span>
+        <span class="cover-name">Harry Potter</span>
+        <span class="cover-desc">Magic & Wizardry</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="ui-card" id="theme-preview" style="text-align:center">
+    <h2 id="preview-title">🌸 Tema Sanrio</h2>
+    <p style="font-size:0.9rem;color:#888;font-weight:700;margin-bottom:16px" id="preview-desc">
+      Kartu lucu bergambar Hello Kitty, My Melody, Cinnamoroll dan teman-temannya!
+    </p>
+    <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap" id="preview-chars"></div>
+  </div>
+
+  <div style="display:flex;gap:12px;max-width:480px;width:100%">
+    <button class="btn btn-secondary" onclick="showScreen('intro-screen')" style="flex:1">← Kembali</button>
+    <button class="btn btn-primary" onclick="startGame()" style="flex:2">Mulai Main! 🎮</button>
+  </div>
+</div>
+
+<!-- ======================== SCREEN 3: GAME ======================== -->
+<div class="screen" id="game-screen">
+  <div class="game-header">
+    <div class="game-title" id="game-phase-title">🃏 Hafal Kartu!</div>
+    <div class="timer-wrap">
+      <span class="timer-icon">⏱️</span>
+      <span class="timer-text" id="timer-display">50</span>
+    </div>
+  </div>
+
+  <div class="progress-bar-wrap">
+    <div class="progress-bar-fill" id="progress-bar" style="width:100%"></div>
+  </div>
+
+  <div class="phase-banner" id="phase-banner">
+    🌟 Fase Menghafal — Klik kartu untuk melihat kata! Hafal baik-baik ya! 🌟
+  </div>
+
+  <div class="cards-grid" id="cards-grid"></div>
+
+  <div id="guess-prompt" class="hidden" style="text-align:center;width:100%;max-width:480px">
+    <div class="guess-label">🃏 Klik kartu, lalu ketik kata Bahasa Inggrisnya!</div>
+    <div class="guess-instruction">Pilih kartu dulu, lalu tulis jawabanmu di bawah 👇</div>
+    <div style="font-size:0.8rem;color:var(--purple);font-weight:800;margin-bottom:8px">
+      Soal <span id="guess-current">1</span> dari 9 &nbsp;|&nbsp; Nilai: <span id="current-score-display">0</span>
+    </div>
+
+    <!-- Type-in answer panel (shown after card selected) -->
+    <div class="type-answer-box hidden" id="type-answer-box">
+      <div class="type-answer-char" id="type-answer-char">🐱 Hello Kitty</div>
+      <div class="type-answer-label">Kata Bahasa Inggris untuk kartu ini?</div>
+      <div class="type-answer-input-row">
+        <input class="type-answer-input" id="type-answer-input" type="text"
+          placeholder="Ketik di sini..." autocomplete="off" autocorrect="off"
+          spellcheck="false" maxlength="30">
+        <button class="type-answer-submit" onclick="submitTypeAnswer()">✔ Kirim</button>
+      </div>
+      <div class="type-answer-hint">Tulis dalam Bahasa Inggris · <b>Enter</b> untuk kirim</div>
+    </div>
+  </div>
+</div>
+
+<!-- ======================== SCREEN 4: SCORE ======================== -->
+<div class="screen" id="score-screen">
+  <div class="logo" style="font-size:clamp(1.8rem,7vw,2.5rem)">🏆 Hasil Permainan!</div>
+
+  <div class="score-character" id="score-character">🌸</div>
+  <div class="score-grade" id="score-grade">A</div>
+  <div class="score-number" id="score-number">Nilai: 100 / 100</div>
+
+  <div class="stars-row" id="stars-row">⭐⭐⭐⭐⭐</div>
+
+  <div class="share-card" id="share-card">
+    <div style="font-size:1.5rem;margin-bottom:6px" id="share-char-emoji">🌸</div>
+    <div style="font-family:'Bubblegum Sans',cursive;font-size:1.2rem;color:var(--purple)" id="share-name-line">Nama</div>
+    <div style="font-size:0.85rem;color:#888;font-weight:700;margin:4px 0" id="share-age-line">Umur 6 tahun</div>
+    <div style="font-family:'Bubblegum Sans',cursive;font-size:2rem;color:var(--pink)" id="share-grade">A</div>
+    <div style="font-size:0.8rem;color:#AAA;font-weight:700" id="share-score-line">100 / 100 poin</div>
+    <div class="share-app-link">Mainkan juga di: YOUR-APP-LINK-HERE.com</div>
+  </div>
+
+  <div class="score-message" id="score-message">Wah, kamu hebat sekali! 🎉</div>
+
+  <div class="score-history hidden" id="score-history">
+    <h3>📊 Riwayat Skor Sesi Ini</h3>
+    <div id="history-list"></div>
+  </div>
+
+  <div style="display:flex;flex-direction:column;gap:12px;width:100%;max-width:360px;margin-top:16px">
+    <button class="btn btn-primary btn-block" onclick="shareResult()">📤 Bagikan Hasil!</button>
+    <button class="btn btn-mint btn-block" onclick="playAgain()">🔄 Main Lagi!</button>
+    <button class="btn btn-secondary btn-block" onclick="showScreen('intro-screen')">🏠 Menu Utama</button>
+  </div>
+</div>
+
+<!-- ======================== OVERLAYS ======================== -->
+<div class="overlay hidden" id="countdown-overlay">
+  <div class="overlay-box">
+    <span class="overlay-icon" id="co-icon">🌟</span>
+    <div class="overlay-title" id="co-title">Siap?</div>
+    <div class="overlay-text" id="co-text">Kartu akan muncul sebentar lagi...</div>
+  </div>
+</div>
+
+<div class="overlay hidden" id="phase2-overlay">
+  <div class="overlay-box">
+    <span class="overlay-icon">🔀</span>
+    <div class="overlay-title">Waktunya Tebak!</div>
+    <div class="overlay-text">Kartu sudah diacak! Sekarang <b>klik satu kartu</b>, lalu <b>ketik kata Bahasa Inggrisnya</b> sesuai gambar yang tadi kamu hafal. Ingat baik-baik ya! 🧠✍️</div>
+    <button class="btn btn-primary btn-block" onclick="startGuessPhase()">Siap! Ayo tebak! 🎯</button>
+  </div>
+</div>
+
+<div class="overlay hidden" id="result-overlay">
+  <div class="overlay-box">
+    <span class="overlay-icon" id="ro-icon">✅</span>
+    <div class="overlay-title" id="ro-title">Benar!</div>
+    <div class="overlay-text" id="ro-text"></div>
+    <button class="btn btn-primary btn-block" id="ro-btn" onclick="nextGuess()">Lanjut →</button>
+  </div>
+</div>
+
+<script>
+// ===================== DATA =====================
+const SANRIO_CHARS = [
+  { name: "Hello Kitty", emoji: "🐱", color: ["#FFB7C5","#FF6EB4"], gradient: "linear-gradient(135deg,#FFB7C5,#FF6EB4)" },
+  { name: "My Melody", emoji: "🐰", color: ["#FFAEC9","#E75480"], gradient: "linear-gradient(135deg,#FFAEC9,#E75480)" },
+  { name: "Cinnamoroll", emoji: "🐶", color: ["#B8DFFF","#5B9BD5"], gradient: "linear-gradient(135deg,#B8DFFF,#5B9BD5)" },
+  { name: "Pompom Purin", emoji: "🐾", color: ["#FFE4A0","#FFB347"], gradient: "linear-gradient(135deg,#FFE4A0,#FFB347)" },
+  { name: "Kuromi", emoji: "💀", color: ["#C8A2C8","#800080"], gradient: "linear-gradient(135deg,#C8A2C8,#800080)" },
+  { name: "Keroppi", emoji: "🐸", color: ["#A8E6CF","#2ECC71"], gradient: "linear-gradient(135deg,#A8E6CF,#2ECC71)" },
+  { name: "Chococat", emoji: "🐱", color: ["#C8A882","#6B4226"], gradient: "linear-gradient(135deg,#C8A882,#6B4226)" },
+  { name: "Gudetama", emoji: "🥚", color: ["#FFF9C4","#F9A825"], gradient: "linear-gradient(135deg,#FFF9C4,#F9A825)" },
+  { name: "Little Twin Stars", emoji: "⭐", color: ["#FFD1DC","#9B59B6"], gradient: "linear-gradient(135deg,#FFD1DC,#9B59B6)" },
+];
+
+const HP_CHARS = [
+  { name: "Harry Potter", emoji: "⚡", color: ["#D4AF37","#8B0000"], gradient: "linear-gradient(135deg,#D4AF37,#8B0000)" },
+  { name: "Hermione Granger", emoji: "📚", color: ["#C41E3A","#8B0000"], gradient: "linear-gradient(135deg,#C41E3A,#8B0000)" },
+  { name: "Ron Weasley", emoji: "🦁", color: ["#FF8C00","#DC143C"], gradient: "linear-gradient(135deg,#FF8C00,#DC143C)" },
+  { name: "Dumbledore", emoji: "🌟", color: ["#4682B4","#191970"], gradient: "linear-gradient(135deg,#4682B4,#191970)" },
+  { name: "Dobby", emoji: "🧦", color: ["#808080","#2F4F4F"], gradient: "linear-gradient(135deg,#9B9B9B,#3D5A5A)" },
+  { name: "Hedwig", emoji: "🦉", color: ["#E0E0E0","#708090"], gradient: "linear-gradient(135deg,#E0E0E0,#6B7B8A)" },
+  { name: "Draco Malfoy", emoji: "🐍", color: ["#228B22","#006400"], gradient: "linear-gradient(135deg,#3CB371,#006400)" },
+  { name: "Luna Lovegood", emoji: "🌙", color: ["#E6E6FA","#9370DB"], gradient: "linear-gradient(135deg,#E6E6FA,#9370DB)" },
+  { name: "Neville Longbottom", emoji: "🌿", color: ["#90EE90","#2E8B57"], gradient: "linear-gradient(135deg,#90EE90,#2E8B57)" },
+];
+
+// Vocabulary pools by age group
+const VOCAB = {
+  easy: [ // age 4-5
+    { emoji: "🍎", en: "Apple", phonetic: "/ˈæp.əl/", id: "Apel" },
+    { emoji: "🐱", en: "Cat", phonetic: "/kæt/", id: "Kucing" },
+    { emoji: "🐶", en: "Dog", phonetic: "/dɒɡ/", id: "Anjing" },
+    { emoji: "🌸", en: "Flower", phonetic: "/ˈflaʊ.ər/", id: "Bunga" },
+    { emoji: "🌙", en: "Moon", phonetic: "/muːn/", id: "Bulan" },
+    { emoji: "☀️", en: "Sun", phonetic: "/sʌn/", id: "Matahari" },
+    { emoji: "🐟", en: "Fish", phonetic: "/fɪʃ/", id: "Ikan" },
+    { emoji: "🌳", en: "Tree", phonetic: "/triː/", id: "Pohon" },
+    { emoji: "🍌", en: "Banana", phonetic: "/bəˈnɑː.nə/", id: "Pisang" },
+    { emoji: "🎈", en: "Balloon", phonetic: "/bəˈluːn/", id: "Balon" },
+    { emoji: "📚", en: "Book", phonetic: "/bʊk/", id: "Buku" },
+    { emoji: "🎨", en: "Color", phonetic: "/ˈkʌl.ər/", id: "Warna" },
+  ],
+  medium: [ // age 6-7
+    { emoji: "🦋", en: "Butterfly", phonetic: "/ˈbʌt.ə.flaɪ/", id: "Kupu-kupu" },
+    { emoji: "🌈", en: "Rainbow", phonetic: "/ˈreɪn.bəʊ/", id: "Pelangi" },
+    { emoji: "✈️", en: "Airplane", phonetic: "/ˈeər.pleɪn/", id: "Pesawat" },
+    { emoji: "🏖️", en: "Beach", phonetic: "/biːtʃ/", id: "Pantai" },
+    { emoji: "🦁", en: "Lion", phonetic: "/ˈlaɪ.ən/", id: "Singa" },
+    { emoji: "🐘", en: "Elephant", phonetic: "/ˈel.ɪ.fənt/", id: "Gajah" },
+    { emoji: "⭐", en: "Star", phonetic: "/stɑːr/", id: "Bintang" },
+    { emoji: "🏔️", en: "Mountain", phonetic: "/ˈmaʊn.tɪn/", id: "Gunung" },
+    { emoji: "🍓", en: "Strawberry", phonetic: "/ˈstrɔː.bər.i/", id: "Stroberi" },
+    { emoji: "🎵", en: "Music", phonetic: "/ˈmjuː.zɪk/", id: "Musik" },
+    { emoji: "🚀", en: "Rocket", phonetic: "/ˈrɒk.ɪt/", id: "Roket" },
+    { emoji: "🌊", en: "Ocean", phonetic: "/ˈoʊ.ʃən/", id: "Samudra" },
+  ],
+  hard: [ // age 8-10
+    { emoji: "🔭", en: "Telescope", phonetic: "/ˈtel.ɪ.skəʊp/", id: "Teleskop" },
+    { emoji: "🌋", en: "Volcano", phonetic: "/vɒlˈkeɪ.nəʊ/", id: "Gunung Berapi" },
+    { emoji: "🦊", en: "Fox", phonetic: "/fɒks/", id: "Rubah" },
+    { emoji: "🧲", en: "Magnet", phonetic: "/ˈmæɡ.nɪt/", id: "Magnet" },
+    { emoji: "🌿", en: "Forest", phonetic: "/ˈfɒr.ɪst/", id: "Hutan" },
+    { emoji: "💎", en: "Diamond", phonetic: "/ˈdaɪ.ə.mənd/", id: "Berlian" },
+    { emoji: "🦅", en: "Eagle", phonetic: "/ˈiː.ɡəl/", id: "Elang" },
+    { emoji: "🌍", en: "Earth", phonetic: "/ɜːrθ/", id: "Bumi" },
+    { emoji: "🎭", en: "Theater", phonetic: "/ˈθɪə.tər/", id: "Teater" },
+    { emoji: "🧬", en: "Science", phonetic: "/ˈsaɪ.əns/", id: "Sains" },
+    { emoji: "🏛️", en: "Museum", phonetic: "/mjuːˈziː.əm/", id: "Museum" },
+    { emoji: "🦒", en: "Giraffe", phonetic: "/dʒɪˈrɑːf/", id: "Jerapah" },
+  ]
+};
+
+// ===================== STATE =====================
+let state = {
+  name: "", age: 6, gender: "girl", theme: "sanrio",
+  cards: [], currentPhase: "memorize",
+  memorizeTimer: null, totalTime: 50,
+  guessQueue: [], currentGuessIdx: 0,
+  score: 0, results: [],
+  sessionHistory: JSON.parse(sessionStorage.getItem("wq_history") || "[]"),
+  cardTickTimers: {}
+};
+
+// ===================== INIT =====================
+function init() {
+  generateBgStars();
+  setupAgeSlider();
+  renderThemePreview("sanrio");
+}
+
+function generateBgStars() {
+  const container = document.getElementById("bgStars");
+  const colors = ["#FFD93D","#FF6EB4","#9B5DE5","#6BCFB5","#4CC9F0","#FF9A3C"];
+  for (let i = 0; i < 25; i++) {
+    const s = document.createElement("div");
+    s.className = "star";
+    s.style.cssText = `
+      left:${Math.random()*100}%;top:${Math.random()*100}%;
+      background:${colors[i%colors.length]};
+      animation-delay:${Math.random()*6}s;
+      animation-duration:${4+Math.random()*4}s;
+      width:${5+Math.random()*8}px;height:${5+Math.random()*8}px;
+    `;
+    container.appendChild(s);
+  }
+}
+
+function setupAgeSlider() {
+  const slider = document.getElementById("age-slider");
+  slider.addEventListener("input", () => {
+    const v = slider.value;
+    document.getElementById("age-display").textContent = v + " tahun";
+    const pct = ((v-4)/(10-4)*100)+"%";
+    slider.style.setProperty("--val", pct);
+  });
+}
+
+// ===================== NAVIGATION =====================
+function showScreen(id) {
+  document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+  window.scrollTo(0,0);
+}
+
+function selectGender(el) {
+  document.querySelectorAll(".gender-btn").forEach(b => b.classList.remove("active"));
+  el.classList.add("active");
+}
+
+function selectTheme(el) {
+  document.querySelectorAll(".cover-option").forEach(o => o.classList.remove("active"));
+  el.classList.add("active");
+  renderThemePreview(el.dataset.theme);
+}
+
+function renderThemePreview(theme) {
+  const chars = theme === "sanrio" ? SANRIO_CHARS : HP_CHARS;
+  const title = theme === "sanrio" ? "🌸 Tema Sanrio" : "⚡ Tema Harry Potter";
+  const desc = theme === "sanrio"
+    ? "Kartu lucu bergambar Hello Kitty, My Melody, Cinnamoroll dan teman-temannya!"
+    : "Kartu ajaib bergambar Harry Potter, Hermione, dan karakter wizarding world!";
+  document.getElementById("preview-title").textContent = title;
+  document.getElementById("preview-desc").textContent = desc;
+  const preview = document.getElementById("preview-chars");
+  preview.innerHTML = chars.slice(0,5).map(c =>
+    `<div style="text-align:center">
+      <div style="width:50px;height:50px;border-radius:12px;background:${c.gradient};display:flex;align-items:center;justify-content:center;font-size:1.6rem;box-shadow:0 4px 12px rgba(0,0,0,0.1);margin-bottom:4px">${c.emoji}</div>
+      <div style="font-size:0.6rem;font-weight:800;color:#888;width:50px;text-align:center">${c.name.split(" ")[0]}</div>
+    </div>`
+  ).join("");
+}
+
+function goToTheme() {
+  const name = document.getElementById("input-name").value.trim();
+  if (!name) { alert("Tulis nama kamu dulu ya! 😊"); return; }
+  state.name = name;
+  state.age = parseInt(document.getElementById("age-slider").value);
+  const activeGender = document.querySelector(".gender-btn.active");
+  state.gender = activeGender ? activeGender.dataset.gender : "girl";
+  showScreen("theme-screen");
+}
+
+// ===================== GAME START =====================
+function startGame() {
+  const activeTheme = document.querySelector(".cover-option.active");
+  state.theme = activeTheme ? activeTheme.dataset.theme : "sanrio";
+  state.currentPhase = "memorize";
+  state.score = 0;
+  state.results = [];
+  state.currentGuessIdx = 0;
+
+  // Pick vocabulary based on age
+  let pool;
+  if (state.age <= 5) pool = VOCAB.easy;
+  else if (state.age <= 7) pool = VOCAB.medium;
+  else pool = VOCAB.hard;
+
+  // Pick 9 random words
+  const shuffled = [...pool].sort(() => Math.random()-0.5).slice(0,9);
+  const chars = state.theme === "sanrio" ? SANRIO_CHARS : HP_CHARS;
+
+  state.cards = shuffled.map((word, i) => ({
+    id: i,
+    word,
+    char: chars[i],
+    flipped: false,
+    matched: false
+  }));
+
+  state.guessQueue = [...state.cards].map(c => c.id);
+
+  showScreen("game-screen");
+  renderCards();
+  showCountdownOverlay();
+}
+
+function showCountdownOverlay() {
+  const overlay = document.getElementById("countdown-overlay");
+  overlay.classList.remove("hidden");
+  const icons = ["3️⃣","2️⃣","1️⃣","🎮"];
+  const texts = ["Bersiap...","Sebentar lagi...","Mulai sekarang!","Hafal semua kata ya!"];
+  let i = 0;
+  document.getElementById("co-icon").textContent = icons[0];
+  document.getElementById("co-title").textContent = "3";
+  document.getElementById("co-text").textContent = texts[0];
+
+  const iv = setInterval(() => {
+    i++;
+    if (i >= icons.length) {
+      clearInterval(iv);
+      overlay.classList.add("hidden");
+      startMemorizePhase();
+      return;
+    }
+    document.getElementById("co-icon").textContent = icons[i];
+    document.getElementById("co-title").textContent = ["3","2","1","Go!"][i];
+    document.getElementById("co-text").textContent = texts[i];
+  }, 900);
+}
+
+// ===================== MEMORIZE PHASE =====================
+function renderCards() {
+  const grid = document.getElementById("cards-grid");
+  grid.innerHTML = "";
+  state.cards.forEach((card, idx) => {
+    const wrap = document.createElement("div");
+    wrap.className = "card-wrap" + (card.flipped ? " flipped" : "");
+    wrap.id = "card-"+card.id;
+    wrap.innerHTML = `
+      <div class="card-inner">
+        <div class="card-front" style="background:${card.char.gradient}">
+          <div class="shimmer"></div>
+          <span class="char-emoji">${card.char.emoji}</span>
+          <span class="char-name">${card.char.name}</span>
+        </div>
+        <div class="card-back">
+          <div class="word-image">${card.word.emoji}</div>
+          <div class="word-english">${card.word.en}</div>
+          <div class="word-phonetic">${card.word.phonetic}</div>
+          <div class="word-divider"></div>
+          <div class="word-indonesia">🇮🇩 ${card.word.id}</div>
+        </div>
+      </div>
+      <div class="card-tick hidden" id="tick-${card.id}">5</div>
+    `;
+    if (state.currentPhase === "memorize") {
+      wrap.onclick = () => flipCard(card.id);
+    }
+    grid.appendChild(wrap);
+  });
+}
+
+function flipCard(id) {
+  if (state.currentPhase !== "memorize") return;
+  const card = state.cards.find(c => c.id === id);
+  if (!card) return;
+
+  const wrap = document.getElementById("card-"+id);
+  const tick = document.getElementById("tick-"+id);
+
+  if (!card.flipped) {
+    card.flipped = true;
+    wrap.classList.add("flipped");
+    tick.classList.remove("hidden");
+
+    // Start 5-second countdown
+    let seconds = 5;
+    tick.textContent = seconds;
+    tick.classList.add("tick-anim");
+
+    // Clear any existing timer for this card
+    if (state.cardTickTimers[id]) clearInterval(state.cardTickTimers[id]);
+    state.cardTickTimers[id] = setInterval(() => {
+      seconds--;
+      tick.textContent = seconds;
+      tick.classList.remove("tick-anim");
+      void tick.offsetWidth;
+      tick.classList.add("tick-anim");
+      if (seconds <= 0) {
+        clearInterval(state.cardTickTimers[id]);
+        card.flipped = false;
+        wrap.classList.remove("flipped");
+        tick.classList.add("hidden");
+      }
+    }, 1000);
+  }
+}
+
+let memorizeInterval = null;
+function startMemorizePhase() {
+  document.getElementById("game-phase-title").textContent = "🃏 Fase Menghafal!";
+  document.getElementById("phase-banner").textContent = "🌟 Klik kartu untuk melihat gambar & kata! Hafal semuanya! 🧠";
+  document.getElementById("guess-prompt").classList.add("hidden");
+
+  let timeLeft = state.totalTime;
+  updateTimer(timeLeft, state.totalTime);
+  memorizeInterval = setInterval(() => {
+    timeLeft--;
+    updateTimer(timeLeft, state.totalTime);
+    if (timeLeft <= 0) {
+      clearInterval(memorizeInterval);
+      // Close all flipped cards
+      Object.values(state.cardTickTimers).forEach(t => clearInterval(t));
+      state.cardTickTimers = {};
+      state.cards.forEach(c => { c.flipped = false; });
+      showPhase2Overlay();
+    }
+  }, 1000);
+}
+
+function updateTimer(time, total) {
+  const el = document.getElementById("timer-display");
+  el.textContent = time;
+  el.className = "timer-text" + (time <= 10 ? " danger" : "");
+  const pct = (time/total)*100;
+  document.getElementById("progress-bar").style.width = pct+"%";
+}
+
+function showPhase2Overlay() {
+  // Shuffle cards display order
+  state.cards = state.cards.sort(() => Math.random()-0.5);
+  state.cards.forEach((c, i) => { c.id = i; });
+  renderCards();
+  document.getElementById("phase2-overlay").classList.remove("hidden");
+}
+
+// ===================== GUESS PHASE =====================
+function startGuessPhase() {
+  document.getElementById("phase2-overlay").classList.add("hidden");
+  state.currentPhase = "guess";
+  state.currentGuessIdx = 0;
+  state.score = 0;
+  state.selectedCardId = null;
+
+  document.getElementById("game-phase-title").textContent = "🎯 Fase Tebak!";
+  document.getElementById("phase-banner").textContent = "🎯 Klik kartu, lalu ketik kata Bahasa Inggrisnya! Ingat gambarnya? ✍️";
+  document.getElementById("guess-prompt").classList.remove("hidden");
+  document.getElementById("type-answer-box").classList.add("hidden");
+
+  // Attach click handlers — clicking selects card, shows type-in box
+  state.cards.forEach(card => {
+    const wrap = document.getElementById("card-"+card.id);
+    if (wrap) {
+      const fresh = wrap.cloneNode(true);
+      fresh.onclick = () => selectCardForGuess(card.id);
+      wrap.parentNode.replaceChild(fresh, wrap);
+    }
+  });
+
+  // Enter key submits
+  const inp = document.getElementById("type-answer-input");
+  inp.onkeydown = (e) => { if (e.key === "Enter") submitTypeAnswer(); };
+
+  showCurrentGuessInfo();
+  startGuessTimer();
+}
+
+function showCurrentGuessInfo() {
+  if (state.currentGuessIdx >= state.guessQueue.length) {
+    clearInterval(guessTimerInterval);
+    endGame();
+    return;
+  }
+  document.getElementById("guess-current").textContent = state.currentGuessIdx + 1;
+  document.getElementById("current-score-display").textContent = state.score;
+  // Update total display dynamically
+  const guessLabel = document.querySelector("#guess-prompt .guess-label");
+  if (guessLabel) guessLabel.textContent = `🃏 Kartu ${state.currentGuessIdx + 1} dari ${state.cards.length} — Klik kartu, lalu ketik kata Bahasa Inggrisnya!`;
+  // Hide answer box until a card is clicked
+  document.getElementById("type-answer-box").classList.add("hidden");
+  document.getElementById("type-answer-input").value = "";
+  state.selectedCardId = null;
+  // Remove selection highlight from all cards
+  document.querySelectorAll(".card-wrap").forEach(w => w.classList.remove("selected"));
+}
+
+function selectCardForGuess(cardId) {
+  if (state.currentPhase !== "guess") return;
+
+  // Deselect previous
+  document.querySelectorAll(".card-wrap").forEach(w => w.classList.remove("selected"));
+
+  // Select clicked card
+  const wrap = document.getElementById("card-"+cardId);
+  if (wrap) wrap.classList.add("selected");
+  state.selectedCardId = cardId;
+
+  // Show type-in box with the selected card's character name
+  const card = state.cards.find(c => c.id === cardId);
+  document.getElementById("type-answer-char").textContent = card.char.emoji + " " + card.char.name;
+  document.getElementById("type-answer-box").classList.remove("hidden");
+
+  // Focus input
+  setTimeout(() => {
+    const inp = document.getElementById("type-answer-input");
+    inp.value = "";
+    inp.focus();
+    inp.classList.remove("shake");
+  }, 50);
+}
+
+function submitTypeAnswer() {
+  if (state.currentPhase !== "guess") return;
+  if (state.selectedCardId === null) return;
+
+  const inp = document.getElementById("type-answer-input");
+  const typed = inp.value.trim().toLowerCase();
+  if (!typed) {
+    inp.classList.add("shake");
+    setTimeout(() => inp.classList.remove("shake"), 500);
+    inp.focus();
+    return;
+  }
+
+  // The correct card for this round = the one whose English word matches typed
+  // User picks a card and types what they think the word on that card is
+  const selectedCard = state.cards.find(c => c.id === state.selectedCardId);
+  const correct = selectedCard.word.en.toLowerCase() === typed;
+
+  if (correct) state.score += Math.round(100 / 9);
+  state.results.push({ correct, cardId: state.selectedCardId });
+
+  // Show result overlay
+  const overlay = document.getElementById("result-overlay");
+  document.getElementById("ro-icon").textContent = correct ? "✅" : "❌";
+  document.getElementById("ro-title").textContent = correct ? "Benar! 🎉" : "Hampir! 😅";
+
+  if (correct) {
+    document.getElementById("ro-text").innerHTML =
+      `Mantap! Kartu <b>${selectedCard.char.name}</b> memang bergambar <b>${selectedCard.word.emoji} ${selectedCard.word.en}</b> = ${selectedCard.word.id}! Kamu hebat! 🌟`;
+  } else {
+    document.getElementById("ro-text").innerHTML =
+      `Kamu mengetik "<b>${inp.value.trim()}</b>" tapi kata untuk kartu <b>${selectedCard.char.name}</b> adalah <b>${selectedCard.word.emoji} ${selectedCard.word.en}</b> = ${selectedCard.word.id}`;
+  }
+
+  // Animate card
+  const wrap = document.getElementById("card-"+state.selectedCardId);
+  if (wrap) {
+    wrap.classList.add(correct ? "card-correct" : "card-wrong");
+    setTimeout(() => wrap && wrap.classList.remove("card-correct", "card-wrong"), 700);
+  }
+
+  overlay.classList.remove("hidden");
+}
+
+let guessTimerInterval = null;
+function startGuessTimer() {
+  let timeLeft = 90;
+  updateTimer(timeLeft, 90);
+  guessTimerInterval = setInterval(() => {
+    timeLeft--;
+    updateTimer(timeLeft, 90);
+    if (timeLeft <= 0) {
+      clearInterval(guessTimerInterval);
+      endGame();
+    }
+  }, 1000);
+}
+
+function nextGuess() {
+  document.getElementById("result-overlay").classList.add("hidden");
+  state.currentGuessIdx++;
+  if (state.currentGuessIdx >= state.cards.length) {
+    clearInterval(guessTimerInterval);
+    endGame();
+    return;
+  }
+  showCurrentGuessInfo();
+}
+
+// ===================== END GAME =====================
+function endGame() {
+  state.currentPhase = "done";
+  const finalScore = Math.min(100, state.score);
+
+  // Grade
+  let grade, message, stars;
+  if (state.theme === "sanrio") {
+    if (finalScore >= 90) { grade = "A"; message = "Luar biasa! Kamu bintang Sanrio! ⭐"; stars = 5; }
+    else if (finalScore >= 80) { grade = "B+"; message = "Bagus sekali! Hampir sempurna! 🌸"; stars = 4; }
+    else if (finalScore >= 70) { grade = "B-"; message = "Lumayan! Kamu punya potensi besar! 🐱"; stars = 3; }
+    else if (finalScore >= 60) { grade = "C+"; message = "Cukup baik! Latihan lagi ya! 🐰"; stars = 3; }
+    else if (finalScore >= 50) { grade = "C-"; message = "Terus semangat! Pasti bisa lebih baik! 🌺"; stars = 2; }
+    else { grade = "D"; message = "Jangan menyerah! Coba lagi ya! 💪"; stars = 1; }
+  } else {
+    if (finalScore >= 90) { grade = "Outstanding"; message = "Kamu luar biasa! Seperti Hermione! ⚡"; stars = 5; }
+    else if (finalScore >= 80) { grade = "Exceed Expectations"; message = "Melebihi harapan! Sangat bagus! 📚"; stars = 4; }
+    else if (finalScore >= 70) { grade = "Acceptable"; message = "Memuaskan! Kamu bisa lebih baik! 🦁"; stars = 3; }
+    else if (finalScore >= 60) { grade = "Poor"; message = "Cukup, tapi masih perlu belajar! 📖"; stars = 2; }
+    else if (finalScore >= 50) { grade = "Dreadful"; message = "Ayo latihan lebih giat lagi! 🧙"; stars = 2; }
+    else { grade = "Troll"; message = "Jangan sedih! Coba lagi, kamu pasti bisa! 🌟"; stars = 1; }
+  }
+
+  // Pick a random character
+  const chars = state.theme === "sanrio" ? SANRIO_CHARS : HP_CHARS;
+  const randChar = chars[Math.floor(Math.random()*chars.length)];
+
+  // Save to session
+  const record = {
+    name: state.name, age: state.age, theme: state.theme,
+    score: finalScore, grade, time: new Date().toLocaleTimeString("id-ID")
+  };
+  state.sessionHistory.unshift(record);
+  if (state.sessionHistory.length > 10) state.sessionHistory.pop();
+  sessionStorage.setItem("wq_history", JSON.stringify(state.sessionHistory));
+
+  // Render score screen
+  document.getElementById("score-character").textContent = randChar.emoji;
+  document.getElementById("score-grade").textContent = grade;
+  document.getElementById("score-number").textContent = "Nilai: "+finalScore+" / 100";
+  document.getElementById("score-message").textContent = message;
+
+  const starsEl = document.getElementById("stars-row");
+  starsEl.innerHTML = "⭐".repeat(stars) + (stars < 5 ? "☆".repeat(5-stars) : "");
+
+  document.getElementById("share-char-emoji").textContent = randChar.emoji;
+  document.getElementById("share-name-line").textContent = state.name;
+  document.getElementById("share-age-line").textContent = "Umur "+state.age+" tahun · "+
+    (state.theme==="sanrio"?"Sanrio":"Harry Potter");
+  document.getElementById("share-grade").textContent = grade;
+  document.getElementById("share-score-line").textContent = finalScore+" / 100 poin";
+
+  // History
+  if (state.sessionHistory.length > 1) {
+    const hist = document.getElementById("score-history");
+    hist.classList.remove("hidden");
+    document.getElementById("history-list").innerHTML = state.sessionHistory.slice(0,5).map(r =>
+      `<div class="history-item">
+        <span>${r.name} · ${r.theme==="sanrio"?"🌸":"⚡"}</span>
+        <span class="history-score">${r.grade} (${r.score})</span>
+      </div>`
+    ).join("");
+  }
+
+  showScreen("score-screen");
+  if (finalScore >= 70) launchConfetti();
+}
+
+function launchConfetti() {
+  const colors = ["#FFD93D","#FF6EB4","#9B5DE5","#6BCFB5","#4CC9F0","#FF9A3C"];
+  for (let i = 0; i < 60; i++) {
+    setTimeout(() => {
+      const p = document.createElement("div");
+      p.className = "confetti-piece";
+      p.style.cssText = `
+        left:${Math.random()*100}vw;
+        top:-10px;
+        background:${colors[Math.floor(Math.random()*colors.length)]};
+        animation-delay:0s;
+        animation-duration:${2+Math.random()*2}s;
+        transform:rotate(${Math.random()*360}deg);
+      `;
+      document.body.appendChild(p);
+      setTimeout(() => p.remove(), 4000);
+    }, i*60);
+  }
+}
+
+function shareResult() {
+  const grade = document.getElementById("score-grade").textContent;
+  const score = state.score;
+  const text = `🌟 ${state.name} mendapat nilai ${score}/100 dengan grade "${grade}" di WordQuest!\nBelajar kosakata Bahasa Inggris bareng di: YOUR-APP-LINK-HERE.com`;
+  if (navigator.share) {
+    navigator.share({ title: "WordQuest - Hasil Saya!", text, url: "https://YOUR-APP-LINK-HERE.com" })
+      .catch(() => copyToClipboard(text));
+  } else {
+    copyToClipboard(text);
+  }
+}
+
+function copyToClipboard(text) {
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(text).then(() => alert("Teks berhasil disalin! Tempel di media sosial kamu 📋"));
+  } else {
+    alert("Salin teks ini:\n\n"+text);
+  }
+}
+
+function playAgain() {
+  clearInterval(memorizeInterval);
+  clearInterval(guessTimerInterval);
+  Object.values(state.cardTickTimers).forEach(t => clearInterval(t));
+  state.cardTickTimers = {};
+  startGame();
+}
+
+// ===================== START =====================
+init();
+</script>
+</body>
+</html>
