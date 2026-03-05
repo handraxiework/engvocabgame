@@ -1,0 +1,1619 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>WordQuest - Word Puzzle! 🔍</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Bubblegum+Sans&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --pink: #FF6EB4;
+      --yellow: #FFD93D;
+      --mint: #6BCFB5;
+      --purple: #9B5DE5;
+      --sky: #4CC9F0;
+      --orange: #FF9A3C;
+      --red: #FF4757;
+      --bg: #F0FFF9;
+
+      /* Highlight colors for found words */
+      --h1: #FF6EB4;
+      --h2: #9B5DE5;
+      --h3: #4CC9F0;
+      --h4: #FFD93D;
+      --h5: #6BCFB5;
+      --h6: #FF9A3C;
+      --h7: #FF4757;
+      --h8: #B983FF;
+      --h9: #00D2D3;
+      --h10: #54A0FF;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: var(--bg);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* === BG === */
+    .bg-stars {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .star {
+      position: absolute;
+      border-radius: 50%;
+      animation: float-star 6s infinite ease-in-out;
+      opacity: 0.35;
+    }
+
+    @keyframes float-star {
+
+      0%,
+      100% {
+        transform: translateY(0) scale(1);
+        opacity: 0.35;
+      }
+
+      50% {
+        transform: translateY(-20px) scale(1.3);
+        opacity: 0.65;
+      }
+    }
+
+    /* === SCREENS === */
+    .screen {
+      position: relative;
+      z-index: 1;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      min-height: 100vh;
+      padding: 24px 16px 48px;
+      animation: fadeIn 0.5s ease;
+    }
+
+    .screen.active {
+      display: flex;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(18px);
+      }
+
+      to {
+        opacity: 1;
+        transform: none;
+      }
+    }
+
+    /* === LOGO === */
+    .logo {
+      font-family: 'Bubblegum Sans', cursive;
+      font-size: clamp(2rem, 9vw, 3.2rem);
+      color: var(--mint);
+      text-shadow: 4px 4px 0 var(--sky), 8px 8px 0 rgba(107, 207, 181, 0.15);
+      letter-spacing: 2px;
+      text-align: center;
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+
+    .logo-sub {
+      font-size: clamp(0.85rem, 3vw, 1.05rem);
+      color: var(--sky);
+      font-weight: 800;
+      letter-spacing: 1px;
+      margin-bottom: 24px;
+      text-align: center;
+    }
+
+    /* === UI CARD === */
+    .ui-card {
+      background: white;
+      border-radius: 24px;
+      padding: 24px 20px;
+      box-shadow: 0 8px 32px rgba(107, 207, 181, 0.15), 0 2px 8px rgba(0, 0, 0, 0.05);
+      width: 100%;
+      max-width: 480px;
+      margin-bottom: 16px;
+    }
+
+    .ui-card h2 {
+      font-family: 'Bubblegum Sans', cursive;
+      font-size: 1.3rem;
+      color: var(--mint);
+      margin-bottom: 16px;
+      text-align: center;
+    }
+
+    /* === BUTTONS === */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-family: 'Nunito', sans-serif;
+      font-weight: 800;
+      font-size: clamp(0.95rem, 3.5vw, 1.1rem);
+      padding: 14px 28px;
+      border-radius: 50px;
+      border: none;
+      cursor: pointer;
+      transition: transform 0.15s, box-shadow 0.15s;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .btn:active {
+      transform: scale(0.95) !important;
+    }
+
+    .btn-mint {
+      background: linear-gradient(135deg, var(--mint), var(--sky));
+      color: white;
+      box-shadow: 0 6px 20px rgba(107, 207, 181, 0.4);
+    }
+
+    .btn-mint:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 28px rgba(107, 207, 181, 0.5);
+    }
+
+    .btn-secondary {
+      background: white;
+      color: var(--mint);
+      border: 3px solid var(--mint);
+      box-shadow: 0 4px 12px rgba(107, 207, 181, 0.15);
+    }
+
+    .btn-secondary:hover {
+      background: var(--mint);
+      color: white;
+      transform: translateY(-2px);
+    }
+
+    .btn-yellow {
+      background: linear-gradient(135deg, var(--yellow), var(--orange));
+      color: #6B3D00;
+      box-shadow: 0 6px 20px rgba(255, 217, 61, 0.4);
+    }
+
+    .btn-yellow:hover {
+      transform: translateY(-3px);
+    }
+
+    .btn-block {
+      width: 100%;
+    }
+
+    /* === FORM === */
+    .form-group {
+      margin-bottom: 18px;
+    }
+
+    .form-label {
+      display: block;
+      font-weight: 800;
+      color: #555;
+      margin-bottom: 8px;
+      font-size: 0.95rem;
+    }
+
+    /* === WORD COUNT PICKER === */
+    .count-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .count-btn {
+      width: 52px;
+      height: 52px;
+      border-radius: 14px;
+      border: 3px solid #C8F0E8;
+      background: #F5FFFD;
+      font-family: 'Bubblegum Sans', cursive;
+      font-size: 1.2rem;
+      color: #AAA;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s;
+    }
+
+    .count-btn.active {
+      border-color: var(--mint);
+      background: #E6FFF9;
+      color: var(--mint);
+      box-shadow: 0 4px 12px rgba(107, 207, 181, 0.3);
+    }
+
+    .count-btn:hover {
+      border-color: var(--mint);
+    }
+
+    /* === TIMER TOGGLE === */
+    .toggle-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 4px 0;
+    }
+
+    .toggle-label {
+      font-weight: 800;
+      color: #555;
+      font-size: 0.95rem;
+    }
+
+    .toggle-sub {
+      font-size: 0.75rem;
+      color: #AAA;
+      font-weight: 700;
+    }
+
+    .toggle-switch {
+      position: relative;
+      width: 52px;
+      height: 28px;
+      flex-shrink: 0;
+    }
+
+    .toggle-switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .toggle-slider {
+      position: absolute;
+      inset: 0;
+      background: #DDD;
+      border-radius: 28px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .toggle-slider::before {
+      content: '';
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: white;
+      left: 4px;
+      top: 4px;
+      transition: transform 0.2s;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    .toggle-switch input:checked+.toggle-slider {
+      background: var(--mint);
+    }
+
+    .toggle-switch input:checked+.toggle-slider::before {
+      transform: translateX(24px);
+    }
+
+    /* === GAME SCREEN === */
+    #game-screen {
+      background: linear-gradient(160deg, #F0FFF9 0%, #EEF8FF 100%);
+    }
+
+    .game-header {
+      width: 100%;
+      max-width: 700px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+      gap: 12px;
+    }
+
+    .game-title-bar {
+      font-family: 'Bubblegum Sans', cursive;
+      font-size: clamp(1rem, 4vw, 1.4rem);
+      color: var(--mint);
+    }
+
+    /* === TIMER === */
+    .timer-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: white;
+      border-radius: 50px;
+      padding: 8px 16px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    }
+
+    .timer-icon {
+      font-size: 1.2rem;
+    }
+
+    .timer-text {
+      font-family: 'Bubblegum Sans', cursive;
+      font-size: 1.4rem;
+      color: var(--mint);
+      min-width: 40px;
+      text-align: center;
+    }
+
+    .timer-text.danger {
+      color: var(--red);
+      animation: pulse-timer 0.5s infinite alternate;
+    }
+
+    @keyframes pulse-timer {
+      to {
+        transform: scale(1.2);
+      }
+    }
+
+    .progress-bar-wrap {
+      width: 100%;
+      max-width: 700px;
+      height: 10px;
+      background: #C8F0E8;
+      border-radius: 5px;
+      margin-bottom: 16px;
+      overflow: hidden;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--mint), var(--sky));
+      border-radius: 5px;
+      transition: width 1s linear;
+    }
+
+    /* === SCORE BAR === */
+    .score-bar {
+      width: 100%;
+      max-width: 700px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .score-pill {
+      background: white;
+      border-radius: 50px;
+      padding: 8px 18px;
+      font-family: 'Bubblegum Sans', cursive;
+      font-size: 1.1rem;
+      color: var(--mint);
+      box-shadow: 0 4px 12px rgba(107, 207, 181, 0.2);
+    }
+
+    .words-left-pill {
+      background: white;
+      border-radius: 50px;
+      padding: 8px 18px;
+      font-family: 'Bubblegum Sans', cursive;
+      font-size: 1rem;
+      color: var(--purple);
+      box-shadow: 0 4px 12px rgba(155, 93, 229, 0.15);
+    }
+
+    /* === PUZZLE AREA === */
+    .puzzle-area {
+      width: 100%;
+      max-width: 700px;
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: flex-start;
+    }
+
+    /* === GRID === */
+    .grid-container {
+      flex: 1;
+      min-width: 280px;
+      max-width: 420px;
+    }
+
+    .puzzle-grid {
+      display: grid;
+      gap: 2px;
+      background: linear-gradient(135deg, #E6FFF9, #EEF8FF);
+      border-radius: 20px;
+      padding: 10px;
+      box-shadow: 0 8px 32px rgba(107, 207, 181, 0.2), 0 2px 8px rgba(0, 0, 0, 0.06);
+      touch-action: none;
+      user-select: none;
+    }
+
+    .grid-cell {
+      aspect-ratio: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Bubblegum Sans', cursive;
+      font-size: clamp(0.8rem, 2.5vw, 1.1rem);
+      color: #334;
+      border-radius: 8px;
+      background: white;
+      cursor: pointer;
+      transition: background 0.12s, transform 0.1s, color 0.12s;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+      position: relative;
+    }
+
+    .grid-cell:hover {
+      transform: scale(1.08);
+      background: #F0FFF9;
+    }
+
+    .grid-cell.selecting {
+      background: #FFD93D !important;
+      color: #6B3D00 !important;
+      transform: scale(1.1);
+      z-index: 2;
+      box-shadow: 0 4px 12px rgba(255, 217, 61, 0.5);
+    }
+
+    .grid-cell.found {
+      color: white !important;
+      transform: scale(1.05);
+      font-weight: 900;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
+      animation: cell-pop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    @keyframes cell-pop {
+      0% {
+        transform: scale(1);
+      }
+
+      50% {
+        transform: scale(1.2);
+      }
+
+      100% {
+        transform: scale(1.05);
+      }
+    }
+
+    /* === WORD LIST === */
+    .word-list-container {
+      flex: 0 0 auto;
+      width: min(200px, 90vw);
+      background: white;
+      border-radius: 20px;
+      padding: 14px 12px;
+      box-shadow: 0 6px 24px rgba(107, 207, 181, 0.15);
+    }
+
+    .word-list-title {
+      font-family: 'Bubblegum Sans', cursive;
+      font-size: 1rem;
+      color: var(--mint);
+      text-align: center;
+      margin-bottom: 10px;
+    }
+
+    .word-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 8px;
+      border-radius: 10px;
+      margin-bottom: 4px;
+      font-weight: 800;
+      font-size: clamp(0.78rem, 2.5vw, 0.9rem);
+      color: #555;
+      transition: all 0.2s;
+      background: #F9FFFD;
+    }
+
+    .word-item.found {
+      text-decoration: line-through;
+      opacity: 0.6;
+      background: #F0FFF9;
+    }
+
+    .word-dot {
+      width: 10px;
+      height: 10px;
+      min-width: 10px;
+      border-radius: 50%;
+      background: #DDD;
+    }
+
+    .word-item.found .word-dot {
+      background: var(--mint);
+    }
+
+    .word-emoji {
+      font-size: 1rem;
+    }
+
+    .word-id {
+      font-size: 0.7rem;
+      color: #AAA;
+      font-weight: 700;
+    }
+
+    /* === CORRECT FLASH === */
+    .correct-flash {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0);
+      background: linear-gradient(135deg, var(--mint), var(--sky));
+      color: white;
+      border-radius: 24px;
+      padding: 20px 36px;
+      font-family: 'Bubblegum Sans', cursive;
+      font-size: clamp(1.4rem, 5vw, 2rem);
+      z-index: 50;
+      pointer-events: none;
+      text-align: center;
+      box-shadow: 0 12px 40px rgba(107, 207, 181, 0.5);
+      animation: flash-pop 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    }
+
+    @keyframes flash-pop {
+      0% {
+        transform: translate(-50%, -50%) scale(0);
+        opacity: 0;
+      }
+
+      20% {
+        transform: translate(-50%, -50%) scale(1.1);
+        opacity: 1;
+      }
+
+      70% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+      }
+
+      100% {
+        transform: translate(-50%, -50%) scale(0.8);
+        opacity: 0;
+      }
+    }
+
+    /* === SCORE SCREEN === */
+    #score-screen {
+      background: linear-gradient(160deg, #F0FFF9 0%, #EEF8FF 100%);
+    }
+
+    .score-character {
+      font-size: clamp(5rem, 20vw, 8rem);
+      filter: drop-shadow(0 8px 24px rgba(107, 207, 181, 0.3));
+      animation: bounce-char 1s ease infinite alternate;
+    }
+
+    @keyframes bounce-char {
+      to {
+        transform: translateY(-16px) scale(1.05);
+      }
+    }
+
+    .score-grade {
+      font-family: 'Bubblegum Sans', cursive;
+      font-size: clamp(3rem, 14vw, 5rem);
+      background: linear-gradient(135deg, var(--mint), var(--sky));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      line-height: 1;
+      margin: 8px 0;
+      text-align: center;
+    }
+
+    .score-number {
+      font-family: 'Bubblegum Sans', cursive;
+      font-size: clamp(1.5rem, 6vw, 2rem);
+      color: var(--orange);
+      text-align: center;
+    }
+
+    .score-message {
+      font-size: clamp(0.85rem, 3vw, 1rem);
+      color: #777;
+      font-weight: 700;
+      text-align: center;
+      max-width: 320px;
+      margin: 10px auto;
+    }
+
+    .stars-row {
+      display: flex;
+      justify-content: center;
+      gap: 4px;
+      font-size: 1.5rem;
+      margin: 8px 0;
+    }
+
+    /* === FOUND WORDS REVIEW === */
+    .found-words-review {
+      width: 100%;
+      max-width: 480px;
+      background: white;
+      border-radius: 20px;
+      padding: 18px 16px;
+      box-shadow: 0 4px 20px rgba(107, 207, 181, 0.12);
+      margin-top: 16px;
+    }
+
+    .found-words-review h3 {
+      font-family: 'Bubblegum Sans', cursive;
+      color: var(--mint);
+      font-size: 1.1rem;
+      text-align: center;
+      margin-bottom: 14px;
+    }
+
+    .review-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px;
+      border-bottom: 1px dashed #E6FFF9;
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: #555;
+    }
+
+    .review-item:last-child {
+      border-bottom: none;
+    }
+
+    .review-found {
+      color: var(--mint);
+    }
+
+    .review-missed {
+      color: var(--red);
+    }
+
+    .vocab-speak {
+      width: 32px;
+      height: 32px;
+      min-width: 32px;
+      border-radius: 50%;
+      border: none;
+      background: linear-gradient(135deg, var(--sky), var(--mint));
+      color: white;
+      font-size: 0.9rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 3px 10px rgba(76, 201, 240, 0.35);
+      transition: transform 0.15s;
+      margin-left: auto;
+    }
+
+    .vocab-speak:hover {
+      transform: scale(1.12);
+    }
+
+    .vocab-speak.speaking {
+      background: linear-gradient(135deg, var(--orange), var(--pink));
+      animation: pulse-speak 0.6s infinite alternate;
+    }
+
+    @keyframes pulse-speak {
+      to {
+        transform: scale(1.15);
+      }
+    }
+
+    /* === OVERLAY === */
+    .overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 60;
+      background: rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .overlay-box {
+      background: white;
+      border-radius: 28px;
+      padding: 32px 28px;
+      max-width: 360px;
+      width: 90%;
+      text-align: center;
+      animation: pop-in 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    @keyframes pop-in {
+      from {
+        transform: scale(0.6);
+        opacity: 0;
+      }
+
+      to {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    .overlay-icon {
+      font-size: 3.5rem;
+      margin-bottom: 12px;
+      display: block;
+    }
+
+    .overlay-title {
+      font-family: 'Bubblegum Sans', cursive;
+      font-size: 1.6rem;
+      color: var(--mint);
+      margin-bottom: 8px;
+    }
+
+    .overlay-text {
+      font-size: 0.9rem;
+      color: #777;
+      font-weight: 700;
+      margin-bottom: 20px;
+      line-height: 1.6;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    /* === CONFETTI === */
+    .confetti-piece {
+      position: fixed;
+      width: 10px;
+      height: 10px;
+      border-radius: 2px;
+      animation: confetti-fall 3s linear forwards;
+      z-index: 100;
+      pointer-events: none;
+    }
+
+    @keyframes confetti-fall {
+      0% {
+        transform: translateY(-20px) rotate(0deg);
+        opacity: 1;
+      }
+
+      100% {
+        transform: translateY(100vh) rotate(720deg);
+        opacity: 0;
+      }
+    }
+
+    /* === MOBILE: stack grid on top, word list below as chips === */
+    @media (max-width: 560px) {
+      .puzzle-area {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .grid-container {
+        width: 100%;
+        max-width: 100%;
+      }
+
+      .puzzle-grid {
+        width: 100%;
+      }
+
+      .word-list-container {
+        width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        padding: 10px 10px 6px;
+        align-items: flex-start;
+      }
+
+      .word-list-title {
+        width: 100%;
+        margin-bottom: 6px;
+      }
+
+      .word-item {
+        flex: 0 0 auto;
+        margin-bottom: 0;
+        padding: 5px 10px;
+      }
+
+      .word-id {
+        display: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="bg-stars" id="bgStars"></div>
+
+  <!-- ===== SCREEN 1: SETUP ===== -->
+  <div class="screen active" id="setup-screen">
+    <div class="logo">🔍 Word Puzzle!</div>
+    <div class="logo-sub">✨ Cari Kata Tersembunyi ✨</div>
+
+    <div class="ui-card">
+      <h2>⚙️ Pengaturan Puzzle</h2>
+
+      <div class="form-group">
+        <label class="form-label">🔢 Berapa kata yang mau dicari?</label>
+        <div class="count-row" id="count-row">
+          <button class="count-btn" data-count="5" onclick="selectCount(this)">5</button>
+          <button class="count-btn" data-count="6" onclick="selectCount(this)">6</button>
+          <button class="count-btn" data-count="7" onclick="selectCount(this)">7</button>
+          <button class="count-btn active" data-count="8" onclick="selectCount(this)">8</button>
+          <button class="count-btn" data-count="9" onclick="selectCount(this)">9</button>
+          <button class="count-btn" data-count="10" onclick="selectCount(this)">10</button>
+        </div>
+        <div style="text-align:center;font-size:0.8rem;color:#AAA;font-weight:700;margin-top:8px">
+          Min 5 kata · Maks 10 kata
+        </div>
+      </div>
+
+      <div class="form-group" style="margin-bottom:0">
+        <div class="toggle-row">
+          <div>
+            <div class="toggle-label">⏱️ Gunakan hitungan waktu</div>
+            <div class="toggle-sub">Matikan untuk main tanpa batas waktu</div>
+          </div>
+          <label class="toggle-switch">
+            <input type="checkbox" id="timer-toggle" checked>
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex;gap:12px;max-width:480px;width:100%">
+      <a class="btn btn-secondary" href="index.html" style="flex:1">← Kembali</a>
+      <button class="btn btn-mint" onclick="startPuzzle()" style="flex:2">Mulai Puzzle! 🔍</button>
+    </div>
+
+    <div style="margin-top:20px;text-align:center;max-width:380px">
+      <div style="background:white;border-radius:16px;padding:14px 16px;box-shadow:0 4px 16px rgba(107,207,181,0.12)">
+        <div style="font-family:'Bubblegum Sans',cursive;color:var(--mint);font-size:1rem;margin-bottom:10px">📖 Cara
+          Main</div>
+        <div style="font-size:0.82rem;color:#888;font-weight:700;line-height:1.8;text-align:left">
+          ↔️ Klik & seret ke <b>kanan</b> untuk kata horizontal<br>
+          ↕️ Klik & seret ke <b>bawah</b> untuk kata vertikal<br>
+          ↗️ Klik & seret secara <b>diagonal</b> juga bisa!<br>
+          🏆 Temukan semua kata secepat mungkin!
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SCREEN 2: GAME ===== -->
+  <div class="screen" id="game-screen">
+    <div class="game-header">
+      <div class="game-title-bar">🔍 Word Puzzle!</div>
+      <div class="timer-wrap" id="timer-wrap">
+        <span class="timer-icon">⏱️</span>
+        <span class="timer-text" id="timer-display">3:00</span>
+      </div>
+    </div>
+
+    <div class="progress-bar-wrap" id="progress-wrap">
+      <div class="progress-bar-fill" id="progress-bar" style="width:100%"></div>
+    </div>
+
+    <div class="score-bar">
+      <div class="score-pill">🌟 Nilai: <span id="score-display">0</span></div>
+      <div class="words-left-pill">📝 Sisa: <span id="words-left">0</span> kata</div>
+    </div>
+
+    <div class="puzzle-area">
+      <div class="grid-container">
+        <div class="puzzle-grid" id="puzzle-grid"></div>
+      </div>
+      <div class="word-list-container">
+        <div class="word-list-title">🎯 Kata yang dicari:</div>
+        <div id="word-list"></div>
+      </div>
+    </div>
+
+    <button class="btn btn-secondary" onclick="giveUp()" style="margin-top:20px;font-size:0.85rem;padding:10px 20px">
+      🏳️ Menyerah
+    </button>
+  </div>
+
+  <!-- ===== SCREEN 3: SCORE ===== -->
+  <div class="screen" id="score-screen">
+    <div class="logo" style="font-size:clamp(1.8rem,7vw,2.5rem)">🏆 Puzzle Selesai!</div>
+
+    <div class="score-character" id="score-character">🌟</div>
+    <div class="score-grade" id="score-grade">A</div>
+    <div class="score-number" id="score-number">Nilai: 100 / 100</div>
+    <div class="stars-row" id="stars-row">⭐⭐⭐⭐⭐</div>
+    <div class="score-message" id="score-message">Wah, kamu hebat!</div>
+
+    <div class="found-words-review" id="found-words-review">
+      <h3>📖 Kata-kata dalam puzzle ini</h3>
+      <div id="review-list"></div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:12px;width:100%;max-width:360px;margin-top:20px">
+      <button class="btn btn-mint btn-block" onclick="playAgain()">🔄 Main Lagi!</button>
+      <button class="btn btn-yellow btn-block" onclick="showScreen('setup-screen')">⚙️ Ubah Pengaturan</button>
+      <a class="btn btn-secondary btn-block" href="index.html">🏠 Menu Utama</a>
+    </div>
+  </div>
+
+  <!-- Overlays -->
+  <div class="overlay hidden" id="finish-overlay">
+    <div class="overlay-box">
+      <span class="overlay-icon" id="fo-icon">🎉</span>
+      <div class="overlay-title" id="fo-title">Semua ditemukan!</div>
+      <div class="overlay-text" id="fo-text">Kamu berhasil menemukan semua kata!</div>
+      <button class="btn btn-mint btn-block" onclick="endGame()">Lihat Hasilku! 🏆</button>
+    </div>
+  </div>
+
+  <script>
+    // ===================== DATA =====================
+    const HIGHLIGHT_COLORS = [
+      '#FF6EB4', '#9B5DE5', '#4CC9F0', '#FF9A3C', '#6BCFB5',
+      '#FF4757', '#B983FF', '#00D2D3', '#54A0FF', '#FFB347'
+    ];
+
+    const SANRIO_CHARS = [
+      { name: "Hello Kitty", emoji: "🐱" }, { name: "My Melody", emoji: "🐰" },
+      { name: "Cinnamoroll", emoji: "🐶" }, { name: "Pompom Purin", emoji: "🐾" },
+      { name: "Kuromi", emoji: "💜" }, { name: "Keroppi", emoji: "🐸" },
+    ];
+
+    // Vocabulary — will be loaded from vocabulary.txt
+    let VOCAB = { easy: [], medium: [], hard: [] };
+
+    function parseVocabTxt(text) {
+      const result = { easy: [], medium: [], hard: [] };
+      for (let raw of text.split("\n")) {
+        const line = raw.trim();
+        if (!line || line.startsWith("#")) continue;
+        const parts = line.split("|").map(p => p.trim());
+        if (parts.length < 5) continue;
+        const [level, emoji, en, phonetic, id] = parts;
+        const key = level.toLowerCase();
+        if (!result[key]) continue;
+        result[key].push({ emoji, en: en.toUpperCase(), phonetic, id });
+      }
+      return result;
+    }
+
+    // Fallback vocabulary in case file not found
+    const FALLBACK_VOCAB = [
+      { emoji: "🐱", en: "CAT", phonetic: "/kæt/", id: "Kucing" },
+      { emoji: "🐶", en: "DOG", phonetic: "/dɒg/", id: "Anjing" },
+      { emoji: "🐠", en: "FISH", phonetic: "/fɪʃ/", id: "Ikan" },
+      { emoji: "🌸", en: "FLOWER", phonetic: "/ˈflaʊər/", id: "Bunga" },
+      { emoji: "🌳", en: "TREE", phonetic: "/triː/", id: "Pohon" },
+      { emoji: "📚", en: "BOOK", phonetic: "/bʊk/", id: "Buku" },
+      { emoji: "✏️", en: "PEN", phonetic: "/pɛn/", id: "Pena" },
+      { emoji: "🏡", en: "HOUSE", phonetic: "/haʊs/", id: "Rumah" },
+      { emoji: "🌈", en: "RAINBOW", phonetic: "/ˈreɪnboʊ/", id: "Pelangi" },
+      { emoji: "⭐", en: "STAR", phonetic: "/stɑːr/", id: "Bintang" },
+    ];
+
+    async function loadVocab() {
+      try {
+        const res = await fetch("vocabulary.txt");
+        if (!res.ok) throw new Error("not found");
+        VOCAB = parseVocabTxt(await res.text());
+        if (VOCAB.easy.length + VOCAB.medium.length + VOCAB.hard.length < 5) throw new Error("too few");
+      } catch (e) {
+        console.warn("Using fallback vocabulary:", e);
+        VOCAB.easy = FALLBACK_VOCAB;
+      }
+    }
+
+    // ===================== STATE =====================
+    let state = {
+      wordCount: 8,
+      useTimer: true,
+      words: [], // array of { word (vocab obj), placed: bool, direction, row, col, color }
+      gridSize: 12,
+      grid: [], // 2D array of chars
+      wordCells: new Map(), // key="r,c" -> { wordIdx, color }
+      foundWords: new Set(),
+      score: 0,
+      totalTime: 0,
+      timeLeft: 0,
+      timerInterval: null,
+      // Selection
+      selecting: false,
+      selStart: null,
+      selEnd: null,
+      selCells: [],
+      touchIdentifier: null,
+    };
+
+    // ===================== INIT =====================
+    async function init() {
+      generateBgStars();
+      await loadVocab();
+    }
+
+    function generateBgStars() {
+      const container = document.getElementById("bgStars");
+      const colors = ["#6BCFB5", "#4CC9F0", "#B983FF", "#FFD93D", "#FF6EB4", "#FF9A3C"];
+      for (let i = 0; i < 25; i++) {
+        const s = document.createElement("div");
+        s.className = "star";
+        s.style.cssText = `
+        left:${Math.random() * 100}%;top:${Math.random() * 100}%;
+        background:${colors[i % colors.length]};
+        animation-delay:${Math.random() * 6}s;
+        animation-duration:${4 + Math.random() * 4}s;
+        width:${5 + Math.random() * 8}px;height:${5 + Math.random() * 8}px;
+      `;
+        container.appendChild(s);
+      }
+    }
+
+    function showScreen(id) {
+      document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+      document.getElementById(id).classList.add("active");
+      window.scrollTo(0, 0);
+    }
+
+    function selectCount(el) {
+      document.querySelectorAll(".count-btn").forEach(b => b.classList.remove("active"));
+      el.classList.add("active");
+    }
+
+    // ===================== PUZZLE BUILDER =====================
+    function buildGrid(size) {
+      return Array.from({ length: size }, () => Array(size).fill(''));
+    }
+
+    const DIRECTIONS = [
+      { dr: 0, dc: 1, name: "horizontal" },   // right
+      { dr: 1, dc: 0, name: "vertical" },     // down
+      { dr: 1, dc: 1, name: "diagonal-dr" },  // down-right
+      { dr: 1, dc: -1, name: "diagonal-dl" }, // down-left
+    ];
+
+    function canPlace(grid, word, row, col, dr, dc) {
+      const n = word.length, size = grid.length;
+      for (let i = 0; i < n; i++) {
+        const r = row + i * dr, c = col + i * dc;
+        if (r < 0 || r >= size || c < 0 || c >= size) return false;
+        if (grid[r][c] !== '' && grid[r][c] !== word[i]) return false;
+      }
+      return true;
+    }
+
+    function placeWord(grid, word, row, col, dr, dc) {
+      const cells = [];
+      for (let i = 0; i < word.length; i++) {
+        const r = row + i * dr, c = col + i * dc;
+        grid[r][c] = word[i];
+        cells.push({ r, c });
+      }
+      return cells;
+    }
+
+    function fillRandom(grid) {
+      const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+      for (let r = 0; r < grid.length; r++)
+        for (let c = 0; c < grid[r].length; c++)
+          if (grid[r][c] === '') grid[r][c] = letters[Math.floor(Math.random() * letters.length)];
+    }
+
+    function tryPlaceAll(words, size) {
+      const grid = buildGrid(size);
+      const placed = [];
+      const wordCells = new Map();
+
+      for (let wi = 0; wi < words.length; wi++) {
+        const word = words[wi].en;
+        let success = false;
+        const dirs = [...DIRECTIONS].sort(() => Math.random() - 0.5);
+        const maxTries = 200;
+
+        for (let t = 0; t < maxTries && !success; t++) {
+          const dir = dirs[t % dirs.length];
+          const row = Math.floor(Math.random() * size);
+          const col = Math.floor(Math.random() * size);
+          if (canPlace(grid, word, row, col, dir.dr, dir.dc)) {
+            const cells = placeWord(grid, word, row, col, dir.dr, dir.dc);
+            cells.forEach(({ r, c }) => wordCells.set(`${r},${c}`, wi));
+            placed.push({ ...words[wi], row, col, dr: dir.dr, dc: dir.dc, cells, colorIdx: wi });
+            success = true;
+          }
+        }
+
+        if (!success) return null; // failed — try again
+      }
+
+      fillRandom(grid);
+      return { grid, placed, wordCells };
+    }
+
+    function buildPuzzle(vocabList, count, size) {
+      for (let attempt = 0; attempt < 20; attempt++) {
+        const result = tryPlaceAll(vocabList, size);
+        if (result) return result;
+      }
+      // Last resort: bigger grid
+      return tryPlaceAll(vocabList, size + 2);
+    }
+
+    // ===================== START PUZZLE =====================
+    function startPuzzle() {
+      const activeCount = document.querySelector(".count-btn.active");
+      state.wordCount = activeCount ? parseInt(activeCount.dataset.count) : 8;
+      state.useTimer = document.getElementById("timer-toggle").checked;
+      state.foundWords = new Set();
+      state.score = 0;
+      state.selecting = false;
+      state.selStart = null;
+      state.selEnd = null;
+      state.selCells = [];
+
+      // Pick words
+      const allWords = [...VOCAB.easy, ...VOCAB.medium, ...VOCAB.hard];
+      if (allWords.length < state.wordCount) {
+        alert("Kosakata tidak cukup! Pastikan vocabulary.txt sudah dimuat.");
+        return;
+      }
+      const shuffled = [...allWords].sort(() => Math.random() - 0.5).slice(0, state.wordCount);
+
+      // Determine grid size
+      const maxLen = Math.max(...shuffled.map(w => w.en.length));
+      state.gridSize = Math.max(12, maxLen + 4, state.wordCount + 4);
+      if (state.gridSize > 16) state.gridSize = 16;
+
+      // Build puzzle
+      const result = buildPuzzle(shuffled, state.wordCount, state.gridSize);
+      if (!result) {
+        alert("Gagal membuat puzzle! Coba lagi.");
+        return;
+      }
+
+      state.grid = result.grid;
+      state.words = result.placed;
+      state.wordCells = result.wordCells;
+
+      // Timer
+      state.totalTime = state.wordCount * 30; // 30s per word
+      state.timeLeft = state.totalTime;
+
+      showScreen("game-screen");
+      renderPuzzle();
+      renderWordList();
+      updateScoreBar();
+      startTimer();
+    }
+
+    // ===================== RENDER GRID =====================
+    function renderPuzzle() {
+      const grid = document.getElementById("puzzle-grid");
+      const size = state.gridSize;
+
+      // On narrow screens the word list stacks below, so full width minus padding is available.
+      // On wide screens the word list sits beside (takes ~200px + gap).
+      const isMobile = window.innerWidth <= 560;
+      const pagePadding = 32;           // 16px each side
+      const gridPadding = 20;           // puzzle-grid inner padding
+      const wordListWidth = isMobile ? 0 : 216; // word-list + gap
+      const availableWidth = Math.min(window.innerWidth, 700) - pagePadding - wordListWidth - gridPadding;
+      const cellSize = Math.max(18, Math.min(34, Math.floor(availableWidth / size)));
+
+      grid.style.gridTemplateColumns = `repeat(${size}, ${cellSize}px)`;
+      grid.innerHTML = "";
+
+      for (let r = 0; r < size; r++) {
+        for (let c = 0; c < size; c++) {
+          const cell = document.createElement("div");
+          cell.className = "grid-cell";
+          cell.textContent = state.grid[r][c];
+          cell.style.width = `${cellSize}px`;
+          cell.style.fontSize = `${Math.max(10, cellSize * 0.5)}px`;
+          cell.dataset.r = r;
+          cell.dataset.c = c;
+
+          // Mouse events
+          cell.addEventListener("mousedown", onCellDown);
+          cell.addEventListener("mouseenter", onCellEnter);
+
+          // Touch events
+          cell.addEventListener("touchstart", onTouchStart, { passive: false });
+          cell.addEventListener("touchmove", onTouchMove, { passive: false });
+          cell.addEventListener("touchend", onTouchEnd);
+
+          grid.appendChild(cell);
+        }
+      }
+
+      document.addEventListener("mouseup", onMouseUp);
+
+      // Restore found cells colors
+      state.words.forEach((w, wi) => {
+        if (state.foundWords.has(wi)) {
+          highlightCells(w.cells, HIGHLIGHT_COLORS[wi % HIGHLIGHT_COLORS.length]);
+        }
+      });
+    }
+
+    function getCellEl(r, c) {
+      return document.querySelector(`[data-r="${r}"][data-c="${c}"]`);
+    }
+
+    function highlightCells(cells, color) {
+      cells.forEach(({ r, c }) => {
+        const el = getCellEl(r, c);
+        if (el) {
+          el.classList.add("found");
+          el.style.background = color;
+          el.style.boxShadow = `0 3px 10px ${color}88`;
+        }
+      });
+    }
+
+    // ===================== SELECTION =====================
+    function getCellPos(el) {
+      return { r: parseInt(el.dataset.r), c: parseInt(el.dataset.c) };
+    }
+
+    function getLineCells(start, end) {
+      const dr = end.r - start.r, dc = end.c - start.c;
+      const len = Math.max(Math.abs(dr), Math.abs(dc));
+      if (len === 0) return [start];
+
+      // Only allow pure H, V, or 45-degree diagonal
+      const stepR = dr === 0 ? 0 : dr / Math.abs(dr);
+      const stepC = dc === 0 ? 0 : dc / Math.abs(dc);
+
+      // Check it's a valid direction (H, V, or diagonal)
+      if (Math.abs(dr) !== 0 && Math.abs(dc) !== 0 && Math.abs(dr) !== Math.abs(dc)) {
+        // Not a clean diagonal
+        return [start];
+      }
+
+      const cells = [];
+      for (let i = 0; i <= len; i++) {
+        cells.push({ r: start.r + i * stepR, c: start.c + i * stepC });
+      }
+      return cells;
+    }
+
+    function onCellDown(e) {
+      if (e.button !== 0) return;
+      e.preventDefault();
+      const pos = getCellPos(e.currentTarget);
+      state.selecting = true;
+      state.selStart = pos;
+      state.selEnd = pos;
+      updateSelectionHighlight([pos]);
+    }
+
+    function onCellEnter(e) {
+      if (!state.selecting) return;
+      state.selEnd = getCellPos(e.currentTarget);
+      const cells = getLineCells(state.selStart, state.selEnd);
+      updateSelectionHighlight(cells);
+    }
+
+    function onMouseUp(e) {
+      if (!state.selecting) return;
+      state.selecting = false;
+      const cells = getLineCells(state.selStart, state.selEnd);
+      checkSelection(cells);
+      clearSelectionHighlight(cells);
+    }
+
+    // Touch support
+    function onTouchStart(e) {
+      e.preventDefault();
+      const touch = e.changedTouches[0];
+      state.touchIdentifier = touch.identifier;
+      const el = document.elementFromPoint(touch.clientX, touch.clientY);
+      if (!el || !el.dataset.r) return;
+      const pos = getCellPos(el);
+      state.selecting = true;
+      state.selStart = pos;
+      state.selEnd = pos;
+      updateSelectionHighlight([pos]);
+    }
+
+    function onTouchMove(e) {
+      e.preventDefault();
+      if (!state.selecting) return;
+      const touch = [...e.changedTouches].find(t => t.identifier === state.touchIdentifier);
+      if (!touch) return;
+      const el = document.elementFromPoint(touch.clientX, touch.clientY);
+      if (!el || !el.dataset.r) return;
+      state.selEnd = getCellPos(el);
+      const cells = getLineCells(state.selStart, state.selEnd);
+      updateSelectionHighlight(cells);
+    }
+
+    function onTouchEnd(e) {
+      if (!state.selecting) return;
+      state.selecting = false;
+      const cells = getLineCells(state.selStart, state.selEnd);
+      checkSelection(cells);
+      clearSelectionHighlight(cells);
+    }
+
+    function updateSelectionHighlight(cells) {
+      // Remove old selection highlight
+      document.querySelectorAll(".grid-cell.selecting").forEach(el => el.classList.remove("selecting"));
+      cells.forEach(({ r, c }) => {
+        const el = getCellEl(r, c);
+        if (el && !el.classList.contains("found")) el.classList.add("selecting");
+      });
+      state.selCells = cells;
+    }
+
+    function clearSelectionHighlight(cells) {
+      cells.forEach(({ r, c }) => {
+        const el = getCellEl(r, c);
+        if (el) el.classList.remove("selecting");
+      });
+    }
+
+    // ===================== CHECK SELECTION =====================
+    function checkSelection(cells) {
+      if (cells.length < 2) return;
+      const selected = cells.map(({ r, c }) => state.grid[r][c]).join("");
+
+      let matched = -1;
+      state.words.forEach((w, wi) => {
+        if (!state.foundWords.has(wi)) {
+          if (selected === w.en || selected === [...w.en].reverse().join("")) {
+            // Verify cells match actual word placement
+            const fwd = cells.map(({ r, c }) => `${r},${c}`);
+            const wFwd = w.cells.map(({ r, c }) => `${r},${c}`);
+            const bwd = [...fwd].reverse();
+            if (JSON.stringify(fwd) === JSON.stringify(wFwd) ||
+              JSON.stringify(bwd) === JSON.stringify(wFwd)) {
+              matched = wi;
+            }
+          }
+        }
+      });
+
+      if (matched >= 0) {
+        const w = state.words[matched];
+        state.foundWords.add(matched);
+        const color = HIGHLIGHT_COLORS[matched % HIGHLIGHT_COLORS.length];
+        highlightCells(w.cells, color);
+
+        // Score: base 10 + time bonus
+        const timeBonus = state.useTimer ? Math.round((state.timeLeft / state.totalTime) * 5) : 0;
+        state.score += 10 + timeBonus;
+
+        // Mark word as found in list
+        const wordEl = document.getElementById(`word-${matched}`);
+        if (wordEl) wordEl.classList.add("found");
+
+        updateScoreBar();
+        showCorrectFlash(w.emoji + " " + w.en + "!");
+
+        if (state.foundWords.size === state.words.length) {
+          setTimeout(() => {
+            clearInterval(state.timerInterval);
+            showFinishOverlay(true);
+          }, 800);
+        }
+      }
+    }
+
+    function showCorrectFlash(text) {
+      const flash = document.createElement("div");
+      flash.className = "correct-flash";
+      flash.textContent = "✅ " + text;
+      document.body.appendChild(flash);
+      setTimeout(() => flash.remove(), 1300);
+    }
+
+    // ===================== WORD LIST =====================
+    function renderWordList() {
+      const list = document.getElementById("word-list");
+      list.innerHTML = state.words.map((w, i) => `
+      <div class="word-item" id="word-${i}">
+        <div class="word-dot"></div>
+        <div class="word-emoji">${w.emoji}</div>
+        <div>
+          <div>${w.en}</div>
+          <div class="word-id">🇮🇩 ${w.id}</div>
+        </div>
+      </div>
+    `).join("");
+    }
+
+    function updateScoreBar() {
+      document.getElementById("score-display").textContent = state.score;
+      const left = state.words.length - state.foundWords.size;
+      document.getElementById("words-left").textContent = left;
+    }
+
+    // ===================== TIMER =====================
+    function startTimer() {
+      const timerWrap = document.getElementById("timer-wrap");
+      const progressWrap = document.getElementById("progress-wrap");
+
+      if (!state.useTimer) {
+        timerWrap.style.display = "none";
+        progressWrap.style.display = "none";
+        return;
+      }
+
+      timerWrap.style.display = "flex";
+      progressWrap.style.display = "block";
+
+      updateTimerDisplay();
+      state.timerInterval = setInterval(() => {
+        state.timeLeft--;
+        updateTimerDisplay();
+        if (state.timeLeft <= 0) {
+          clearInterval(state.timerInterval);
+          showFinishOverlay(false);
+        }
+      }, 1000);
+    }
+
+    function updateTimerDisplay() {
+      const mins = Math.floor(state.timeLeft / 60);
+      const secs = state.timeLeft % 60;
+      const text = `${mins}:${secs.toString().padStart(2, '0')}`;
+      const el = document.getElementById("timer-display");
+      el.textContent = text;
+      el.className = "timer-text" + (state.timeLeft <= 15 ? " danger" : "");
+
+      const pct = (state.timeLeft / state.totalTime) * 100;
+      document.getElementById("progress-bar").style.width = pct + "%";
+    }
+
+    // ===================== FINISH =====================
+    function showFinishOverlay(allFound) {
+      const found = state.foundWords.size;
+      const total = state.words.length;
+      const icon = document.getElementById("fo-icon");
+      const title = document.getElementById("fo-title");
+      const text = document.getElementById("fo-text");
+
+      if (allFound) {
+        icon.textContent = "🎉";
+        title.textContent = "Luar biasa!";
+        text.textContent = `Kamu berhasil menemukan semua ${total} kata! 🌟`;
+      } else {
+        icon.textContent = "⏰";
+        title.textContent = "Waktu Habis!";
+        text.textContent = `Kamu berhasil menemukan ${found} dari ${total} kata. Semangat! 💪`;
+      }
+
+      document.getElementById("finish-overlay").classList.remove("hidden");
+    }
+
+    function giveUp() {
+      clearInterval(state.timerInterval);
+      showFinishOverlay(false);
+    }
+
+    function endGame() {
+      document.getElementById("finish-overlay").classList.add("hidden");
+
+      const found = state.foundWords.size;
+      const total = state.words.length;
+      const pct = Math.round((found / total) * 100);
+
+      // Sanrio scoring model
+      let grade, message, stars;
+      if (pct >= 90) { grade = "A"; message = "Luar biasa! Kamu bintang Sanrio! ⭐"; stars = 5; }
+      else if (pct >= 80) { grade = "B+"; message = "Bagus sekali! Hampir sempurna! 🌸"; stars = 4; }
+      else if (pct >= 70) { grade = "B-"; message = "Lumayan! Kamu punya potensi besar! 🐱"; stars = 3; }
+      else if (pct >= 60) { grade = "C+"; message = "Cukup baik! Latihan lagi ya! 🐰"; stars = 3; }
+      else if (pct >= 50) { grade = "C-"; message = "Terus semangat! Pasti bisa lebih baik! 🌺"; stars = 2; }
+      else { grade = "D"; message = "Jangan menyerah! Coba lagi ya! 💪"; stars = 1; }
+
+      const randChar = SANRIO_CHARS[Math.floor(Math.random() * SANRIO_CHARS.length)];
+
+      document.getElementById("score-character").textContent = randChar.emoji;
+      document.getElementById("score-grade").textContent = grade;
+      document.getElementById("score-number").textContent = `Nilai: ${state.score} poin · ${found}/${total} kata`;
+      document.getElementById("score-message").textContent = message;
+      document.getElementById("stars-row").innerHTML = "⭐".repeat(stars) + (stars < 5 ? "☆".repeat(5 - stars) : "");
+
+      // Review list
+      const reviewList = document.getElementById("review-list");
+      reviewList.innerHTML = state.words.map((w, i) => {
+        const isFound = state.foundWords.has(i);
+        return `
+        <div class="review-item">
+          <span style="font-size:1.2rem">${w.emoji}</span>
+          <div>
+            <div class="${isFound ? 'review-found' : 'review-missed'}" style="font-weight:800">
+              ${isFound ? '✅' : '❌'} ${w.en}
+            </div>
+            <div style="font-size:0.7rem;color:#AAA">${w.phonetic} · 🇮🇩 ${w.id}</div>
+          </div>
+          <button class="vocab-speak" onclick="speakWord('${w.en.toLowerCase()}', this)" title="Dengarkan">🔊</button>
+        </div>
+      `;
+      }).join("");
+
+      showScreen("score-screen");
+      if (pct >= 70) launchConfetti();
+    }
+
+    function playAgain() {
+      clearInterval(state.timerInterval);
+      startPuzzle();
+    }
+
+    // ===================== SPEECH =====================
+    function speakWord(word, btn) {
+      if (!window.speechSynthesis) return;
+      window.speechSynthesis.cancel();
+      const utter = new SpeechSynthesisUtterance(word);
+      utter.lang = "en-US"; utter.rate = 0.85; utter.pitch = 1.1;
+      btn.classList.add("speaking");
+      utter.onend = () => btn.classList.remove("speaking");
+      utter.onerror = () => btn.classList.remove("speaking");
+      window.speechSynthesis.speak(utter);
+    }
+
+    // ===================== CONFETTI =====================
+    function launchConfetti() {
+      const colors = ["#FFD93D", "#FF6EB4", "#9B5DE5", "#6BCFB5", "#4CC9F0", "#FF9A3C"];
+      for (let i = 0; i < 60; i++) {
+        setTimeout(() => {
+          const p = document.createElement("div");
+          p.className = "confetti-piece";
+          p.style.cssText = `
+          left:${Math.random() * 100}vw;top:-10px;
+          background:${colors[Math.floor(Math.random() * colors.length)]};
+          animation-duration:${2 + Math.random() * 2}s;
+          transform:rotate(${Math.random() * 360}deg);
+        `;
+          document.body.appendChild(p);
+          setTimeout(() => p.remove(), 4000);
+        }, i * 60);
+      }
+    }
+
+    // Re-render grid on screen resize / orientation change
+    window.addEventListener("resize", () => {
+      if (document.getElementById("game-screen").classList.contains("active")) {
+        renderPuzzle();
+      }
+    });
+
+    // ===================== START =====================
+    init();
+  </script>
+</body>
+
+</html>
