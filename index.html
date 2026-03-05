@@ -159,7 +159,19 @@
     }
 
     .card-puzzle .game-title { color: var(--mint); }
-    .card-soon .game-title { color: var(--orange); }
+    .card-snake::before {
+      background: linear-gradient(135deg, rgba(57,255,20,0.06), rgba(76,201,240,0.06));
+    }
+    .badge-snake {
+      background: linear-gradient(135deg, #39FF14, #00C853);
+      color: #0A1A00;
+    }
+    .tag-green { background: #EFFFEE; color: #1A7A00; }
+    .cta-green {
+      background: linear-gradient(135deg, #39FF14, #00C853);
+      color: #0A1A00; box-shadow: 0 6px 20px rgba(57,255,20,0.35);
+    }
+    .card-snake .game-title { color: #1A8A00; }
 
     .game-desc {
       font-size: clamp(0.82rem, 2.8vw, 0.95rem);
@@ -286,20 +298,21 @@
         <div class="game-cta cta-mint">Main Sekarang 🔍</div>
       </a>
 
-      <!-- GAME 3: Coming Soon -->
-      <div class="game-card card-soon">
-        <span class="game-badge badge-soon">🔒 Segera</span>
-        <span class="game-icon">🎵</span>
-        <div class="game-title">Spell & Sing!</div>
+      <!-- GAME 3: Snake Spell -->
+      <a class="game-card card-snake" href="snake-spell.html">
+        <span class="game-badge badge-snake">🐍 Baru!</span>
+        <span class="game-icon">🐍</span>
+        <div class="game-title">Snake Spell!</div>
         <div class="game-desc">
-          Dengar pengucapan kata lalu eja dengan benar! Belajar sambil bernyanyi bersama!
+          Kendalikan ular dan makan huruf dalam urutan yang benar untuk mengeja kata!
         </div>
         <div class="game-tags">
-          <span class="tag tag-yellow">👂 Mendengar</span>
-          <span class="tag tag-yellow">✏️ Mengeja</span>
+          <span class="tag tag-green">🐍 Snake</span>
+          <span class="tag tag-green">✍️ Mengeja</span>
+          <span class="tag tag-green">⚡ Reflek</span>
         </div>
-        <div class="game-cta cta-yellow">Segera Hadir ⏳</div>
-      </div>
+        <div class="game-cta cta-green">Main Sekarang 🐍</div>
+      </a>
 
     </div>
 
