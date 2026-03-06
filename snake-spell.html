@@ -1,1189 +1,1829 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>WordQuest – Snake Spell! 🐍</title>
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&family=Bubblegum+Sans&family=Share+Tech+Mono&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --neon-green: #39FF14;
-      --neon-pink:  #FF6EB4;
-      --neon-blue:  #4CC9F0;
-      --neon-yellow:#FFD93D;
-      --neon-purple:#B983FF;
-      --neon-orange:#FF9A3C;
-      --bg-dark:    #0A0A1A;
-      --bg-panel:   #12122A;
-      --grid-line:  rgba(76,201,240,0.07);
-      --mint: #6BCFB5;
-      --purple: #9B5DE5;
-      --pink: #FF6EB4;
-      --red: #FF4757;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <title>WordQuest – Snake Spell! 🐍</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&family=Bubblegum+Sans&family=Share+Tech+Mono&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --neon-green: #39FF14;
+            --neon-pink: #FF6EB4;
+            --neon-blue: #4CC9F0;
+            --neon-yellow: #FFD93D;
+            --neon-purple: #B983FF;
+            --neon-orange: #FF9A3C;
+            --bg-dark: #0A0A1A;
+            --bg-panel: #12122A;
+            --grid-line: rgba(76, 201, 240, 0.07);
+            --mint: #6BCFB5;
+            --purple: #9B5DE5;
+            --pink: #FF6EB4;
+            --red: #FF4757;
+        }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
-    body {
-      font-family: 'Nunito', sans-serif;
-      background: var(--bg-dark);
-      min-height: 100vh;
-      overflow-x: hidden;
-      color: white;
-    }
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: var(--bg-dark);
+            min-height: 100vh;
+            overflow-x: hidden;
+            color: white;
+        }
 
-    /* ── SCREENS ── */
-    .screen {
-      display: none; flex-direction: column; align-items: center;
-      justify-content: flex-start; min-height: 100vh;
-      padding: 24px 16px 48px; animation: fadeUp .45s ease;
-      position: relative; z-index: 1;
-    }
-    .screen.active { display: flex; }
-    @keyframes fadeUp {
-      from { opacity:0; transform:translateY(20px); }
-      to   { opacity:1; transform:none; }
-    }
+        /* ── SCREENS ── */
+        .screen {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            min-height: 100vh;
+            padding: 24px 16px 48px;
+            animation: fadeUp .45s ease;
+            position: relative;
+            z-index: 1;
+        }
 
-    /* ── BACKGROUND GRID ── */
-    body::before {
-      content:'';
-      position: fixed; inset: 0; z-index: 0; pointer-events: none;
-      background-image:
-        linear-gradient(var(--grid-line) 1px, transparent 1px),
-        linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
-      background-size: 32px 32px;
-    }
+        .screen.active {
+            display: flex;
+        }
 
-    /* Scanline overlay */
-    body::after {
-      content:'';
-      position: fixed; inset: 0; z-index: 0; pointer-events: none;
-      background: repeating-linear-gradient(
-        to bottom,
-        transparent 0px, transparent 3px,
-        rgba(0,0,0,0.08) 3px, rgba(0,0,0,0.08) 4px
-      );
-    }
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
 
-    /* ── LOGO ── */
-    .logo {
-      font-family: 'Bubblegum Sans', cursive;
-      font-size: clamp(2rem, 9vw, 3.4rem);
-      color: var(--neon-green);
-      text-shadow: 0 0 20px var(--neon-green), 0 0 40px rgba(57,255,20,.4);
-      letter-spacing: 2px; text-align: center; line-height: 1.1;
-      margin-bottom: 4px;
-    }
-    .logo-sub {
-      font-size: clamp(0.8rem, 2.8vw, 1rem);
-      color: var(--neon-blue); font-weight: 800; letter-spacing: 1px;
-      margin-bottom: 28px; text-align: center;
-      text-shadow: 0 0 8px var(--neon-blue);
-    }
+            to {
+                opacity: 1;
+                transform: none;
+            }
+        }
 
-    /* ── CARDS ── */
-    .ui-card {
-      background: var(--bg-panel);
-      border: 1px solid rgba(76,201,240,0.2);
-      border-radius: 20px; padding: 22px 20px;
-      box-shadow: 0 0 32px rgba(76,201,240,0.08), inset 0 1px 0 rgba(255,255,255,0.04);
-      width: 100%; max-width: 460px; margin-bottom: 14px;
-    }
-    .ui-card h2 {
-      font-family: 'Bubblegum Sans', cursive;
-      font-size: 1.2rem; color: var(--neon-blue); margin-bottom: 14px;
-      text-align: center; text-shadow: 0 0 8px var(--neon-blue);
-    }
+        /* ── BACKGROUND GRID ── */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            background-image:
+                linear-gradient(var(--grid-line) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+            background-size: 32px 32px;
+        }
 
-    /* ── BUTTONS ── */
-    .btn {
-      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-      font-family: 'Nunito', sans-serif; font-weight: 900;
-      font-size: clamp(.9rem, 3.5vw, 1.05rem);
-      padding: 13px 26px; border-radius: 50px; border: none;
-      cursor: pointer; transition: transform .15s, box-shadow .15s;
-      text-decoration: none; white-space: nowrap; letter-spacing: .5px;
-    }
-    .btn:active { transform: scale(.95) !important; }
+        /* Scanline overlay */
+        body::after {
+            content: '';
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            background: repeating-linear-gradient(to bottom,
+                    transparent 0px, transparent 3px,
+                    rgba(0, 0, 0, 0.08) 3px, rgba(0, 0, 0, 0.08) 4px);
+        }
 
-    .btn-green {
-      background: linear-gradient(135deg, #39FF14, #00C853);
-      color: #0A1A00;
-      box-shadow: 0 0 20px rgba(57,255,20,.5), 0 4px 16px rgba(0,0,0,.3);
-    }
-    .btn-green:hover { transform: translateY(-3px); box-shadow: 0 0 32px rgba(57,255,20,.7), 0 8px 24px rgba(0,0,0,.3); }
+        /* ── LOGO ── */
+        .logo {
+            font-family: 'Bubblegum Sans', cursive;
+            font-size: clamp(2rem, 9vw, 3.4rem);
+            color: var(--neon-green);
+            text-shadow: 0 0 20px var(--neon-green), 0 0 40px rgba(57, 255, 20, .4);
+            letter-spacing: 2px;
+            text-align: center;
+            line-height: 1.1;
+            margin-bottom: 4px;
+        }
 
-    .btn-outline {
-      background: transparent; color: var(--neon-blue);
-      border: 2px solid var(--neon-blue);
-      box-shadow: 0 0 12px rgba(76,201,240,.2);
-    }
-    .btn-outline:hover { background: rgba(76,201,240,.1); transform: translateY(-2px); }
+        .logo-sub {
+            font-size: clamp(0.8rem, 2.8vw, 1rem);
+            color: var(--neon-blue);
+            font-weight: 800;
+            letter-spacing: 1px;
+            margin-bottom: 28px;
+            text-align: center;
+            text-shadow: 0 0 8px var(--neon-blue);
+        }
 
-    .btn-pink {
-      background: linear-gradient(135deg, var(--neon-pink), #C42B7A);
-      color: white; box-shadow: 0 0 20px rgba(255,110,180,.4), 0 4px 16px rgba(0,0,0,.3);
-    }
-    .btn-pink:hover { transform: translateY(-3px); }
+        /* ── CARDS ── */
+        .ui-card {
+            background: var(--bg-panel);
+            border: 1px solid rgba(76, 201, 240, 0.2);
+            border-radius: 20px;
+            padding: 22px 20px;
+            box-shadow: 0 0 32px rgba(76, 201, 240, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+            width: 100%;
+            max-width: 460px;
+            margin-bottom: 14px;
+        }
 
-    .btn-yellow {
-      background: linear-gradient(135deg, var(--neon-yellow), var(--neon-orange));
-      color: #3A1A00; box-shadow: 0 0 20px rgba(255,217,61,.4), 0 4px 16px rgba(0,0,0,.3);
-    }
-    .btn-yellow:hover { transform: translateY(-3px); }
+        .ui-card h2 {
+            font-family: 'Bubblegum Sans', cursive;
+            font-size: 1.2rem;
+            color: var(--neon-blue);
+            margin-bottom: 14px;
+            text-align: center;
+            text-shadow: 0 0 8px var(--neon-blue);
+        }
 
-    .btn-block { width: 100%; }
+        /* ── BUTTONS ── */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-family: 'Nunito', sans-serif;
+            font-weight: 900;
+            font-size: clamp(.9rem, 3.5vw, 1.05rem);
+            padding: 13px 26px;
+            border-radius: 50px;
+            border: none;
+            cursor: pointer;
+            transition: transform .15s, box-shadow .15s;
+            text-decoration: none;
+            white-space: nowrap;
+            letter-spacing: .5px;
+        }
 
-    /* ── FORM ── */
-    .form-label { display: block; font-weight: 800; color: #AAA; margin-bottom: 8px; font-size: .9rem; }
-    .form-group { margin-bottom: 16px; }
+        .btn:active {
+            transform: scale(.95) !important;
+        }
 
-    /* ── DIFFICULTY PICKER ── */
-    .diff-row { display: flex; gap: 10px; }
-    .diff-btn {
-      flex: 1; padding: 14px 8px; border-radius: 14px;
-      border: 2px solid rgba(76,201,240,.2); background: rgba(76,201,240,.04);
-      cursor: pointer; text-align: center; transition: all .2s;
-      font-family: 'Nunito', sans-serif; font-weight: 800; font-size: .85rem; color: #888;
-    }
-    .diff-btn .diff-icon { font-size: 1.8rem; display: block; margin-bottom: 6px; }
-    .diff-btn.active { border-color: var(--neon-green); background: rgba(57,255,20,.08); color: var(--neon-green); }
-    .diff-btn:hover { border-color: var(--neon-green); }
+        .btn-green {
+            background: linear-gradient(135deg, #39FF14, #00C853);
+            color: #0A1A00;
+            box-shadow: 0 0 20px rgba(57, 255, 20, .5), 0 4px 16px rgba(0, 0, 0, .3);
+        }
 
-    /* ── TOGGLE ── */
-    .toggle-row { display: flex; align-items: center; justify-content: space-between; }
-    .toggle-label { font-weight: 800; color: #AAA; font-size: .9rem; }
-    .toggle-sub { font-size: .72rem; color: #555; font-weight: 700; }
-    .toggle-switch { position: relative; width: 50px; height: 26px; flex-shrink: 0; }
-    .toggle-switch input { opacity: 0; width: 0; height: 0; }
-    .toggle-slider {
-      position: absolute; inset: 0; background: #333; border-radius: 26px;
-      cursor: pointer; transition: background .2s;
-    }
-    .toggle-slider::before {
-      content:''; position:absolute; width:18px; height:18px;
-      border-radius:50%; background:white; left:4px; top:4px;
-      transition:transform .2s; box-shadow:0 2px 4px rgba(0,0,0,.4);
-    }
-    .toggle-switch input:checked+.toggle-slider { background: var(--neon-green); }
-    .toggle-switch input:checked+.toggle-slider::before { transform:translateX(24px); }
+        .btn-green:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 32px rgba(57, 255, 20, .7), 0 8px 24px rgba(0, 0, 0, .3);
+        }
 
-    /* ════════════════════════════════════
-       GAME SCREEN
+        .btn-outline {
+            background: transparent;
+            color: var(--neon-blue);
+            border: 2px solid var(--neon-blue);
+            box-shadow: 0 0 12px rgba(76, 201, 240, .2);
+        }
+
+        .btn-outline:hover {
+            background: rgba(76, 201, 240, .1);
+            transform: translateY(-2px);
+        }
+
+        .btn-pink {
+            background: linear-gradient(135deg, var(--neon-pink), #C42B7A);
+            color: white;
+            box-shadow: 0 0 20px rgba(255, 110, 180, .4), 0 4px 16px rgba(0, 0, 0, .3);
+        }
+
+        .btn-pink:hover {
+            transform: translateY(-3px);
+        }
+
+        .btn-yellow {
+            background: linear-gradient(135deg, var(--neon-yellow), var(--neon-orange));
+            color: #3A1A00;
+            box-shadow: 0 0 20px rgba(255, 217, 61, .4), 0 4px 16px rgba(0, 0, 0, .3);
+        }
+
+        .btn-yellow:hover {
+            transform: translateY(-3px);
+        }
+
+        .btn-block {
+            width: 100%;
+        }
+
+        /* ── FORM ── */
+        .form-label {
+            display: block;
+            font-weight: 800;
+            color: #AAA;
+            margin-bottom: 8px;
+            font-size: .9rem;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        /* ── DIFFICULTY PICKER ── */
+        .diff-row {
+            display: flex;
+            gap: 10px;
+        }
+
+        .diff-btn {
+            flex: 1;
+            padding: 14px 8px;
+            border-radius: 14px;
+            border: 2px solid rgba(76, 201, 240, .2);
+            background: rgba(76, 201, 240, .04);
+            cursor: pointer;
+            text-align: center;
+            transition: all .2s;
+            font-family: 'Nunito', sans-serif;
+            font-weight: 800;
+            font-size: .85rem;
+            color: #888;
+        }
+
+        .diff-btn .diff-icon {
+            font-size: 1.8rem;
+            display: block;
+            margin-bottom: 6px;
+        }
+
+        .diff-btn.active {
+            border-color: var(--neon-green);
+            background: rgba(57, 255, 20, .08);
+            color: var(--neon-green);
+        }
+
+        .diff-btn:hover {
+            border-color: var(--neon-green);
+        }
+
+        /* ── TOGGLE ── */
+        .toggle-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .toggle-label {
+            font-weight: 800;
+            color: #AAA;
+            font-size: .9rem;
+        }
+
+        .toggle-sub {
+            font-size: .72rem;
+            color: #555;
+            font-weight: 700;
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 50px;
+            height: 26px;
+            flex-shrink: 0;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            inset: 0;
+            background: #333;
+            border-radius: 26px;
+            cursor: pointer;
+            transition: background .2s;
+        }
+
+        .toggle-slider::before {
+            content: '';
+            position: absolute;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: white;
+            left: 4px;
+            top: 4px;
+            transition: transform .2s;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, .4);
+        }
+
+        .toggle-switch input:checked+.toggle-slider {
+            background: var(--neon-green);
+        }
+
+        .toggle-switch input:checked+.toggle-slider::before {
+            transform: translateX(24px);
+        }
+
+        /* ════════════════════════════════════
+       ROTATE PROMPT (portrait on mobile)
     ════════════════════════════════════ */
-    #game-screen {
-      padding: 12px 12px 24px;
-      background: var(--bg-dark);
-    }
+        #rotate-prompt {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 200;
+            background: var(--bg-dark);
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            text-align: center;
+            padding: 24px;
+        }
 
-    /* ── TOP HUD ── */
-    .hud {
-      width: 100%; max-width: 520px;
-      display: flex; align-items: center; justify-content: space-between;
-      gap: 10px; margin-bottom: 8px; flex-wrap: wrap;
-    }
+        #rotate-prompt .rotate-icon {
+            font-size: 4rem;
+            animation: rotate-hint 1.5s ease-in-out infinite;
+        }
 
-    .hud-pill {
-      background: var(--bg-panel);
-      border: 1px solid rgba(76,201,240,.2);
-      border-radius: 50px; padding: 6px 14px;
-      font-family: 'Share Tech Mono', monospace;
-      font-size: clamp(.85rem, 3vw, 1rem);
-      display: flex; align-items: center; gap: 6px;
-    }
-    .hud-pill .label { color: #555; font-size: .7rem; font-family: 'Nunito', sans-serif; font-weight: 800; }
-    .hud-score { color: var(--neon-yellow); text-shadow: 0 0 8px var(--neon-yellow); }
-    .hud-timer { color: var(--neon-green); text-shadow: 0 0 8px var(--neon-green); }
-    .hud-timer.danger { color: var(--red); text-shadow: 0 0 10px var(--red); animation: blink .4s infinite alternate; }
-    @keyframes blink { to { opacity: .5; } }
-    .hud-words { color: var(--neon-purple); text-shadow: 0 0 8px var(--neon-purple); }
+        @keyframes rotate-hint {
+            0%, 100% { transform: rotate(0deg); }
+            40% { transform: rotate(90deg); }
+            60% { transform: rotate(90deg); }
+        }
 
-    /* ── TARGET WORD DISPLAY ── */
-    .target-bar {
-      width: 100%; max-width: 520px;
-      background: var(--bg-panel);
-      border: 1px solid rgba(57,255,20,.25);
-      border-radius: 14px; padding: 10px 16px;
-      margin-bottom: 8px; text-align: center;
-    }
-    .target-label {
-      font-size: .7rem; font-weight: 800; color: #555; letter-spacing: 1px;
-      text-transform: uppercase; margin-bottom: 6px;
-    }
-    .target-hint {
-      font-size: .72rem; color: #888; font-weight: 700;
-      margin-top: 4px; font-style: italic;
-    }
-    .target-letters {
-      display: flex; gap: 6px; justify-content: center; flex-wrap: wrap;
-    }
-    .target-letter {
-      width: 32px; height: 36px; border-radius: 8px;
-      display: flex; align-items: center; justify-content: center;
-      font-family: 'Share Tech Mono', monospace; font-size: 1.1rem; font-weight: 700;
-      border: 2px solid rgba(57,255,20,.3);
-      background: rgba(57,255,20,.05); color: #445;
-      transition: all .3s;
-    }
-    .target-letter.eaten {
-      background: var(--neon-green) !important;
-      border-color: var(--neon-green) !important;
-      color: #0A1A00 !important;
-      box-shadow: 0 0 12px var(--neon-green);
-      transform: scale(1.1);
-    }
-    .target-letter.next {
-      border-color: var(--neon-yellow);
-      color: var(--neon-yellow);
-      box-shadow: 0 0 8px var(--neon-yellow);
-      animation: pulse-next .7s infinite alternate;
-    }
-    @keyframes pulse-next { to { transform:scale(1.08); box-shadow:0 0 16px var(--neon-yellow); } }
+        #rotate-prompt p {
+            font-family: 'Bubblegum Sans', cursive;
+            font-size: 1.3rem;
+            color: var(--neon-blue);
+            text-shadow: 0 0 10px var(--neon-blue);
+        }
 
-    /* ── CANVAS WRAPPER ── */
-    .canvas-wrapper {
-      position: relative;
-      border-radius: 16px; overflow: hidden;
-      box-shadow: 0 0 40px rgba(57,255,20,.15), 0 0 80px rgba(76,201,240,.08);
-      border: 2px solid rgba(57,255,20,.2);
-      max-width: 520px; width: 100%;
-    }
+        #rotate-prompt small {
+            color: #555;
+            font-size: .8rem;
+            font-weight: 700;
+        }
 
-    #gameCanvas {
-      display: block; width: 100%; height: auto;
-      image-rendering: pixelated;
-    }
+        /* ════════════════════════════════════
+       GAME SCREEN — LANDSCAPE LAYOUT
+    ════════════════════════════════════ */
+        #game-screen {
+            padding: 0;
+            background: var(--bg-dark);
+            flex-direction: row;
+            align-items: stretch;
+            justify-content: flex-start;
+            min-height: 100vh;
+            min-height: 100dvh;
+            overflow: hidden;
+        }
 
-    /* Dizzy overlay */
-    .dizzy-overlay {
-      position: absolute; inset: 0; pointer-events: none;
-      background: rgba(255,71,87,.12);
-      border-radius: 14px;
-      opacity: 0; transition: opacity .3s;
-    }
-    .dizzy-overlay.active { opacity: 1; animation: dizzy-pulse .4s infinite alternate; }
-    @keyframes dizzy-pulse { to { background: rgba(255,71,87,.22); } }
+        /* Left: canvas takes all available height */
+        .game-canvas-col {
+            flex: 1 1 auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8px;
+            min-width: 0;
+        }
 
-    /* Word complete flash */
-    .word-flash {
-      position: absolute; inset: 0; pointer-events: none;
-      display: flex; align-items: center; justify-content: center;
-      font-family: 'Bubblegum Sans', cursive;
-      font-size: clamp(1.5rem, 6vw, 2.4rem);
-      color: var(--neon-green);
-      text-shadow: 0 0 20px var(--neon-green);
-      opacity: 0; border-radius: 14px;
-    }
-    .word-flash.show {
-      animation: flash-word .9s ease forwards;
-    }
-    @keyframes flash-word {
-      0%   { opacity:0; transform:scale(.7); }
-      20%  { opacity:1; transform:scale(1.1); }
-      70%  { opacity:1; transform:scale(1); }
-      100% { opacity:0; transform:scale(.9); }
-    }
+        /* Right: info panel */
+        .game-info-col {
+            flex: 0 0 auto;
+            width: clamp(130px, 26vw, 200px);
+            display: flex;
+            flex-direction: column;
+            padding: 8px 8px 8px 0;
+            gap: 6px;
+            position: relative;
+        }
 
-    /* ── D-PAD ── */
-    .dpad {
-      display: grid;
-      grid-template-areas: ". up ." "left . right" ". down .";
-      gap: 4px; margin-top: 12px; max-width: 160px;
-    }
-    .dpad-btn {
-      width: 52px; height: 52px; border-radius: 12px;
-      border: 2px solid rgba(57,255,20,.3);
-      background: rgba(57,255,20,.06);
-      color: var(--neon-green); font-size: 1.4rem;
-      display: flex; align-items: center; justify-content: center;
-      cursor: pointer; transition: background .1s, transform .1s;
-      -webkit-tap-highlight-color: transparent; user-select: none;
-    }
-    .dpad-btn:active { background: rgba(57,255,20,.2); transform: scale(.92); }
-    .dpad-btn[data-dir="UP"]    { grid-area: up; }
-    .dpad-btn[data-dir="LEFT"]  { grid-area: left; }
-    .dpad-btn[data-dir="RIGHT"] { grid-area: right; }
-    .dpad-btn[data-dir="DOWN"]  { grid-area: down; }
+        /* ── TOP HUD (inside right panel) ── */
+        .hud {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            width: 100%;
+        }
 
-    /* ── STATUS MSG ── */
-    .status-msg {
-      font-family: 'Bubblegum Sans', cursive;
-      font-size: clamp(.85rem, 3vw, 1rem);
-      min-height: 1.4em; text-align: center; margin-top: 6px;
-      transition: all .3s;
-    }
-    .status-msg.dizzy { color: var(--red); text-shadow: 0 0 8px var(--red); }
-    .status-msg.good  { color: var(--neon-green); text-shadow: 0 0 8px var(--neon-green); }
-    .status-msg.info  { color: var(--neon-blue); }
+        .hud-pill {
+            background: var(--bg-panel);
+            border: 1px solid rgba(76, 201, 240, .2);
+            border-radius: 10px;
+            padding: 5px 10px;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: clamp(.75rem, 2vw, .92rem);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 6px;
+        }
 
-    /* ════════════════════════════════════
+        .hud-pill .label {
+            color: #555;
+            font-size: .62rem;
+            font-family: 'Nunito', sans-serif;
+            font-weight: 800;
+            letter-spacing: .5px;
+        }
+
+        .hud-score {
+            color: var(--neon-yellow);
+            text-shadow: 0 0 8px var(--neon-yellow);
+        }
+
+        .hud-timer {
+            color: var(--neon-green);
+            text-shadow: 0 0 8px var(--neon-green);
+        }
+
+        .hud-timer.danger {
+            color: var(--red);
+            text-shadow: 0 0 10px var(--red);
+            animation: blink .4s infinite alternate;
+        }
+
+        @keyframes blink {
+            to { opacity: .5; }
+        }
+
+        .hud-words {
+            color: var(--neon-purple);
+            text-shadow: 0 0 8px var(--neon-purple);
+        }
+
+        /* ── TARGET WORD DISPLAY (right panel) ── */
+        .target-bar {
+            width: 100%;
+            background: var(--bg-panel);
+            border: 1px solid rgba(57, 255, 20, .25);
+            border-radius: 12px;
+            padding: 8px 10px;
+            text-align: center;
+            flex-shrink: 0;
+        }
+
+        .target-label {
+            font-size: .58rem;
+            font-weight: 800;
+            color: #555;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+
+        .target-hint {
+            font-size: .62rem;
+            color: #888;
+            font-weight: 700;
+            margin-top: 4px;
+            font-style: italic;
+            line-height: 1.3;
+            word-break: break-word;
+        }
+
+        .target-letters {
+            display: flex;
+            gap: 4px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .target-letter {
+            width: 26px;
+            height: 30px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: .9rem;
+            font-weight: 700;
+            border: 2px solid rgba(57, 255, 20, .3);
+            background: rgba(57, 255, 20, .05);
+            color: #445;
+            transition: all .3s;
+        }
+
+        .target-letter.eaten {
+            background: var(--neon-green) !important;
+            border-color: var(--neon-green) !important;
+            color: #0A1A00 !important;
+            box-shadow: 0 0 10px var(--neon-green);
+            transform: scale(1.1);
+        }
+
+        .target-letter.next {
+            border-color: var(--neon-yellow);
+            color: var(--neon-yellow);
+            box-shadow: 0 0 8px var(--neon-yellow);
+            animation: pulse-next .7s infinite alternate;
+        }
+
+        @keyframes pulse-next {
+            to {
+                transform: scale(1.08);
+                box-shadow: 0 0 16px var(--neon-yellow);
+            }
+        }
+
+        /* ── CANVAS WRAPPER ── */
+        .canvas-wrapper {
+            position: relative;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 0 40px rgba(57, 255, 20, .15), 0 0 80px rgba(76, 201, 240, .08);
+            border: 2px solid rgba(57, 255, 20, .2);
+            /* Square canvas sized to fit viewport height */
+            height: min(calc(100vh - 16px), calc(100vw - clamp(130px,26vw,200px) - 16px));
+            width: min(calc(100vh - 16px), calc(100vw - clamp(130px,26vw,200px) - 16px));
+            max-height: min(calc(100dvh - 16px), calc(100dvw - clamp(130px,26vw,200px) - 16px));
+        }
+
+        #gameCanvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+            image-rendering: pixelated;
+        }
+
+        /* Dizzy overlay */
+        .dizzy-overlay {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            background: rgba(255, 71, 87, .12);
+            border-radius: 10px;
+            opacity: 0;
+            transition: opacity .3s;
+        }
+
+        .dizzy-overlay.active {
+            opacity: 1;
+            animation: dizzy-pulse .4s infinite alternate;
+        }
+
+        @keyframes dizzy-pulse {
+            to { background: rgba(255, 71, 87, .22); }
+        }
+
+        /* Word complete flash */
+        .word-flash {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Bubblegum Sans', cursive;
+            font-size: clamp(1.2rem, 4vw, 2rem);
+            color: var(--neon-green);
+            text-shadow: 0 0 20px var(--neon-green);
+            opacity: 0;
+            border-radius: 10px;
+        }
+
+        .word-flash.show {
+            animation: flash-word .9s ease forwards;
+        }
+
+        @keyframes flash-word {
+            0%   { opacity: 0; transform: scale(.7); }
+            20%  { opacity: 1; transform: scale(1.1); }
+            70%  { opacity: 1; transform: scale(1); }
+            100% { opacity: 0; transform: scale(.9); }
+        }
+
+        /* ── FLOATING D-PAD (bottom-right of game screen) ── */
+        .dpad-float {
+            position: fixed;
+            bottom: 12px;
+            right: 12px;
+            z-index: 50;
+            display: grid;
+            grid-template-areas: ". up ." "left . right" ". down .";
+            gap: 3px;
+        }
+
+        /* Hide the old dpad placeholder */
+        .dpad { display: none !important; }
+
+        .dpad-btn {
+            width: 54px;
+            height: 54px;
+            border-radius: 14px;
+            border: 2px solid rgba(57, 255, 20, .4);
+            background: rgba(10, 10, 26, .85);
+            backdrop-filter: blur(6px);
+            color: var(--neon-green);
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background .1s, transform .1s, box-shadow .1s;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+            box-shadow: 0 0 10px rgba(57, 255, 20, .15), 0 4px 12px rgba(0,0,0,.5);
+        }
+
+        .dpad-btn:active,
+        .dpad-btn.pressed {
+            background: rgba(57, 255, 20, .25);
+            transform: scale(.9);
+            box-shadow: 0 0 20px rgba(57, 255, 20, .4);
+        }
+
+        .dpad-btn[data-dir="UP"]    { grid-area: up; }
+        .dpad-btn[data-dir="LEFT"]  { grid-area: left; }
+        .dpad-btn[data-dir="RIGHT"] { grid-area: right; }
+        .dpad-btn[data-dir="DOWN"]  { grid-area: down; }
+
+        /* ── PAUSE BTN (top of right panel) ── */
+        .pause-btn-inline {
+            width: 100%;
+            font-size: .75rem !important;
+            padding: 7px 10px !important;
+            border-radius: 10px !important;
+            flex-shrink: 0;
+        }
+
+        /* ── STATUS MSG (bottom of right panel) ── */
+        .status-msg {
+            font-family: 'Bubblegum Sans', cursive;
+            font-size: clamp(.68rem, 1.8vw, .82rem);
+            min-height: 1.4em;
+            text-align: center;
+            transition: all .3s;
+            line-height: 1.3;
+            word-break: break-word;
+            margin-top: auto;
+            padding-top: 4px;
+        }
+
+        .status-msg.dizzy {
+            color: var(--red);
+            text-shadow: 0 0 8px var(--red);
+        }
+
+        .status-msg.good {
+            color: var(--neon-green);
+            text-shadow: 0 0 8px var(--neon-green);
+        }
+
+        .status-msg.info {
+            color: var(--neon-blue);
+        }
+
+        /* ════════════════════════════════════
+           DESKTOP / LARGE SCREEN fallback
+           (>= 768px wide — revert to portrait stacked)
+        ════════════════════════════════════ */
+        @media (min-width: 768px) and (orientation: landscape) {
+            /* keep landscape layout as-is, just cap canvas size */
+            .canvas-wrapper {
+                height: min(calc(100vh - 16px), calc(100vw - 220px - 16px));
+                width: min(calc(100vh - 16px), calc(100vw - 220px - 16px));
+            }
+            .game-info-col { width: 200px; }
+        }
+
+        @media (min-width: 960px) {
+            /* On large desktop, stack vertically like original */
+            #game-screen {
+                flex-direction: column;
+                align-items: center;
+                padding: 12px 12px 24px;
+                overflow: auto;
+            }
+            .game-canvas-col {
+                width: 100%;
+                max-width: 520px;
+                padding: 0;
+            }
+            .canvas-wrapper {
+                height: auto;
+                width: 100%;
+                max-width: 520px;
+            }
+            .game-info-col {
+                width: 100%;
+                max-width: 520px;
+                padding: 0;
+                flex-direction: row;
+                flex-wrap: wrap;
+            }
+            .hud {
+                flex-direction: row;
+                justify-content: space-between;
+                width: 100%;
+            }
+            .target-bar { width: 100%; }
+            .dpad-float { position: static; display: grid; margin: 10px auto 0; }
+            #pause-btn { display: inline-flex; }
+            .pause-btn-inline { display: none; }
+            .status-msg { width: 100%; text-align: center; font-size: 1rem; }
+        }
+
+        /* ════════════════════════════════════
        SCORE SCREEN
     ════════════════════════════════════ */
-    #score-screen { background: var(--bg-dark); }
+        #score-screen {
+            background: var(--bg-dark);
+        }
 
-    .score-trophy {
-      font-size: clamp(4rem,16vw,7rem);
-      filter: drop-shadow(0 0 20px var(--neon-yellow));
-      animation: trophy-bounce 1s ease infinite alternate;
-      margin-bottom: 8px;
-    }
-    @keyframes trophy-bounce { to { transform:translateY(-14px) scale(1.05); } }
+        .score-trophy {
+            font-size: clamp(4rem, 16vw, 7rem);
+            filter: drop-shadow(0 0 20px var(--neon-yellow));
+            animation: trophy-bounce 1s ease infinite alternate;
+            margin-bottom: 8px;
+        }
 
-    .score-grade {
-      font-family: 'Bubblegum Sans', cursive;
-      font-size: clamp(3rem,14vw,5.5rem);
-      background: linear-gradient(135deg, var(--neon-green), var(--neon-blue));
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-      line-height: 1; margin: 6px 0; text-align: center;
-    }
-    .score-number {
-      font-family: 'Share Tech Mono', monospace;
-      font-size: clamp(1.4rem,6vw,2rem);
-      color: var(--neon-yellow);
-      text-shadow: 0 0 12px var(--neon-yellow);
-      text-align: center;
-    }
-    .score-message {
-      font-size: clamp(.82rem,3vw,.98rem); color: #777; font-weight: 700;
-      text-align: center; max-width: 300px; margin: 10px auto;
-    }
-    .stars-row {
-      display:flex; justify-content:center; gap:4px; font-size:1.5rem; margin:8px 0;
-    }
+        @keyframes trophy-bounce {
+            to {
+                transform: translateY(-14px) scale(1.05);
+            }
+        }
 
-    /* Word history table */
-    .word-history {
-      width:100%; max-width:460px; background:var(--bg-panel);
-      border:1px solid rgba(76,201,240,.15); border-radius:18px;
-      padding:16px; margin-top:14px;
-    }
-    .word-history h3 {
-      font-family:'Bubblegum Sans',cursive; color:var(--neon-blue);
-      font-size:1.05rem; text-align:center; margin-bottom:12px;
-      text-shadow:0 0 8px var(--neon-blue);
-    }
-    .wh-item {
-      display:flex; align-items:center; gap:10px;
-      padding:7px 6px; border-bottom:1px solid rgba(76,201,240,.08);
-      font-size:.84rem; font-weight:700; color:#888;
-    }
-    .wh-item:last-child { border-bottom:none; }
-    .wh-emoji { font-size:1.1rem; }
-    .wh-word { color:var(--neon-green); font-family:'Share Tech Mono',monospace; }
-    .wh-id   { color:#555; font-size:.72rem; }
-    .wh-pts  { margin-left:auto; color:var(--neon-yellow); font-family:'Share Tech Mono',monospace; }
+        .score-grade {
+            font-family: 'Bubblegum Sans', cursive;
+            font-size: clamp(3rem, 14vw, 5.5rem);
+            background: linear-gradient(135deg, var(--neon-green), var(--neon-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1;
+            margin: 6px 0;
+            text-align: center;
+        }
 
-    /* ── OVERLAY ── */
-    .overlay {
-      position:fixed; inset:0; z-index:60;
-      background:rgba(0,0,0,.75); backdrop-filter:blur(4px);
-      display:flex; align-items:center; justify-content:center;
-      animation:fadeUp .3s ease;
-    }
-    .overlay-box {
-      background:var(--bg-panel);
-      border:1px solid rgba(57,255,20,.3);
-      border-radius:24px; padding:30px 26px;
-      max-width:340px; width:90%; text-align:center;
-      box-shadow:0 0 60px rgba(57,255,20,.15);
-      animation:pop-in .4s cubic-bezier(.34,1.56,.64,1);
-    }
-    @keyframes pop-in { from{transform:scale(.6);opacity:0} to{transform:scale(1);opacity:1} }
-    .overlay-icon { font-size:3.2rem; margin-bottom:10px; display:block; }
-    .overlay-title {
-      font-family:'Bubblegum Sans',cursive; font-size:1.5rem;
-      color:var(--neon-green); margin-bottom:8px;
-      text-shadow:0 0 10px var(--neon-green);
-    }
-    .overlay-text { font-size:.88rem; color:#888; font-weight:700; margin-bottom:18px; line-height:1.6; }
-    .hidden { display:none !important; }
+        .score-number {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: clamp(1.4rem, 6vw, 2rem);
+            color: var(--neon-yellow);
+            text-shadow: 0 0 12px var(--neon-yellow);
+            text-align: center;
+        }
 
-    /* ── CONFETTI ── */
-    .confetti-piece {
-      position:fixed; width:8px; height:8px; border-radius:2px;
-      animation:confetti-fall 3s linear forwards; z-index:100; pointer-events:none;
-    }
-    @keyframes confetti-fall {
-      0%   { transform:translateY(-10px) rotate(0deg); opacity:1; }
-      100% { transform:translateY(100vh) rotate(720deg); opacity:0; }
-    }
+        .score-message {
+            font-size: clamp(.82rem, 3vw, .98rem);
+            color: #777;
+            font-weight: 700;
+            text-align: center;
+            max-width: 300px;
+            margin: 10px auto;
+        }
 
-    /* ── BACK LINK ── */
-    .back-link {
-      display:inline-flex; align-items:center; gap:6px;
-      color:#555; font-weight:800; font-size:.85rem; text-decoration:none;
-      margin-bottom:16px; transition:color .2s;
-    }
-    .back-link:hover { color:var(--neon-blue); }
-  </style>
+        .stars-row {
+            display: flex;
+            justify-content: center;
+            gap: 4px;
+            font-size: 1.5rem;
+            margin: 8px 0;
+        }
+
+        /* Word history table */
+        .word-history {
+            width: 100%;
+            max-width: 460px;
+            background: var(--bg-panel);
+            border: 1px solid rgba(76, 201, 240, .15);
+            border-radius: 18px;
+            padding: 16px;
+            margin-top: 14px;
+        }
+
+        .word-history h3 {
+            font-family: 'Bubblegum Sans', cursive;
+            color: var(--neon-blue);
+            font-size: 1.05rem;
+            text-align: center;
+            margin-bottom: 12px;
+            text-shadow: 0 0 8px var(--neon-blue);
+        }
+
+        .wh-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 7px 6px;
+            border-bottom: 1px solid rgba(76, 201, 240, .08);
+            font-size: .84rem;
+            font-weight: 700;
+            color: #888;
+        }
+
+        .wh-item:last-child {
+            border-bottom: none;
+        }
+
+        .wh-emoji {
+            font-size: 1.1rem;
+        }
+
+        .wh-word {
+            color: var(--neon-green);
+            font-family: 'Share Tech Mono', monospace;
+        }
+
+        .wh-id {
+            color: #555;
+            font-size: .72rem;
+        }
+
+        .wh-pts {
+            margin-left: auto;
+            color: var(--neon-yellow);
+            font-family: 'Share Tech Mono', monospace;
+        }
+
+        /* ── OVERLAY ── */
+        .overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 60;
+            background: rgba(0, 0, 0, .75);
+            backdrop-filter: blur(4px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: fadeUp .3s ease;
+        }
+
+        .overlay-box {
+            background: var(--bg-panel);
+            border: 1px solid rgba(57, 255, 20, .3);
+            border-radius: 24px;
+            padding: 30px 26px;
+            max-width: 340px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 0 60px rgba(57, 255, 20, .15);
+            animation: pop-in .4s cubic-bezier(.34, 1.56, .64, 1);
+        }
+
+        @keyframes pop-in {
+            from {
+                transform: scale(.6);
+                opacity: 0
+            }
+
+            to {
+                transform: scale(1);
+                opacity: 1
+            }
+        }
+
+        .overlay-icon {
+            font-size: 3.2rem;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .overlay-title {
+            font-family: 'Bubblegum Sans', cursive;
+            font-size: 1.5rem;
+            color: var(--neon-green);
+            margin-bottom: 8px;
+            text-shadow: 0 0 10px var(--neon-green);
+        }
+
+        .overlay-text {
+            font-size: .88rem;
+            color: #888;
+            font-weight: 700;
+            margin-bottom: 18px;
+            line-height: 1.6;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* ── CONFETTI ── */
+        .confetti-piece {
+            position: fixed;
+            width: 8px;
+            height: 8px;
+            border-radius: 2px;
+            animation: confetti-fall 3s linear forwards;
+            z-index: 100;
+            pointer-events: none;
+        }
+
+        @keyframes confetti-fall {
+            0% {
+                transform: translateY(-10px) rotate(0deg);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        /* ── BACK LINK ── */
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: #555;
+            font-weight: 800;
+            font-size: .85rem;
+            text-decoration: none;
+            margin-bottom: 16px;
+            transition: color .2s;
+        }
+
+        .back-link:hover {
+            color: var(--neon-blue);
+        }
+    </style>
 </head>
+
 <body>
 
-<div class="bg-stars" id="bgStars"></div>
+    <div class="bg-stars" id="bgStars"></div>
 
-<!-- ══════════════ SCREEN 1: SETUP ══════════════ -->
-<div class="screen active" id="setup-screen">
-  <a class="back-link" href="index.html">← Kembali ke Menu</a>
-  <div class="logo">🐍 Snake Spell!</div>
-  <div class="logo-sub">✨ Eja Kata · Makan Huruf · Jadi Juara! ✨</div>
+    <!-- ══════════════ SCREEN 1: SETUP ══════════════ -->
+    <div class="screen active" id="setup-screen">
+        <a class="back-link" href="index.html">← Kembali ke Menu</a>
+        <div class="logo">🐍 Snake Spell!</div>
+        <div class="logo-sub">✨ Eja Kata · Makan Huruf · Jadi Juara! ✨</div>
 
-  <div class="ui-card">
-    <h2>⚙️ Pengaturan Game</h2>
+        <div class="ui-card">
+            <h2>⚙️ Pengaturan Game</h2>
 
-    <div class="form-group">
-      <label class="form-label">🎯 Tingkat Kesulitan</label>
-      <div class="diff-row">
-        <div class="diff-btn active" data-diff="easy" onclick="selectDiff(this)">
-          <span class="diff-icon">🐣</span>Mudah<br><span style="font-size:.7rem;color:#555">Kata pendek</span>
+            <div class="form-group">
+                <label class="form-label">🎯 Tingkat Kesulitan</label>
+                <div class="diff-row">
+                    <div class="diff-btn active" data-diff="easy" onclick="selectDiff(this)">
+                        <span class="diff-icon">🐣</span>Mudah<br><span style="font-size:.7rem;color:#555">Kata
+                            pendek</span>
+                    </div>
+                    <div class="diff-btn" data-diff="medium" onclick="selectDiff(this)">
+                        <span class="diff-icon">🐥</span>Sedang<br><span
+                            style="font-size:.7rem;color:#555">Campuran</span>
+                    </div>
+                    <div class="diff-btn" data-diff="hard" onclick="selectDiff(this)">
+                        <span class="diff-icon">🦅</span>Sulit<br><span style="font-size:.7rem;color:#555">Kata
+                            panjang</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group" style="margin-bottom:0">
+                <div class="toggle-row">
+                    <div>
+                        <div class="toggle-label">⏱️ Gunakan hitungan waktu</div>
+                        <div class="toggle-sub">Tiap kata benar = +waktu bonus!</div>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="timer-toggle" checked>
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+            </div>
         </div>
-        <div class="diff-btn" data-diff="medium" onclick="selectDiff(this)">
-          <span class="diff-icon">🐥</span>Sedang<br><span style="font-size:.7rem;color:#555">Campuran</span>
+
+        <div style="max-width:460px;width:100%;display:flex;gap:10px">
+            <button class="btn btn-green btn-block" onclick="startGame()" style="flex:2">
+                🎮 Mulai Main!
+            </button>
         </div>
-        <div class="diff-btn" data-diff="hard" onclick="selectDiff(this)">
-          <span class="diff-icon">🦅</span>Sulit<br><span style="font-size:.7rem;color:#555">Kata panjang</span>
+
+        <!-- How to play -->
+        <div class="ui-card" style="margin-top:16px">
+            <h2>📖 Cara Main</h2>
+            <div style="font-size:.84rem;color:#777;font-weight:700;line-height:2">
+                🐍 Gerakkan ular dengan tombol arah / swipe<br>
+                🔤 Makan huruf <span style="color:var(--neon-yellow)">sesuai urutan</span> untuk mengeja kata<br>
+                ✅ Ejaan selesai → ular tumbuh & dapat poin + waktu bonus!<br>
+                ❌ Huruf salah → ular <span style="color:var(--red)">pusing 3 detik</span> & melambat<br>
+                🏆 Skor bisa melebihi 100 — terus main selama bisa!
+            </div>
         </div>
-      </div>
     </div>
 
-    <div class="form-group" style="margin-bottom:0">
-      <div class="toggle-row">
-        <div>
-          <div class="toggle-label">⏱️ Gunakan hitungan waktu</div>
-          <div class="toggle-sub">Tiap kata benar = +waktu bonus!</div>
+    <!-- Rotate-to-landscape prompt (shown in portrait on small screens) -->
+    <div id="rotate-prompt">
+        <div class="rotate-icon">📱</div>
+        <p>Putar layarmu!</p>
+        <small>Game ini lebih seru dalam mode landscape 🎮</small>
+    </div>
+
+    <!-- ══════════════ SCREEN 2: GAME ══════════════ -->
+    <div class="screen" id="game-screen">
+
+        <!-- LEFT: Canvas -->
+        <div class="game-canvas-col">
+            <div class="canvas-wrapper" id="canvas-wrapper">
+                <canvas id="gameCanvas"></canvas>
+                <div class="dizzy-overlay" id="dizzy-overlay"></div>
+                <div class="word-flash" id="word-flash"></div>
+            </div>
         </div>
-        <label class="toggle-switch">
-          <input type="checkbox" id="timer-toggle" checked>
-          <span class="toggle-slider"></span>
-        </label>
-      </div>
+
+        <!-- RIGHT: Info panel -->
+        <div class="game-info-col">
+
+            <!-- HUD pills stacked -->
+            <div class="hud">
+                <div class="hud-pill">
+                    <span class="label">SKOR</span>
+                    <span class="hud-score" id="hud-score">0</span>
+                </div>
+                <div class="hud-pill" id="timer-pill">
+                    <span class="label">WAKTU</span>
+                    <span class="hud-timer" id="hud-timer">2:00</span>
+                </div>
+                <div class="hud-pill">
+                    <span class="label">KATA</span>
+                    <span class="hud-words" id="hud-words">0</span>
+                </div>
+            </div>
+
+            <!-- Target word -->
+            <div class="target-bar">
+                <div class="target-label">🎯 Eja kata ini:</div>
+                <div class="target-letters" id="target-letters"></div>
+                <div class="target-hint" id="target-hint"></div>
+            </div>
+
+            <!-- Pause button inline -->
+            <button class="btn btn-outline pause-btn-inline" onclick="pauseGame()" id="pause-btn-inline">⏸ Pause</button>
+
+            <!-- Status message -->
+            <div class="status-msg info" id="status-msg">Swipe atau pakai tombol arah!</div>
+        </div>
+
+        <!-- Floating D-Pad (bottom-right corner) -->
+        <div class="dpad-float" id="dpad-float">
+            <button class="dpad-btn" data-dir="UP" ontouchstart="dpadPress('UP')" onclick="dpadPress('UP')">▲</button>
+            <button class="dpad-btn" data-dir="LEFT" ontouchstart="dpadPress('LEFT')" onclick="dpadPress('LEFT')">◀</button>
+            <button class="dpad-btn" data-dir="RIGHT" ontouchstart="dpadPress('RIGHT')" onclick="dpadPress('RIGHT')">▶</button>
+            <button class="dpad-btn" data-dir="DOWN" ontouchstart="dpadPress('DOWN')" onclick="dpadPress('DOWN')">▼</button>
+        </div>
+
+        <!-- Legacy stubs kept for JS references -->
+        <div class="dpad"></div>
+        <button class="btn btn-outline hidden" onclick="pauseGame()" id="pause-btn">⏸ Pause</button>
     </div>
-  </div>
 
-  <div style="max-width:460px;width:100%;display:flex;gap:10px">
-    <button class="btn btn-green btn-block" onclick="startGame()" style="flex:2">
-      🎮 Mulai Main!
-    </button>
-  </div>
+    <!-- ══════════════ SCREEN 3: SCORE ══════════════ -->
+    <div class="screen" id="score-screen">
+        <div class="logo" style="font-size:clamp(1.6rem,7vw,2.4rem)">🏆 Game Over!</div>
+        <div class="score-trophy" id="score-trophy">🏆</div>
+        <div class="score-grade" id="score-grade">A</div>
+        <div class="score-number" id="score-number">0 poin</div>
+        <div class="stars-row" id="stars-row">⭐⭐⭐⭐⭐</div>
+        <div class="score-message" id="score-message"></div>
 
-  <!-- How to play -->
-  <div class="ui-card" style="margin-top:16px">
-    <h2>📖 Cara Main</h2>
-    <div style="font-size:.84rem;color:#777;font-weight:700;line-height:2">
-      🐍 Gerakkan ular dengan tombol arah / swipe<br>
-      🔤 Makan huruf <span style="color:var(--neon-yellow)">sesuai urutan</span> untuk mengeja kata<br>
-      ✅ Ejaan selesai → ular tumbuh & dapat poin + waktu bonus!<br>
-      ❌ Huruf salah → ular <span style="color:var(--red)">pusing 3 detik</span> & melambat<br>
-      🏆 Skor bisa melebihi 100 — terus main selama bisa!
+        <div class="word-history" id="word-history">
+            <h3>📖 Kata yang berhasil dieja</h3>
+            <div id="word-history-list"></div>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:10px;width:100%;max-width:340px;margin-top:18px">
+            <button class="btn btn-green btn-block" onclick="restartGame()">🔄 Main Lagi!</button>
+            <button class="btn btn-yellow btn-block" onclick="showScreen('setup-screen')">⚙️ Ubah Pengaturan</button>
+            <a class="btn btn-outline btn-block" href="index.html">🏠 Menu Utama</a>
+        </div>
     </div>
-  </div>
-</div>
 
-<!-- ══════════════ SCREEN 2: GAME ══════════════ -->
-<div class="screen" id="game-screen">
-  <!-- HUD -->
-  <div class="hud">
-    <div class="hud-pill">
-      <span class="label">SKOR</span>
-      <span class="hud-score" id="hud-score">0</span>
+    <!-- Pause overlay -->
+    <div class="overlay hidden" id="pause-overlay">
+        <div class="overlay-box">
+            <span class="overlay-icon">⏸</span>
+            <div class="overlay-title">Game Dijeda</div>
+            <div class="overlay-text">Ambil napas dulu, lanjutkan kalau sudah siap!</div>
+            <button class="btn btn-green btn-block" onclick="resumeGame()">▶ Lanjutkan</button>
+            <button class="btn btn-outline btn-block" onclick="endGame()" style="margin-top:8px">🏳 Menyerah</button>
+        </div>
     </div>
-    <div class="hud-pill" id="timer-pill">
-      <span class="label">WAKTU</span>
-      <span class="hud-timer" id="hud-timer">2:00</span>
-    </div>
-    <div class="hud-pill">
-      <span class="label">KATA</span>
-      <span class="hud-words" id="hud-words">0</span>
-    </div>
-  </div>
 
-  <!-- Target word -->
-  <div class="target-bar">
-    <div class="target-label">🎯 Eja kata ini:</div>
-    <div class="target-letters" id="target-letters"></div>
-    <div class="target-hint" id="target-hint"></div>
-  </div>
+    <script>
+        // ═══════════════════════════════════════════════════
+        //  DATA
+        // ═══════════════════════════════════════════════════
+        let VOCAB = { easy: [], medium: [], hard: [] };
 
-  <!-- Canvas -->
-  <div class="canvas-wrapper" id="canvas-wrapper">
-    <canvas id="gameCanvas"></canvas>
-    <div class="dizzy-overlay" id="dizzy-overlay"></div>
-    <div class="word-flash" id="word-flash"></div>
-  </div>
+        const FALLBACK = [
+            { emoji: "🐱", en: "CAT", phonetic: "/kæt/", id: "Kucing" },
+            { emoji: "🐶", en: "DOG", phonetic: "/dɒg/", id: "Anjing" },
+            { emoji: "🐠", en: "FISH", phonetic: "/fɪʃ/", id: "Ikan" },
+            { emoji: "🌸", en: "FLOWER", phonetic: "/ˈflaʊər/", id: "Bunga" },
+            { emoji: "🌳", en: "TREE", phonetic: "/triː/", id: "Pohon" },
+            { emoji: "📚", en: "BOOK", phonetic: "/bʊk/", id: "Buku" },
+            { emoji: "🏡", en: "HOUSE", phonetic: "/haʊs/", id: "Rumah" },
+            { emoji: "🌈", en: "RAINBOW", phonetic: "/ˈreɪnboʊ/", id: "Pelangi" },
+            { emoji: "⭐", en: "STAR", phonetic: "/stɑːr/", id: "Bintang" },
+            { emoji: "🌙", en: "MOON", phonetic: "/muːn/", id: "Bulan" },
+            { emoji: "☀️", en: "SUN", phonetic: "/sʌn/", id: "Matahari" },
+            { emoji: "🍎", en: "APPLE", phonetic: "/ˈæpl/", id: "Apel" },
+        ];
 
-  <!-- Status message -->
-  <div class="status-msg info" id="status-msg">Gunakan tombol arah atau swipe untuk bergerak!</div>
+        function parseVocabTxt(text) {
+            const result = { easy: [], medium: [], hard: [] };
+            for (let raw of text.split('\n')) {
+                const line = raw.trim();
+                if (!line || line.startsWith('#')) continue;
+                const parts = line.split('|').map(p => p.trim());
+                if (parts.length < 5) continue;
+                const [level, emoji, en, phonetic, id] = parts;
+                const key = level.toLowerCase();
+                if (!result[key]) continue;
+                result[key].push({ emoji, en: en.toUpperCase(), phonetic, id });
+            }
+            return result;
+        }
 
-  <!-- D-Pad for mobile -->
-  <div class="dpad">
-    <button class="dpad-btn" data-dir="UP"    onclick="dpadPress('UP')">▲</button>
-    <button class="dpad-btn" data-dir="LEFT"  onclick="dpadPress('LEFT')">◀</button>
-    <button class="dpad-btn" data-dir="RIGHT" onclick="dpadPress('RIGHT')">▶</button>
-    <button class="dpad-btn" data-dir="DOWN"  onclick="dpadPress('DOWN')">▼</button>
-  </div>
+        async function loadVocab() {
+            try {
+                const res = await fetch('vocabulary.txt');
+                if (!res.ok) throw new Error('not found');
+                VOCAB = parseVocabTxt(await res.text());
+                const total = VOCAB.easy.length + VOCAB.medium.length + VOCAB.hard.length;
+                if (total < 5) throw new Error('too few');
+            } catch (e) {
+                console.warn('Using fallback vocab');
+                VOCAB.easy = FALLBACK;
+            }
+        }
 
-  <button class="btn btn-outline" onclick="pauseGame()" id="pause-btn" style="margin-top:10px;font-size:.85rem;padding:9px 20px">
-    ⏸ Pause
-  </button>
-</div>
+        // ═══════════════════════════════════════════════════
+        //  CANVAS + GRID SETUP
+        // ═══════════════════════════════════════════════════
+        const CANVAS_TILES = 16; // grid is 16×16 tiles
+        let TILE = 28;           // px per tile — recalculated on start
+        let canvas, ctx;
 
-<!-- ══════════════ SCREEN 3: SCORE ══════════════ -->
-<div class="screen" id="score-screen">
-  <div class="logo" style="font-size:clamp(1.6rem,7vw,2.4rem)">🏆 Game Over!</div>
-  <div class="score-trophy" id="score-trophy">🏆</div>
-  <div class="score-grade" id="score-grade">A</div>
-  <div class="score-number" id="score-number">0 poin</div>
-  <div class="stars-row" id="stars-row">⭐⭐⭐⭐⭐</div>
-  <div class="score-message" id="score-message"></div>
+        function setupCanvas() {
+            canvas = document.getElementById('gameCanvas');
+            ctx = canvas.getContext('2d');
 
-  <div class="word-history" id="word-history">
-    <h3>📖 Kata yang berhasil dieja</h3>
-    <div id="word-history-list"></div>
-  </div>
+            const wrapper = document.getElementById('canvas-wrapper');
+            const wrapperSize = Math.min(wrapper.clientWidth || 320, wrapper.clientHeight || 320);
+            const maxW = Math.min(Math.max(wrapperSize, 200), 480);
+            TILE = Math.floor(maxW / CANVAS_TILES);
+            const size = TILE * CANVAS_TILES;
+            canvas.width = size;
+            canvas.height = size;
+        }
 
-  <div style="display:flex;flex-direction:column;gap:10px;width:100%;max-width:340px;margin-top:18px">
-    <button class="btn btn-green btn-block"  onclick="restartGame()">🔄 Main Lagi!</button>
-    <button class="btn btn-yellow btn-block" onclick="showScreen('setup-screen')">⚙️ Ubah Pengaturan</button>
-    <a class="btn btn-outline btn-block" href="index.html">🏠 Menu Utama</a>
-  </div>
-</div>
+        // ═══════════════════════════════════════════════════
+        //  GAME STATE
+        // ═══════════════════════════════════════════════════
+        const NEON_COLORS = ['#39FF14', '#4CC9F0', '#FFD93D', '#FF6EB4', '#B983FF', '#FF9A3C'];
 
-<!-- Pause overlay -->
-<div class="overlay hidden" id="pause-overlay">
-  <div class="overlay-box">
-    <span class="overlay-icon">⏸</span>
-    <div class="overlay-title">Game Dijeda</div>
-    <div class="overlay-text">Ambil napas dulu, lanjutkan kalau sudah siap!</div>
-    <button class="btn btn-green btn-block" onclick="resumeGame()">▶ Lanjutkan</button>
-    <button class="btn btn-outline btn-block" onclick="endGame()" style="margin-top:8px">🏳 Menyerah</button>
-  </div>
-</div>
+        let G = {}; // game state
 
-<script>
-// ═══════════════════════════════════════════════════
-//  DATA
-// ═══════════════════════════════════════════════════
-let VOCAB = { easy:[], medium:[], hard:[] };
+        function freshState(diff, useTimer) {
+            return {
+                diff, useTimer,
+                snake: [{ x: 8, y: 8 }, { x: 7, y: 8 }, { x: 6, y: 8 }],
+                dir: { x: 1, y: 0 },
+                nextDir: { x: 1, y: 0 },
+                letters: [],       // {x,y,char,isTarget,idx,color}
+                targetWord: null,  // current vocab object
+                wordProgress: 0,   // how many letters eaten correctly
+                score: 0,
+                wordsCompleted: 0,
+                wordHistory: [],   // [{emoji,en,id,pts}]
+                totalTime: useTimer ? 120 : Infinity,
+                timeLeft: useTimer ? 120 : Infinity,
+                timerInterval: null,
+                gameLoopId: null,
+                speed: 160,        // ms per tick
+                dizzy: false,
+                dizzyTimeout: null,
+                paused: false,
+                over: false,
+                pendingWordPool: [],
+                snakeColor: '#39FF14',
+            };
+        }
 
-const FALLBACK = [
-  {emoji:"🐱",en:"CAT",phonetic:"/kæt/",id:"Kucing"},
-  {emoji:"🐶",en:"DOG",phonetic:"/dɒg/",id:"Anjing"},
-  {emoji:"🐠",en:"FISH",phonetic:"/fɪʃ/",id:"Ikan"},
-  {emoji:"🌸",en:"FLOWER",phonetic:"/ˈflaʊər/",id:"Bunga"},
-  {emoji:"🌳",en:"TREE",phonetic:"/triː/",id:"Pohon"},
-  {emoji:"📚",en:"BOOK",phonetic:"/bʊk/",id:"Buku"},
-  {emoji:"🏡",en:"HOUSE",phonetic:"/haʊs/",id:"Rumah"},
-  {emoji:"🌈",en:"RAINBOW",phonetic:"/ˈreɪnboʊ/",id:"Pelangi"},
-  {emoji:"⭐",en:"STAR",phonetic:"/stɑːr/",id:"Bintang"},
-  {emoji:"🌙",en:"MOON",phonetic:"/muːn/",id:"Bulan"},
-  {emoji:"☀️",en:"SUN",phonetic:"/sʌn/",id:"Matahari"},
-  {emoji:"🍎",en:"APPLE",phonetic:"/ˈæpl/",id:"Apel"},
-];
+        // ═══════════════════════════════════════════════════
+        //  WORD MANAGEMENT
+        // ═══════════════════════════════════════════════════
+        function buildWordPool(diff) {
+            let pool = [];
+            if (diff === 'easy') pool = [...VOCAB.easy];
+            else if (diff === 'medium') pool = [...VOCAB.easy, ...VOCAB.medium];
+            else pool = [...VOCAB.medium, ...VOCAB.hard];
+            if (pool.length === 0) pool = FALLBACK;
+            return pool.sort(() => Math.random() - 0.5);
+        }
 
-function parseVocabTxt(text) {
-  const result = {easy:[],medium:[],hard:[]};
-  for (let raw of text.split('\n')) {
-    const line = raw.trim();
-    if (!line || line.startsWith('#')) continue;
-    const parts = line.split('|').map(p=>p.trim());
-    if (parts.length < 5) continue;
-    const [level,emoji,en,phonetic,id] = parts;
-    const key = level.toLowerCase();
-    if (!result[key]) continue;
-    result[key].push({emoji,en:en.toUpperCase(),phonetic,id});
-  }
-  return result;
-}
+        function nextWord() {
+            if (G.pendingWordPool.length === 0) {
+                G.pendingWordPool = buildWordPool(G.diff);
+            }
+            G.targetWord = G.pendingWordPool.pop();
+            G.wordProgress = 0;
+            spawnLetters();
+            renderTargetBar();
+        }
 
-async function loadVocab() {
-  try {
-    const res = await fetch('vocabulary.txt');
-    if (!res.ok) throw new Error('not found');
-    VOCAB = parseVocabTxt(await res.text());
-    const total = VOCAB.easy.length + VOCAB.medium.length + VOCAB.hard.length;
-    if (total < 5) throw new Error('too few');
-  } catch(e) {
-    console.warn('Using fallback vocab');
-    VOCAB.easy = FALLBACK;
-  }
-}
+        // ═══════════════════════════════════════════════════
+        //  LETTER SPAWNING
+        // ═══════════════════════════════════════════════════
+        function freeCell(x, y) {
+            if (G.snake.some(s => s.x === x && s.y === y)) return false;
+            if (G.letters.some(l => l.x === x && l.y === y)) return false;
+            return true;
+        }
 
-// ═══════════════════════════════════════════════════
-//  CANVAS + GRID SETUP
-// ═══════════════════════════════════════════════════
-const CANVAS_TILES = 16; // grid is 16×16 tiles
-let TILE = 28;           // px per tile — recalculated on start
-let canvas, ctx;
+        function randomFreeCell() {
+            let tries = 0, x, y;
+            do {
+                x = Math.floor(Math.random() * CANVAS_TILES);
+                y = Math.floor(Math.random() * CANVAS_TILES);
+                tries++;
+            } while (!freeCell(x, y) && tries < 200);
+            return { x, y };
+        }
 
-function setupCanvas() {
-  canvas = document.getElementById('gameCanvas');
-  ctx    = canvas.getContext('2d');
+        function spawnLetters() {
+            G.letters = [];
+            const word = G.targetWord.en;
+            const DECOY_COUNT = Math.min(6 + G.wordsCompleted, 14);
 
-  const wrapper = document.getElementById('canvas-wrapper');
-  const maxW    = Math.min(wrapper.clientWidth || 480, 480);
-  TILE          = Math.floor(maxW / CANVAS_TILES);
-  const size    = TILE * CANVAS_TILES;
-  canvas.width  = size;
-  canvas.height = size;
-}
+            // Place one tile per unique letter in the word (showing the NEXT needed letter highlighted)
+            // Actually we show ALL letters of the word scattered, plus decoys
+            const uniqueLetters = [...new Set(word.split(''))];
 
-// ═══════════════════════════════════════════════════
-//  GAME STATE
-// ═══════════════════════════════════════════════════
-const NEON_COLORS = ['#39FF14','#4CC9F0','#FFD93D','#FF6EB4','#B983FF','#FF9A3C'];
+            // Place each letter of the word (multiple occurrences = multiple tiles)
+            for (let i = 0; i < word.length; i++) {
+                const pos = randomFreeCell();
+                G.letters.push({
+                    x: pos.x, y: pos.y,
+                    char: word[i],
+                    isTarget: true,
+                    targetIdx: i,
+                    color: NEON_COLORS[i % NEON_COLORS.length]
+                });
+            }
 
-let G = {}; // game state
+            // Decoy letters (random alphabet, not part of the word at this index)
+            const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            for (let d = 0; d < DECOY_COUNT; d++) {
+                let ch;
+                do { ch = alphabet[Math.floor(Math.random() * 26)]; }
+                while (word.includes(ch) && Math.random() > 0.3); // sometimes allow letters in word as extra decoy
+                const pos = randomFreeCell();
+                G.letters.push({ x: pos.x, y: pos.y, char: ch, isTarget: false, color: '#334455' });
+            }
+        }
 
-function freshState(diff, useTimer) {
-  return {
-    diff, useTimer,
-    snake: [{x:8,y:8},{x:7,y:8},{x:6,y:8}],
-    dir:   {x:1,y:0},
-    nextDir: {x:1,y:0},
-    letters: [],       // {x,y,char,isTarget,idx,color}
-    targetWord: null,  // current vocab object
-    wordProgress: 0,   // how many letters eaten correctly
-    score: 0,
-    wordsCompleted: 0,
-    wordHistory: [],   // [{emoji,en,id,pts}]
-    totalTime: useTimer ? 120 : Infinity,
-    timeLeft:  useTimer ? 120 : Infinity,
-    timerInterval: null,
-    gameLoopId: null,
-    speed: 160,        // ms per tick
-    dizzy: false,
-    dizzyTimeout: null,
-    paused: false,
-    over: false,
-    pendingWordPool: [],
-    snakeColor: '#39FF14',
-  };
-}
+        // ═══════════════════════════════════════════════════
+        //  RENDER
+        // ═══════════════════════════════════════════════════
+        let dizzyAngle = 0;
 
-// ═══════════════════════════════════════════════════
-//  WORD MANAGEMENT
-// ═══════════════════════════════════════════════════
-function buildWordPool(diff) {
-  let pool = [];
-  if (diff === 'easy')   pool = [...VOCAB.easy];
-  else if (diff === 'medium') pool = [...VOCAB.easy, ...VOCAB.medium];
-  else pool = [...VOCAB.medium, ...VOCAB.hard];
-  if (pool.length === 0) pool = FALLBACK;
-  return pool.sort(() => Math.random() - 0.5);
-}
+        function draw() {
+            const T = TILE;
+            const W = canvas.width, H = canvas.height;
 
-function nextWord() {
-  if (G.pendingWordPool.length === 0) {
-    G.pendingWordPool = buildWordPool(G.diff);
-  }
-  G.targetWord   = G.pendingWordPool.pop();
-  G.wordProgress = 0;
-  spawnLetters();
-  renderTargetBar();
-}
+            ctx.clearRect(0, 0, W, H);
 
-// ═══════════════════════════════════════════════════
-//  LETTER SPAWNING
-// ═══════════════════════════════════════════════════
-function freeCell(x, y) {
-  if (G.snake.some(s => s.x===x && s.y===y)) return false;
-  if (G.letters.some(l => l.x===x && l.y===y)) return false;
-  return true;
-}
+            // Background
+            ctx.fillStyle = '#080818';
+            ctx.fillRect(0, 0, W, H);
 
-function randomFreeCell() {
-  let tries = 0, x, y;
-  do {
-    x = Math.floor(Math.random() * CANVAS_TILES);
-    y = Math.floor(Math.random() * CANVAS_TILES);
-    tries++;
-  } while (!freeCell(x,y) && tries < 200);
-  return {x,y};
-}
+            // Grid lines
+            ctx.strokeStyle = 'rgba(76,201,240,0.06)';
+            ctx.lineWidth = 1;
+            for (let i = 0; i <= CANVAS_TILES; i++) {
+                ctx.beginPath(); ctx.moveTo(i * T, 0); ctx.lineTo(i * T, H); ctx.stroke();
+                ctx.beginPath(); ctx.moveTo(0, i * T); ctx.lineTo(W, i * T); ctx.stroke();
+            }
 
-function spawnLetters() {
-  G.letters = [];
-  const word  = G.targetWord.en;
-  const DECOY_COUNT = Math.min(6 + G.wordsCompleted, 14);
+            // Dizzy wobble
+            if (G.dizzy) {
+                dizzyAngle += 0.3;
+                ctx.save();
+                ctx.translate(W / 2, H / 2);
+                ctx.rotate(Math.sin(dizzyAngle) * 0.04);
+                ctx.translate(-W / 2, -H / 2);
+            }
 
-  // Place one tile per unique letter in the word (showing the NEXT needed letter highlighted)
-  // Actually we show ALL letters of the word scattered, plus decoys
-  const uniqueLetters = [...new Set(word.split(''))];
+            // Letters
+            G.letters.forEach(l => {
+                const px = l.x * T, py = l.y * T;
+                const isNext = l.isTarget && l.targetIdx === G.wordProgress;
 
-  // Place each letter of the word (multiple occurrences = multiple tiles)
-  for (let i = 0; i < word.length; i++) {
-    const pos = randomFreeCell();
-    G.letters.push({
-      x: pos.x, y: pos.y,
-      char: word[i],
-      isTarget: true,
-      targetIdx: i,
-      color: NEON_COLORS[i % NEON_COLORS.length]
-    });
-  }
+                // Tile background
+                ctx.fillStyle = isNext
+                    ? 'rgba(255,217,61,0.18)'
+                    : l.isTarget
+                        ? `${l.color}18`
+                        : 'rgba(40,40,60,0.8)';
 
-  // Decoy letters (random alphabet, not part of the word at this index)
-  const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-  for (let d = 0; d < DECOY_COUNT; d++) {
-    let ch;
-    do { ch = alphabet[Math.floor(Math.random() * 26)]; }
-    while (word.includes(ch) && Math.random() > 0.3); // sometimes allow letters in word as extra decoy
-    const pos = randomFreeCell();
-    G.letters.push({x:pos.x, y:pos.y, char:ch, isTarget:false, color:'#334455'});
-  }
-}
+                roundRect(ctx, px + 2, py + 2, T - 4, T - 4, 7);
+                ctx.fill();
 
-// ═══════════════════════════════════════════════════
-//  RENDER
-// ═══════════════════════════════════════════════════
-let dizzyAngle = 0;
+                // Border
+                ctx.strokeStyle = isNext
+                    ? '#FFD93D'
+                    : l.isTarget
+                        ? `${l.color}99`
+                        : 'rgba(80,80,100,0.4)';
+                ctx.lineWidth = isNext ? 2 : 1;
+                roundRect(ctx, px + 2, py + 2, T - 4, T - 4, 7);
+                ctx.stroke();
 
-function draw() {
-  const T = TILE;
-  const W = canvas.width, H = canvas.height;
+                // Glow for next letter
+                if (isNext) {
+                    ctx.shadowColor = '#FFD93D';
+                    ctx.shadowBlur = 12;
+                }
 
-  ctx.clearRect(0, 0, W, H);
+                // Letter text
+                ctx.fillStyle = isNext
+                    ? '#FFD93D'
+                    : l.isTarget
+                        ? l.color
+                        : '#556677';
+                ctx.font = `bold ${Math.round(T * 0.52)}px 'Share Tech Mono', monospace`;
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(l.char, px + T / 2, py + T / 2);
+                ctx.shadowBlur = 0;
+            });
 
-  // Background
-  ctx.fillStyle = '#080818';
-  ctx.fillRect(0, 0, W, H);
+            // Snake body
+            G.snake.forEach((seg, i) => {
+                const px = seg.x * T, py = seg.y * T;
+                const t = i / (G.snake.length - 1 || 1);
 
-  // Grid lines
-  ctx.strokeStyle = 'rgba(76,201,240,0.06)';
-  ctx.lineWidth = 1;
-  for (let i = 0; i <= CANVAS_TILES; i++) {
-    ctx.beginPath(); ctx.moveTo(i*T, 0); ctx.lineTo(i*T, H); ctx.stroke();
-    ctx.beginPath(); ctx.moveTo(0, i*T); ctx.lineTo(W, i*T); ctx.stroke();
-  }
+                // Gradient: head bright, tail fades
+                const alpha = G.dizzy
+                    ? (0.5 - t * 0.3).toFixed(2)
+                    : (1 - t * 0.45).toFixed(2);
 
-  // Dizzy wobble
-  if (G.dizzy) {
-    dizzyAngle += 0.3;
-    ctx.save();
-    ctx.translate(W/2, H/2);
-    ctx.rotate(Math.sin(dizzyAngle) * 0.04);
-    ctx.translate(-W/2, -H/2);
-  }
+                ctx.fillStyle = G.dizzy
+                    ? `rgba(255,71,87,${alpha})`
+                    : `rgba(57,255,20,${alpha})`;
 
-  // Letters
-  G.letters.forEach(l => {
-    const px = l.x * T, py = l.y * T;
-    const isNext = l.isTarget && l.targetIdx === G.wordProgress;
+                if (i === 0) {
+                    // Head — slightly bigger
+                    ctx.shadowColor = G.dizzy ? '#FF4757' : '#39FF14';
+                    ctx.shadowBlur = 14;
+                    roundRect(ctx, px + 1, py + 1, T - 2, T - 2, 8);
+                } else {
+                    ctx.shadowBlur = 0;
+                    roundRect(ctx, px + 3, py + 3, T - 6, T - 6, 5);
+                }
+                ctx.fill();
 
-    // Tile background
-    ctx.fillStyle = isNext
-      ? 'rgba(255,217,61,0.18)'
-      : l.isTarget
-        ? `${l.color}18`
-        : 'rgba(40,40,60,0.8)';
+                // Eyes on head
+                if (i === 0) {
+                    ctx.shadowBlur = 0;
+                    ctx.fillStyle = '#0A1A00';
+                    const eyeR = Math.max(2, T * 0.1);
+                    const d = G.dir;
+                    // Position eyes based on direction
+                    const ex1 = px + T / 2 + d.y * T * 0.2 + d.x * T * 0.15 - d.y * T * 0.2;
+                    const ey1 = py + T / 2 + d.x * T * 0.2 + d.y * T * 0.15 - d.x * T * 0.2;
+                    const ex2 = px + T / 2 + d.y * T * 0.2 + d.x * T * 0.15 + d.y * T * 0.2;
+                    const ey2 = py + T / 2 + d.x * T * 0.2 + d.y * T * 0.15 + d.x * T * 0.2;
+                    ctx.beginPath(); ctx.arc(ex1, ey1, eyeR, 0, Math.PI * 2); ctx.fill();
+                    ctx.beginPath(); ctx.arc(ex2, ey2, eyeR, 0, Math.PI * 2); ctx.fill();
+                    // Dizzy eyes X
+                    if (G.dizzy) {
+                        ctx.strokeStyle = '#FF4757'; ctx.lineWidth = 1.5;
+                        [[ex1, ey1], [ex2, ey2]].forEach(([ex, ey]) => {
+                            ctx.beginPath(); ctx.moveTo(ex - 2, ey - 2); ctx.lineTo(ex + 2, ey + 2); ctx.stroke();
+                            ctx.beginPath(); ctx.moveTo(ex + 2, ey - 2); ctx.lineTo(ex - 2, ey + 2); ctx.stroke();
+                        });
+                    }
+                }
+            });
 
-    roundRect(ctx, px+2, py+2, T-4, T-4, 7);
-    ctx.fill();
+            if (G.dizzy) ctx.restore();
 
-    // Border
-    ctx.strokeStyle = isNext
-      ? '#FFD93D'
-      : l.isTarget
-        ? `${l.color}99`
-        : 'rgba(80,80,100,0.4)';
-    ctx.lineWidth = isNext ? 2 : 1;
-    roundRect(ctx, px+2, py+2, T-4, T-4, 7);
-    ctx.stroke();
+            // Progress indicator text inside canvas (bottom bar)
+            if (G.targetWord) {
+                const word = G.targetWord.en;
+                const pct = G.wordProgress / word.length;
+                ctx.fillStyle = `rgba(57,255,20,${pct * 0.12})`;
+                ctx.fillRect(0, H - 4, W * pct, 4);
+            }
+        }
 
-    // Glow for next letter
-    if (isNext) {
-      ctx.shadowColor = '#FFD93D';
-      ctx.shadowBlur  = 12;
-    }
+        function roundRect(ctx, x, y, w, h, r) {
+            ctx.beginPath();
+            ctx.moveTo(x + r, y);
+            ctx.lineTo(x + w - r, y); ctx.arcTo(x + w, y, x + w, y + r, r);
+            ctx.lineTo(x + w, y + h - r); ctx.arcTo(x + w, y + h, x + w - r, y + h, r);
+            ctx.lineTo(x + r, y + h); ctx.arcTo(x, y + h, x, y + h - r, r);
+            ctx.lineTo(x, y + r); ctx.arcTo(x, y, x + r, y, r);
+            ctx.closePath();
+        }
 
-    // Letter text
-    ctx.fillStyle = isNext
-      ? '#FFD93D'
-      : l.isTarget
-        ? l.color
-        : '#556677';
-    ctx.font = `bold ${Math.round(T * 0.52)}px 'Share Tech Mono', monospace`;
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.fillText(l.char, px + T/2, py + T/2);
-    ctx.shadowBlur = 0;
-  });
+        // ═══════════════════════════════════════════════════
+        //  GAME LOOP
+        // ═══════════════════════════════════════════════════
+        function tick() {
+            if (G.paused || G.over) return;
 
-  // Snake body
-  G.snake.forEach((seg, i) => {
-    const px = seg.x * T, py = seg.y * T;
-    const t  = i / (G.snake.length - 1 || 1);
+            // Apply direction
+            G.dir = { ...G.nextDir };
+            const head = G.snake[0];
+            const nx = (head.x + G.dir.x + CANVAS_TILES) % CANVAS_TILES;
+            const ny = (head.y + G.dir.y + CANVAS_TILES) % CANVAS_TILES;
 
-    // Gradient: head bright, tail fades
-    const alpha = G.dizzy
-      ? (0.5 - t * 0.3).toFixed(2)
-      : (1   - t * 0.45).toFixed(2);
+            // Self-collision
+            if (G.snake.some(s => s.x === nx && s.y === ny)) {
+                gameOver();
+                return;
+            }
 
-    ctx.fillStyle = G.dizzy
-      ? `rgba(255,71,87,${alpha})`
-      : `rgba(57,255,20,${alpha})`;
+            G.snake.unshift({ x: nx, y: ny });
 
-    if (i === 0) {
-      // Head — slightly bigger
-      ctx.shadowColor = G.dizzy ? '#FF4757' : '#39FF14';
-      ctx.shadowBlur  = 14;
-      roundRect(ctx, px+1, py+1, T-2, T-2, 8);
-    } else {
-      ctx.shadowBlur = 0;
-      roundRect(ctx, px+3, py+3, T-6, T-6, 5);
-    }
-    ctx.fill();
+            // Check letter collision
+            const hitIdx = G.letters.findIndex(l => l.x === nx && l.y === ny);
+            let grew = false;
 
-    // Eyes on head
-    if (i === 0) {
-      ctx.shadowBlur = 0;
-      ctx.fillStyle = '#0A1A00';
-      const eyeR = Math.max(2, T * 0.1);
-      const d    = G.dir;
-      // Position eyes based on direction
-      const ex1 = px + T/2 + d.y * T*0.2 + d.x * T*0.15 - d.y * T*0.2;
-      const ey1 = py + T/2 + d.x * T*0.2 + d.y * T*0.15 - d.x * T*0.2;
-      const ex2 = px + T/2 + d.y * T*0.2 + d.x * T*0.15 + d.y * T*0.2;
-      const ey2 = py + T/2 + d.x * T*0.2 + d.y * T*0.15 + d.x * T*0.2;
-      ctx.beginPath(); ctx.arc(ex1, ey1, eyeR, 0, Math.PI*2); ctx.fill();
-      ctx.beginPath(); ctx.arc(ex2, ey2, eyeR, 0, Math.PI*2); ctx.fill();
-      // Dizzy eyes X
-      if (G.dizzy) {
-        ctx.strokeStyle = '#FF4757'; ctx.lineWidth = 1.5;
-        [[ex1,ey1],[ex2,ey2]].forEach(([ex,ey]) => {
-          ctx.beginPath(); ctx.moveTo(ex-2,ey-2); ctx.lineTo(ex+2,ey+2); ctx.stroke();
-          ctx.beginPath(); ctx.moveTo(ex+2,ey-2); ctx.lineTo(ex-2,ey+2); ctx.stroke();
+            if (hitIdx >= 0) {
+                const hit = G.letters[hitIdx];
+
+                if (hit.isTarget && hit.targetIdx === G.wordProgress) {
+                    // ✅ Correct letter!
+                    G.letters.splice(hitIdx, 1);
+                    G.wordProgress++;
+                    grew = true;
+
+                    setStatus(`✅ "${hit.char}" benar! (${G.wordProgress}/${G.targetWord.en.length})`, 'good');
+                    renderTargetBar();
+
+                    if (G.wordProgress === G.targetWord.en.length) {
+                        wordComplete();
+                    }
+                } else {
+                    // ❌ Wrong letter or out-of-order — respawn at a new random cell
+                    const newPos = randomFreeCell();
+                    G.letters[hitIdx].x = newPos.x;
+                    G.letters[hitIdx].y = newPos.y;
+                    grew = false;
+                    triggerDizzy();
+                }
+            }
+
+            if (!grew) G.snake.pop();
+
+            draw();
+            updateHUD();
+        }
+
+        function scheduleLoop() {
+            clearTimeout(G.gameLoopId);
+            if (!G.over && !G.paused) {
+                G.gameLoopId = setTimeout(() => { tick(); scheduleLoop(); }, G.speed);
+            }
+        }
+
+        // ═══════════════════════════════════════════════════
+        //  VOICE-OVER (Web Speech API)
+        // ═══════════════════════════════════════════════════
+        function speakWord(text) {
+            if (!window.speechSynthesis) return;
+            // Cancel any ongoing speech first
+            window.speechSynthesis.cancel();
+            const utt = new SpeechSynthesisUtterance(text);
+            utt.lang = 'en-US';
+            utt.rate = 0.85;   // slightly slower for clarity
+            utt.pitch = 1.1;
+            utt.volume = 1.0;
+
+            // Pick a natural-sounding English voice if available
+            const voices = window.speechSynthesis.getVoices();
+            const preferred = voices.find(v =>
+                v.lang.startsWith('en') && (v.name.includes('Samantha') || v.name.includes('Karen')
+                    || v.name.includes('Daniel') || v.name.includes('Google') || v.name.includes('Natural'))
+            ) || voices.find(v => v.lang.startsWith('en'));
+            if (preferred) utt.voice = preferred;
+
+            window.speechSynthesis.speak(utt);
+        }
+
+        // Voices load async on some browsers — pre-load them
+        if (window.speechSynthesis) {
+            window.speechSynthesis.getVoices();
+            window.speechSynthesis.addEventListener('voiceschanged', () => window.speechSynthesis.getVoices());
+        }
+
+        //  WORD COMPLETE
+        // ═══════════════════════════════════════════════════
+        function wordComplete() {
+            const word = G.targetWord;
+            G.wordsCompleted++;
+
+            // Scoring: 15 base + word length bonus + time bonus
+            const timeBonus = G.useTimer ? Math.round((G.timeLeft / G.totalTime) * 10) : 0;
+            const lengthBonus = word.en.length * 2;
+            const pts = 15 + lengthBonus + timeBonus;
+            G.score += pts;
+            G.wordHistory.push({ emoji: word.emoji, en: word.en, id: word.id, pts });
+
+            // Time bonus added
+            if (G.useTimer) {
+                const bonus = Math.max(10, word.en.length * 3); // +10 to +30s
+                G.timeLeft = Math.min(G.totalTime * 2, G.timeLeft + bonus); // cap at 2× original
+                setStatus(`🎉 "${word.en}" benar! +${pts} poin · +${bonus}s waktu!`, 'good');
+            } else {
+                setStatus(`🎉 "${word.en}" benar! +${pts} poin!`, 'good');
+            }
+
+            // Flash + voice-over
+            const flash = document.getElementById('word-flash');
+            flash.textContent = `${word.emoji} ${word.en}! +${pts}pts`;
+            flash.className = 'word-flash show';
+            setTimeout(() => flash.className = 'word-flash', 950);
+
+            // Speak the English word aloud
+            speakWord(word.en);
+
+            confetti(5);
+
+            // After short pause, load next word
+            clearTimeout(G.gameLoopId);
+            setTimeout(() => {
+                nextWord();
+                if (!G.over && !G.paused) scheduleLoop();
+            }, 900);
+        }
+
+        // ═══════════════════════════════════════════════════
+        //  SOUND EFFECTS (Web Audio API)
+        // ═══════════════════════════════════════════════════
+        let _audioCtx = null;
+        function getAudioCtx() {
+            if (!_audioCtx) _audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            // Resume if suspended (browser autoplay policy)
+            if (_audioCtx.state === 'suspended') _audioCtx.resume();
+            return _audioCtx;
+        }
+
+        function playWrongSound() {
+            try {
+                const ctx = getAudioCtx();
+                const now = ctx.currentTime;
+
+                // Layer 1: low thud / impact
+                const osc1 = ctx.createOscillator();
+                const gain1 = ctx.createGain();
+                osc1.connect(gain1); gain1.connect(ctx.destination);
+                osc1.type = 'sawtooth';
+                osc1.frequency.setValueAtTime(180, now);
+                osc1.frequency.exponentialRampToValueAtTime(60, now + 0.18);
+                gain1.gain.setValueAtTime(0.55, now);
+                gain1.gain.exponentialRampToValueAtTime(0.001, now + 0.22);
+                osc1.start(now); osc1.stop(now + 0.22);
+
+                // Layer 2: mid buzz / dissonance
+                const osc2 = ctx.createOscillator();
+                const gain2 = ctx.createGain();
+                osc2.connect(gain2); gain2.connect(ctx.destination);
+                osc2.type = 'square';
+                osc2.frequency.setValueAtTime(220, now + 0.05);
+                osc2.frequency.exponentialRampToValueAtTime(90, now + 0.28);
+                gain2.gain.setValueAtTime(0.3, now + 0.05);
+                gain2.gain.exponentialRampToValueAtTime(0.001, now + 0.28);
+                osc2.start(now + 0.05); osc2.stop(now + 0.28);
+
+                // Layer 3: short high scratch / crunch
+                const bufSize = ctx.sampleRate * 0.12;
+                const noiseBuffer = ctx.createBuffer(1, bufSize, ctx.sampleRate);
+                const data = noiseBuffer.getChannelData(0);
+                for (let i = 0; i < bufSize; i++) data[i] = (Math.random() * 2 - 1);
+                const noise = ctx.createBufferSource();
+                noise.buffer = noiseBuffer;
+                const bandpass = ctx.createBiquadFilter();
+                bandpass.type = 'bandpass';
+                bandpass.frequency.value = 800;
+                bandpass.Q.value = 1.5;
+                const gain3 = ctx.createGain();
+                noise.connect(bandpass); bandpass.connect(gain3); gain3.connect(ctx.destination);
+                gain3.gain.setValueAtTime(0.35, now);
+                gain3.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
+                noise.start(now); noise.stop(now + 0.12);
+
+            } catch (e) { /* audio not supported */ }
+        }
+
+        //  DIZZY
+        // ═══════════════════════════════════════════════════
+        function triggerDizzy() {
+            if (G.dizzy) return;
+            G.dizzy = true;
+            G.speed = 260; // slow down
+
+            playWrongSound();
+
+            document.getElementById('dizzy-overlay').classList.add('active');
+            setStatus('😵 Salah huruf! Ular pusing 3 detik...', 'dizzy');
+
+            // Visual shake on canvas wrapper
+            const wrapper = document.getElementById('canvas-wrapper');
+            wrapper.style.animation = 'none';
+            wrapper.offsetHeight; // reflow
+            wrapper.style.animation = 'shake .4s ease';
+
+            clearTimeout(G.dizzyTimeout);
+            G.dizzyTimeout = setTimeout(() => {
+                G.dizzy = false;
+                G.speed = getBaseSpeed();
+                document.getElementById('dizzy-overlay').classList.remove('active');
+                setStatus('😌 Udah mendingan! Lanjutkan!', 'info');
+                dizzyAngle = 0;
+            }, 3000);
+        }
+
+        function getBaseSpeed() {
+            // Speed up slightly with each word completed
+            return Math.max(100, 160 - G.wordsCompleted * 5);
+        }
+
+        // ═══════════════════════════════════════════════════
+        //  TIMER
+        // ═══════════════════════════════════════════════════
+        function startTimer() {
+            const pill = document.getElementById('timer-pill');
+            if (!G.useTimer) { pill.style.display = 'none'; return; }
+            pill.style.display = 'flex';
+
+            G.timerInterval = setInterval(() => {
+                if (G.paused || G.over) return;
+                G.timeLeft--;
+                updateHUD();
+                if (G.timeLeft <= 0) {
+                    clearInterval(G.timerInterval);
+                    gameOver();
+                }
+            }, 1000);
+        }
+
+        // ═══════════════════════════════════════════════════
+        //  HUD + UI
+        // ═══════════════════════════════════════════════════
+        function updateHUD() {
+            document.getElementById('hud-score').textContent = G.score;
+            document.getElementById('hud-words').textContent = G.wordsCompleted;
+            if (G.useTimer) {
+                const m = Math.floor(G.timeLeft / 60);
+                const s = G.timeLeft % 60;
+                const el = document.getElementById('hud-timer');
+                el.textContent = `${m}:${s.toString().padStart(2, '0')}`;
+                el.className = 'hud-timer' + (G.timeLeft <= 15 ? ' danger' : '');
+            }
+        }
+
+        function renderTargetBar() {
+            const word = G.targetWord.en;
+            const cont = document.getElementById('target-letters');
+            cont.innerHTML = word.split('').map((ch, i) => {
+                const cls = i < G.wordProgress ? 'target-letter eaten'
+                    : i === G.wordProgress ? 'target-letter next'
+                        : 'target-letter';
+                return `<div class="${cls}">${ch}</div>`;
+            }).join('');
+
+            document.getElementById('target-hint').textContent =
+                `${G.targetWord.emoji} ${G.targetWord.id} — ${G.targetWord.phonetic}`;
+        }
+
+        function setStatus(msg, type) {
+            const el = document.getElementById('status-msg');
+            el.textContent = msg;
+            el.className = `status-msg ${type}`;
+        }
+
+        function showScreen(id) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            window.scrollTo(0, 0);
+            setTimeout(checkOrientation, 50);
+        }
+
+        function selectDiff(el) {
+            document.querySelectorAll('.diff-btn').forEach(b => b.classList.remove('active'));
+            el.classList.add('active');
+        }
+
+        // ═══════════════════════════════════════════════════
+        //  INPUT
+        // ═══════════════════════════════════════════════════
+        const OPPOSITE = { UP: 'DOWN', DOWN: 'UP', LEFT: 'RIGHT', RIGHT: 'LEFT' };
+        let currentDirName = 'RIGHT';
+
+        function changeDir(dir) {
+            if (G.paused || G.over) return;
+            if (dir === OPPOSITE[currentDirName]) return; // no 180°
+            const map = { UP: { x: 0, y: -1 }, DOWN: { x: 0, y: 1 }, LEFT: { x: -1, y: 0 }, RIGHT: { x: 1, y: 0 } };
+            G.nextDir = map[dir];
+            currentDirName = dir;
+        }
+
+        function dpadPress(dir) { changeDir(dir); }
+
+        document.addEventListener('keydown', e => {
+            const map = {
+                ArrowUp: 'UP', ArrowDown: 'DOWN', ArrowLeft: 'LEFT', ArrowRight: 'RIGHT',
+                w: 'UP', s: 'DOWN', a: 'LEFT', d: 'RIGHT',
+                W: 'UP', S: 'DOWN', A: 'LEFT', D: 'RIGHT'
+            };
+            if (map[e.key]) { e.preventDefault(); changeDir(map[e.key]); }
+            if (e.key === 'Escape' || e.key === 'p' || e.key === 'P') pauseGame();
         });
-      }
-    }
-  });
 
-  if (G.dizzy) ctx.restore();
+        // Swipe
+        let touchStart = null;
+        document.addEventListener('touchstart', e => {
+            const t = e.touches[0];
+            touchStart = { x: t.clientX, y: t.clientY };
+        }, { passive: true });
 
-  // Progress indicator text inside canvas (bottom bar)
-  if (G.targetWord) {
-    const word  = G.targetWord.en;
-    const pct   = G.wordProgress / word.length;
-    ctx.fillStyle = `rgba(57,255,20,${pct * 0.12})`;
-    ctx.fillRect(0, H - 4, W * pct, 4);
-  }
-}
+        document.addEventListener('touchend', e => {
+            if (!touchStart) return;
+            const t = e.changedTouches[0];
+            const dx = t.clientX - touchStart.x;
+            const dy = t.clientY - touchStart.y;
+            const abs = Math.max(Math.abs(dx), Math.abs(dy));
+            if (abs < 20) return;
+            if (Math.abs(dx) > Math.abs(dy)) changeDir(dx > 0 ? 'RIGHT' : 'LEFT');
+            else changeDir(dy > 0 ? 'DOWN' : 'UP');
+            touchStart = null;
+        }, { passive: true });
 
-function roundRect(ctx, x, y, w, h, r) {
-  ctx.beginPath();
-  ctx.moveTo(x+r, y);
-  ctx.lineTo(x+w-r, y); ctx.arcTo(x+w,y,   x+w,y+r,   r);
-  ctx.lineTo(x+w, y+h-r); ctx.arcTo(x+w,y+h, x+w-r,y+h, r);
-  ctx.lineTo(x+r, y+h); ctx.arcTo(x,  y+h, x,  y+h-r, r);
-  ctx.lineTo(x,   y+r);   ctx.arcTo(x,  y,   x+r,y,    r);
-  ctx.closePath();
-}
+        // ═══════════════════════════════════════════════════
+        //  PAUSE / RESUME
+        // ═══════════════════════════════════════════════════
+        function pauseGame() {
+            if (G.over) return;
+            G.paused = true;
+            clearTimeout(G.gameLoopId);
+            document.getElementById('pause-overlay').classList.remove('hidden');
+            document.getElementById('pause-btn').textContent = '⏸ Dijeda';
+            const pbi = document.getElementById('pause-btn-inline'); if(pbi) pbi.textContent = '⏸ Dijeda';
+        }
 
-// ═══════════════════════════════════════════════════
-//  GAME LOOP
-// ═══════════════════════════════════════════════════
-function tick() {
-  if (G.paused || G.over) return;
+        function resumeGame() {
+            G.paused = false;
+            document.getElementById('pause-overlay').classList.add('hidden');
+            document.getElementById('pause-btn').textContent = '⏸ Pause';
+            const pbi2 = document.getElementById('pause-btn-inline'); if(pbi2) pbi2.textContent = '⏸ Pause';
+            scheduleLoop();
+        }
 
-  // Apply direction
-  G.dir = {...G.nextDir};
-  const head = G.snake[0];
-  const nx = (head.x + G.dir.x + CANVAS_TILES) % CANVAS_TILES;
-  const ny = (head.y + G.dir.y + CANVAS_TILES) % CANVAS_TILES;
+        // ═══════════════════════════════════════════════════
+        //  GAME OVER
+        // ═══════════════════════════════════════════════════
+        function gameOver() {
+            G.over = true;
+            clearTimeout(G.gameLoopId);
+            clearInterval(G.timerInterval);
+            clearTimeout(G.dizzyTimeout);
+            document.getElementById('pause-overlay').classList.add('hidden');
+            setTimeout(endGame, 400);
+        }
 
-  // Self-collision
-  if (G.snake.some(s => s.x===nx && s.y===ny)) {
-    gameOver();
-    return;
-  }
+        function endGame() {
+            document.getElementById('pause-overlay').classList.add('hidden');
+            G.over = true;
+            clearTimeout(G.gameLoopId);
+            clearInterval(G.timerInterval);
 
-  G.snake.unshift({x:nx, y:ny});
+            const score = G.score;
+            const pct = G.wordsCompleted > 0
+                ? Math.min(100, Math.round((score / (G.wordsCompleted * 25)) * 100))
+                : 0;
 
-  // Check letter collision
-  const hitIdx = G.letters.findIndex(l => l.x===nx && l.y===ny);
-  let grew = false;
+            // Sanrio grading (by score percentage)
+            let grade, message, stars, trophy;
+            if (pct >= 90) { grade = 'A'; message = 'Luar biasa! Kamu bintang Sanrio! ⭐'; stars = 5; trophy = '🏆'; }
+            else if (pct >= 80) { grade = 'B+'; message = 'Bagus sekali! Hampir sempurna! 🌸'; stars = 4; trophy = '🥇'; }
+            else if (pct >= 70) { grade = 'B-'; message = 'Lumayan! Kamu punya potensi besar! 🐱'; stars = 3; trophy = '🥈'; }
+            else if (pct >= 60) { grade = 'C+'; message = 'Cukup baik! Latihan lagi ya! 🐰'; stars = 3; trophy = '🥉'; }
+            else if (pct >= 50) { grade = 'C-'; message = 'Terus semangat! Pasti bisa lebih baik! 🌺'; stars = 2; trophy = '💪'; }
+            else { grade = 'D'; message = 'Jangan menyerah! Coba lagi ya! 💪'; stars = 1; trophy = '🐍'; }
 
-  if (hitIdx >= 0) {
-    const hit = G.letters[hitIdx];
+            // If score > 100, bump grade display
+            const displayScore = score; // always show actual score
 
-    if (hit.isTarget && hit.targetIdx === G.wordProgress) {
-      // ✅ Correct letter!
-      G.letters.splice(hitIdx, 1);
-      G.wordProgress++;
-      grew = true;
+            document.getElementById('score-trophy').textContent = trophy;
+            document.getElementById('score-grade').textContent = grade;
+            document.getElementById('score-number').textContent = `${displayScore} poin · ${G.wordsCompleted} kata`;
+            document.getElementById('score-message').textContent = message;
+            document.getElementById('stars-row').innerHTML =
+                '⭐'.repeat(stars) + (stars < 5 ? '☆'.repeat(5 - stars) : '');
 
-      setStatus(`✅ "${hit.char}" benar! (${G.wordProgress}/${G.targetWord.en.length})`, 'good');
-      renderTargetBar();
-
-      if (G.wordProgress === G.targetWord.en.length) {
-        wordComplete();
-      }
-    } else {
-      // ❌ Wrong letter or out-of-order
-      G.letters.splice(hitIdx, 1); // consume it
-      grew = false;
-      triggerDizzy();
-    }
-  }
-
-  if (!grew) G.snake.pop();
-
-  draw();
-  updateHUD();
-}
-
-function scheduleLoop() {
-  clearTimeout(G.gameLoopId);
-  if (!G.over && !G.paused) {
-    G.gameLoopId = setTimeout(() => { tick(); scheduleLoop(); }, G.speed);
-  }
-}
-
-// ═══════════════════════════════════════════════════
-//  WORD COMPLETE
-// ═══════════════════════════════════════════════════
-function wordComplete() {
-  const word = G.targetWord;
-  G.wordsCompleted++;
-
-  // Scoring: 15 base + word length bonus + time bonus
-  const timeBonus   = G.useTimer ? Math.round((G.timeLeft / G.totalTime) * 10) : 0;
-  const lengthBonus = word.en.length * 2;
-  const pts         = 15 + lengthBonus + timeBonus;
-  G.score += pts;
-  G.wordHistory.push({emoji:word.emoji, en:word.en, id:word.id, pts});
-
-  // Time bonus added
-  if (G.useTimer) {
-    const bonus = Math.max(10, word.en.length * 3); // +10 to +30s
-    G.timeLeft = Math.min(G.totalTime * 2, G.timeLeft + bonus); // cap at 2× original
-    setStatus(`🎉 "${word.en}" benar! +${pts} poin · +${bonus}s waktu!`, 'good');
-  } else {
-    setStatus(`🎉 "${word.en}" benar! +${pts} poin!`, 'good');
-  }
-
-  // Flash
-  const flash = document.getElementById('word-flash');
-  flash.textContent = `${word.emoji} ${word.en}! +${pts}pts`;
-  flash.className = 'word-flash show';
-  setTimeout(() => flash.className = 'word-flash', 950);
-
-  confetti(5);
-
-  // After short pause, load next word
-  clearTimeout(G.gameLoopId);
-  setTimeout(() => {
-    nextWord();
-    if (!G.over && !G.paused) scheduleLoop();
-  }, 900);
-}
-
-// ═══════════════════════════════════════════════════
-//  DIZZY
-// ═══════════════════════════════════════════════════
-function triggerDizzy() {
-  if (G.dizzy) return;
-  G.dizzy = true;
-  G.speed = 260; // slow down
-
-  document.getElementById('dizzy-overlay').classList.add('active');
-  setStatus('😵 Salah huruf! Ular pusing 3 detik...', 'dizzy');
-
-  // Visual shake on canvas wrapper
-  const wrapper = document.getElementById('canvas-wrapper');
-  wrapper.style.animation = 'none';
-  wrapper.offsetHeight; // reflow
-  wrapper.style.animation = 'shake .4s ease';
-
-  clearTimeout(G.dizzyTimeout);
-  G.dizzyTimeout = setTimeout(() => {
-    G.dizzy = false;
-    G.speed = getBaseSpeed();
-    document.getElementById('dizzy-overlay').classList.remove('active');
-    setStatus('😌 Udah mendingan! Lanjutkan!', 'info');
-    dizzyAngle = 0;
-  }, 3000);
-}
-
-function getBaseSpeed() {
-  // Speed up slightly with each word completed
-  return Math.max(100, 160 - G.wordsCompleted * 5);
-}
-
-// ═══════════════════════════════════════════════════
-//  TIMER
-// ═══════════════════════════════════════════════════
-function startTimer() {
-  const pill = document.getElementById('timer-pill');
-  if (!G.useTimer) { pill.style.display = 'none'; return; }
-  pill.style.display = 'flex';
-
-  G.timerInterval = setInterval(() => {
-    if (G.paused || G.over) return;
-    G.timeLeft--;
-    updateHUD();
-    if (G.timeLeft <= 0) {
-      clearInterval(G.timerInterval);
-      gameOver();
-    }
-  }, 1000);
-}
-
-// ═══════════════════════════════════════════════════
-//  HUD + UI
-// ═══════════════════════════════════════════════════
-function updateHUD() {
-  document.getElementById('hud-score').textContent = G.score;
-  document.getElementById('hud-words').textContent = G.wordsCompleted;
-  if (G.useTimer) {
-    const m   = Math.floor(G.timeLeft / 60);
-    const s   = G.timeLeft % 60;
-    const el  = document.getElementById('hud-timer');
-    el.textContent = `${m}:${s.toString().padStart(2,'0')}`;
-    el.className   = 'hud-timer' + (G.timeLeft <= 15 ? ' danger' : '');
-  }
-}
-
-function renderTargetBar() {
-  const word = G.targetWord.en;
-  const cont = document.getElementById('target-letters');
-  cont.innerHTML = word.split('').map((ch, i) => {
-    const cls = i < G.wordProgress ? 'target-letter eaten'
-              : i === G.wordProgress ? 'target-letter next'
-              : 'target-letter';
-    return `<div class="${cls}">${ch}</div>`;
-  }).join('');
-
-  document.getElementById('target-hint').textContent =
-    `${G.targetWord.emoji} ${G.targetWord.id} — ${G.targetWord.phonetic}`;
-}
-
-function setStatus(msg, type) {
-  const el = document.getElementById('status-msg');
-  el.textContent  = msg;
-  el.className    = `status-msg ${type}`;
-}
-
-function showScreen(id) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-  window.scrollTo(0,0);
-}
-
-function selectDiff(el) {
-  document.querySelectorAll('.diff-btn').forEach(b => b.classList.remove('active'));
-  el.classList.add('active');
-}
-
-// ═══════════════════════════════════════════════════
-//  INPUT
-// ═══════════════════════════════════════════════════
-const OPPOSITE = {UP:'DOWN',DOWN:'UP',LEFT:'RIGHT',RIGHT:'LEFT'};
-let currentDirName = 'RIGHT';
-
-function changeDir(dir) {
-  if (G.paused || G.over) return;
-  if (dir === OPPOSITE[currentDirName]) return; // no 180°
-  const map = {UP:{x:0,y:-1},DOWN:{x:0,y:1},LEFT:{x:-1,y:0},RIGHT:{x:1,y:0}};
-  G.nextDir    = map[dir];
-  currentDirName = dir;
-}
-
-function dpadPress(dir) { changeDir(dir); }
-
-document.addEventListener('keydown', e => {
-  const map = {ArrowUp:'UP',ArrowDown:'DOWN',ArrowLeft:'LEFT',ArrowRight:'RIGHT',
-               w:'UP',s:'DOWN',a:'LEFT',d:'RIGHT',
-               W:'UP',S:'DOWN',A:'LEFT',D:'RIGHT'};
-  if (map[e.key]) { e.preventDefault(); changeDir(map[e.key]); }
-  if (e.key === 'Escape' || e.key === 'p' || e.key === 'P') pauseGame();
-});
-
-// Swipe
-let touchStart = null;
-document.addEventListener('touchstart', e => {
-  const t = e.touches[0];
-  touchStart = {x:t.clientX, y:t.clientY};
-}, {passive:true});
-
-document.addEventListener('touchend', e => {
-  if (!touchStart) return;
-  const t   = e.changedTouches[0];
-  const dx  = t.clientX - touchStart.x;
-  const dy  = t.clientY - touchStart.y;
-  const abs = Math.max(Math.abs(dx), Math.abs(dy));
-  if (abs < 20) return;
-  if (Math.abs(dx) > Math.abs(dy)) changeDir(dx > 0 ? 'RIGHT' : 'LEFT');
-  else changeDir(dy > 0 ? 'DOWN' : 'UP');
-  touchStart = null;
-}, {passive:true});
-
-// ═══════════════════════════════════════════════════
-//  PAUSE / RESUME
-// ═══════════════════════════════════════════════════
-function pauseGame() {
-  if (G.over) return;
-  G.paused = true;
-  clearTimeout(G.gameLoopId);
-  document.getElementById('pause-overlay').classList.remove('hidden');
-  document.getElementById('pause-btn').textContent = '⏸ Dijeda';
-}
-
-function resumeGame() {
-  G.paused = false;
-  document.getElementById('pause-overlay').classList.add('hidden');
-  document.getElementById('pause-btn').textContent = '⏸ Pause';
-  scheduleLoop();
-}
-
-// ═══════════════════════════════════════════════════
-//  GAME OVER
-// ═══════════════════════════════════════════════════
-function gameOver() {
-  G.over = true;
-  clearTimeout(G.gameLoopId);
-  clearInterval(G.timerInterval);
-  clearTimeout(G.dizzyTimeout);
-  document.getElementById('pause-overlay').classList.add('hidden');
-  setTimeout(endGame, 400);
-}
-
-function endGame() {
-  document.getElementById('pause-overlay').classList.add('hidden');
-  G.over = true;
-  clearTimeout(G.gameLoopId);
-  clearInterval(G.timerInterval);
-
-  const score = G.score;
-  const pct   = G.wordsCompleted > 0
-    ? Math.min(100, Math.round((score / (G.wordsCompleted * 25)) * 100))
-    : 0;
-
-  // Sanrio grading (by score percentage)
-  let grade, message, stars, trophy;
-  if (pct >= 90)      { grade='A';   message='Luar biasa! Kamu bintang Sanrio! ⭐'; stars=5; trophy='🏆'; }
-  else if (pct >= 80) { grade='B+';  message='Bagus sekali! Hampir sempurna! 🌸'; stars=4; trophy='🥇'; }
-  else if (pct >= 70) { grade='B-';  message='Lumayan! Kamu punya potensi besar! 🐱'; stars=3; trophy='🥈'; }
-  else if (pct >= 60) { grade='C+';  message='Cukup baik! Latihan lagi ya! 🐰'; stars=3; trophy='🥉'; }
-  else if (pct >= 50) { grade='C-';  message='Terus semangat! Pasti bisa lebih baik! 🌺'; stars=2; trophy='💪'; }
-  else                { grade='D';   message='Jangan menyerah! Coba lagi ya! 💪'; stars=1; trophy='🐍'; }
-
-  // If score > 100, bump grade display
-  const displayScore = score; // always show actual score
-
-  document.getElementById('score-trophy').textContent  = trophy;
-  document.getElementById('score-grade').textContent   = grade;
-  document.getElementById('score-number').textContent  = `${displayScore} poin · ${G.wordsCompleted} kata`;
-  document.getElementById('score-message').textContent = message;
-  document.getElementById('stars-row').innerHTML =
-    '⭐'.repeat(stars) + (stars < 5 ? '☆'.repeat(5-stars) : '');
-
-  // Word history
-  const list = document.getElementById('word-history-list');
-  if (G.wordHistory.length === 0) {
-    list.innerHTML = '<div style="text-align:center;color:#555;padding:12px;font-size:.85rem">Belum ada kata yang berhasil dieja 😢</div>';
-  } else {
-    list.innerHTML = G.wordHistory.map(w => `
+            // Word history
+            const list = document.getElementById('word-history-list');
+            if (G.wordHistory.length === 0) {
+                list.innerHTML = '<div style="text-align:center;color:#555;padding:12px;font-size:.85rem">Belum ada kata yang berhasil dieja 😢</div>';
+            } else {
+                list.innerHTML = G.wordHistory.map(w => `
       <div class="wh-item">
         <span class="wh-emoji">${w.emoji}</span>
         <div>
@@ -1193,61 +1833,61 @@ function endGame() {
         <span class="wh-pts">+${w.pts}pts</span>
       </div>
     `).join('');
-  }
+            }
 
-  showScreen('score-screen');
-  if (stars >= 3) confetti(40);
-}
+            showScreen('score-screen');
+            if (stars >= 3) confetti(40);
+        }
 
-// ═══════════════════════════════════════════════════
-//  START / RESTART
-// ═══════════════════════════════════════════════════
-function startGame() {
-  const diff     = document.querySelector('.diff-btn.active')?.dataset.diff || 'easy';
-  const useTimer = document.getElementById('timer-toggle').checked;
+        // ═══════════════════════════════════════════════════
+        //  START / RESTART
+        // ═══════════════════════════════════════════════════
+        function startGame() {
+            const diff = document.querySelector('.diff-btn.active')?.dataset.diff || 'easy';
+            const useTimer = document.getElementById('timer-toggle').checked;
 
-  showScreen('game-screen');
-  setupCanvas();
+            showScreen('game-screen');
+            setupCanvas();
 
-  G              = freshState(diff, useTimer);
-  currentDirName = 'RIGHT';
-  G.pendingWordPool = buildWordPool(diff);
+            G = freshState(diff, useTimer);
+            currentDirName = 'RIGHT';
+            G.pendingWordPool = buildWordPool(diff);
 
-  nextWord();
-  draw();
-  updateHUD();
-  scheduleLoop();
-  startTimer();
-  setStatus('🐍 Go! Makan huruf sesuai urutan!', 'info');
-}
+            nextWord();
+            draw();
+            updateHUD();
+            scheduleLoop();
+            startTimer();
+            setStatus('🐍 Go! Makan huruf sesuai urutan!', 'info');
+        }
 
-function restartGame() { startGame(); }
+        function restartGame() { startGame(); }
 
-// ═══════════════════════════════════════════════════
-//  CONFETTI
-// ═══════════════════════════════════════════════════
-function confetti(count=30) {
-  const colors = ['#39FF14','#FF6EB4','#4CC9F0','#FFD93D','#B983FF','#FF9A3C'];
-  for (let i = 0; i < count; i++) {
-    setTimeout(() => {
-      const p = document.createElement('div');
-      p.className = 'confetti-piece';
-      p.style.cssText = `
-        left:${Math.random()*100}vw; top:-10px;
-        background:${colors[Math.floor(Math.random()*colors.length)]};
-        animation-duration:${1.5+Math.random()*2}s;
-        transform:rotate(${Math.random()*360}deg);
-        border-radius:${Math.random()>0.5?'50%':'2px'};
+        // ═══════════════════════════════════════════════════
+        //  CONFETTI
+        // ═══════════════════════════════════════════════════
+        function confetti(count = 30) {
+            const colors = ['#39FF14', '#FF6EB4', '#4CC9F0', '#FFD93D', '#B983FF', '#FF9A3C'];
+            for (let i = 0; i < count; i++) {
+                setTimeout(() => {
+                    const p = document.createElement('div');
+                    p.className = 'confetti-piece';
+                    p.style.cssText = `
+        left:${Math.random() * 100}vw; top:-10px;
+        background:${colors[Math.floor(Math.random() * colors.length)]};
+        animation-duration:${1.5 + Math.random() * 2}s;
+        transform:rotate(${Math.random() * 360}deg);
+        border-radius:${Math.random() > 0.5 ? '50%' : '2px'};
       `;
-      document.body.appendChild(p);
-      setTimeout(()=>p.remove(), 3500);
-    }, i * 50);
-  }
-}
+                    document.body.appendChild(p);
+                    setTimeout(() => p.remove(), 3500);
+                }, i * 50);
+            }
+        }
 
-// Add shake keyframe dynamically
-const style = document.createElement('style');
-style.textContent = `
+        // Add shake keyframe dynamically
+        const style = document.createElement('style');
+        style.textContent = `
   @keyframes shake {
     0%,100%{transform:translateX(0)}
     15%{transform:translateX(-6px) rotate(-1deg)}
@@ -1258,12 +1898,44 @@ style.textContent = `
     90%{transform:translateX(3px)}
   }
 `;
-document.head.appendChild(style);
+        document.head.appendChild(style);
 
-// ═══════════════════════════════════════════════════
-//  INIT
-// ═══════════════════════════════════════════════════
-loadVocab();
-</script>
+        // ═══════════════════════════════════════════════════
+        //  ROTATE PROMPT (portrait warning on mobile)
+        // ═══════════════════════════════════════════════════
+        const rotatePrompt = document.getElementById('rotate-prompt');
+
+        function checkOrientation() {
+            const isGameActive = document.getElementById('game-screen').classList.contains('active');
+            const isMobile = window.innerWidth < 960;
+            const isPortrait = window.innerHeight > window.innerWidth;
+            if (isGameActive && isMobile && isPortrait) {
+                rotatePrompt.style.display = 'flex';
+                if (!G.over && !G.paused) pauseGame();
+            } else {
+                rotatePrompt.style.display = 'none';
+                // recalc canvas on orientation change
+                if (isGameActive && canvas) {
+                    setTimeout(() => { setupCanvas(); draw(); }, 100);
+                }
+            }
+        }
+
+        window.addEventListener('orientationchange', () => setTimeout(checkOrientation, 200));
+        window.addEventListener('resize', checkOrientation);
+
+        // Also check when game screen becomes active
+        // D-pad visual press feedback
+        document.querySelectorAll('.dpad-btn').forEach(btn => {
+            btn.addEventListener('touchstart', () => btn.classList.add('pressed'), { passive: true });
+            btn.addEventListener('touchend', () => btn.classList.remove('pressed'), { passive: true });
+        });
+
+        // ═══════════════════════════════════════════════════
+        //  INIT
+        // ═══════════════════════════════════════════════════
+        loadVocab();
+    </script>
 </body>
+
 </html>
