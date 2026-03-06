@@ -362,22 +362,37 @@
         }
 
         /* ════════════════════════════════════
-       GAME SCREEN — LANDSCAPE LAYOUT
-    ════════════════════════════════════ */
+           GAME SCREEN — 3-COLUMN LANDSCAPE
+           25% left info | 50% center canvas | 25% right dpad
+        ════════════════════════════════════ */
         #game-screen {
             padding: 0;
             background: var(--bg-dark);
             flex-direction: row;
             align-items: stretch;
-            justify-content: flex-start;
+            justify-content: stretch;
             min-height: 100vh;
             min-height: 100dvh;
+            width: 100vw;
             overflow: hidden;
         }
 
-        /* Left: canvas takes all available height */
+        /* ── LEFT PANEL: 25% — all info ── */
+        .game-left-col {
+            flex: 0 0 25%;
+            width: 25%;
+            display: flex;
+            flex-direction: column;
+            padding: 10px 6px 10px 10px;
+            gap: 7px;
+            overflow: hidden;
+            border-right: 1px solid rgba(76, 201, 240, .08);
+        }
+
+        /* ── CENTER PANEL: 50% — snake canvas ── */
         .game-canvas-col {
-            flex: 1 1 auto;
+            flex: 0 0 50%;
+            width: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -385,18 +400,19 @@
             min-width: 0;
         }
 
-        /* Right: info panel */
-        .game-info-col {
-            flex: 0 0 auto;
-            width: clamp(170px, 30vw, 210px);
+        /* ── RIGHT PANEL: 25% — d-pad only ── */
+        .game-right-col {
+            flex: 0 0 25%;
+            width: 25%;
             display: flex;
             flex-direction: column;
-            padding: 8px 8px 8px 0;
-            gap: 6px;
-            overflow: hidden;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 10px 10px 6px;
+            border-left: 1px solid rgba(76, 201, 240, .08);
         }
 
-        /* ── TOP HUD (inside right panel) ── */
+        /* ── HUD PILLS (left panel) ── */
         .hud {
             display: flex;
             flex-direction: column;
@@ -408,9 +424,9 @@
             background: var(--bg-panel);
             border: 1px solid rgba(76, 201, 240, .2);
             border-radius: 10px;
-            padding: 5px 10px;
+            padding: 6px 10px;
             font-family: 'Share Tech Mono', monospace;
-            font-size: clamp(.75rem, 2vw, .92rem);
+            font-size: clamp(.72rem, 1.8vw, .95rem);
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -419,21 +435,15 @@
 
         .hud-pill .label {
             color: #555;
-            font-size: .62rem;
+            font-size: .6rem;
             font-family: 'Nunito', sans-serif;
             font-weight: 800;
             letter-spacing: .5px;
         }
 
-        .hud-score {
-            color: var(--neon-yellow);
-            text-shadow: 0 0 8px var(--neon-yellow);
-        }
-
-        .hud-timer {
-            color: var(--neon-green);
-            text-shadow: 0 0 8px var(--neon-green);
-        }
+        .hud-score  { color: var(--neon-yellow); text-shadow: 0 0 8px var(--neon-yellow); }
+        .hud-timer  { color: var(--neon-green);  text-shadow: 0 0 8px var(--neon-green); }
+        .hud-words  { color: var(--neon-purple); text-shadow: 0 0 8px var(--neon-purple); }
 
         .hud-timer.danger {
             color: var(--red);
@@ -441,16 +451,9 @@
             animation: blink .4s infinite alternate;
         }
 
-        @keyframes blink {
-            to { opacity: .5; }
-        }
+        @keyframes blink { to { opacity: .5; } }
 
-        .hud-words {
-            color: var(--neon-purple);
-            text-shadow: 0 0 8px var(--neon-purple);
-        }
-
-        /* ── TARGET WORD DISPLAY (right panel) ── */
+        /* ── TARGET WORD (left panel) ── */
         .target-bar {
             width: 100%;
             background: var(--bg-panel);
@@ -471,7 +474,7 @@
         }
 
         .target-hint {
-            font-size: .62rem;
+            font-size: .6rem;
             color: #888;
             font-weight: 700;
             margin-top: 4px;
@@ -495,7 +498,7 @@
             align-items: center;
             justify-content: center;
             font-family: 'Share Tech Mono', monospace;
-            font-size: .9rem;
+            font-size: .88rem;
             font-weight: 700;
             border: 2px solid rgba(57, 255, 20, .3);
             background: rgba(57, 255, 20, .05);
@@ -519,23 +522,47 @@
         }
 
         @keyframes pulse-next {
-            to {
-                transform: scale(1.08);
-                box-shadow: 0 0 16px var(--neon-yellow);
-            }
+            to { transform: scale(1.08); box-shadow: 0 0 16px var(--neon-yellow); }
         }
 
-        /* ── CANVAS WRAPPER ── */
+        /* ── PAUSE BTN (left panel) ── */
+        .pause-btn-inline {
+            width: 100%;
+            font-size: .75rem !important;
+            padding: 7px 10px !important;
+            border-radius: 10px !important;
+            flex-shrink: 0;
+        }
+
+        /* ── STATUS MSG (left panel, pushes to bottom) ── */
+        .status-msg {
+            font-family: 'Bubblegum Sans', cursive;
+            font-size: clamp(.62rem, 1.6vw, .8rem);
+            text-align: center;
+            transition: all .3s;
+            line-height: 1.35;
+            word-break: break-word;
+            margin-top: auto;
+            padding: 6px 4px;
+            background: rgba(76, 201, 240, .04);
+            border-radius: 8px;
+            border: 1px solid rgba(76, 201, 240, .1);
+        }
+
+        .status-msg.dizzy { color: var(--red);       text-shadow: 0 0 8px var(--red); }
+        .status-msg.good  { color: var(--neon-green); text-shadow: 0 0 8px var(--neon-green); }
+        .status-msg.info  { color: var(--neon-blue); }
+
+        /* ── CANVAS WRAPPER (center, square, fills 50% col height) ── */
         .canvas-wrapper {
             position: relative;
             border-radius: 12px;
             overflow: hidden;
             box-shadow: 0 0 40px rgba(57, 255, 20, .15), 0 0 80px rgba(76, 201, 240, .08);
             border: 2px solid rgba(57, 255, 20, .2);
-            /* Square canvas sized to fit viewport height */
-            height: min(calc(100vh - 16px), calc(100vw - clamp(130px,26vw,200px) - 16px));
-            width: min(calc(100vh - 16px), calc(100vw - clamp(130px,26vw,200px) - 16px));
-            max-height: min(calc(100dvh - 16px), calc(100dvw - clamp(130px,26vw,200px) - 16px));
+            /* Square: constrained by both the 50vw width and 100vh height */
+            width:  min(50vw - 16px, 100vh - 16px);
+            height: min(50vw - 16px, 100vh - 16px);
         }
 
         #gameCanvas {
@@ -561,9 +588,7 @@
             animation: dizzy-pulse .4s infinite alternate;
         }
 
-        @keyframes dizzy-pulse {
-            to { background: rgba(255, 71, 87, .22); }
-        }
+        @keyframes dizzy-pulse { to { background: rgba(255, 71, 87, .22); } }
 
         /* Word complete flash */
         .word-flash {
@@ -581,9 +606,7 @@
             border-radius: 10px;
         }
 
-        .word-flash.show {
-            animation: flash-word .9s ease forwards;
-        }
+        .word-flash.show { animation: flash-word .9s ease forwards; }
 
         @keyframes flash-word {
             0%   { opacity: 0; transform: scale(.7); }
@@ -592,27 +615,23 @@
             100% { opacity: 0; transform: scale(.9); }
         }
 
-        /* ── D-PAD (inside right info column, bottom) ── */
+        /* ── D-PAD (right panel, centered) ── */
         .dpad-float {
-            position: static;
             display: grid;
             grid-template-areas: ". up ." "left . right" ". down .";
-            gap: 4px;
-            margin-top: auto;
-            align-self: center;
+            gap: 6px;
         }
 
-        /* Hide the old dpad placeholder */
         .dpad { display: none !important; }
 
         .dpad-btn {
-            width: 48px;
-            height: 48px;
-            border-radius: 12px;
+            width: clamp(44px, 7vw, 64px);
+            height: clamp(44px, 7vw, 64px);
+            border-radius: 14px;
             border: 2px solid rgba(57, 255, 20, .4);
-            background: rgba(10, 10, 26, .85);
+            background: rgba(10, 10, 26, .9);
             color: var(--neon-green);
-            font-size: 1.3rem;
+            font-size: clamp(1.1rem, 2.5vw, 1.6rem);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -620,14 +639,14 @@
             transition: background .1s, transform .1s, box-shadow .1s;
             -webkit-tap-highlight-color: transparent;
             user-select: none;
-            box-shadow: 0 0 10px rgba(57, 255, 20, .15), 0 3px 8px rgba(0,0,0,.5);
+            box-shadow: 0 0 12px rgba(57, 255, 20, .2), 0 4px 10px rgba(0,0,0,.6);
         }
 
         .dpad-btn:active,
         .dpad-btn.pressed {
             background: rgba(57, 255, 20, .25);
-            transform: scale(.9);
-            box-shadow: 0 0 20px rgba(57, 255, 20, .4);
+            transform: scale(.88);
+            box-shadow: 0 0 24px rgba(57, 255, 20, .5);
         }
 
         .dpad-btn[data-dir="UP"]    { grid-area: up; }
@@ -635,90 +654,39 @@
         .dpad-btn[data-dir="RIGHT"] { grid-area: right; }
         .dpad-btn[data-dir="DOWN"]  { grid-area: down; }
 
-        /* ── PAUSE BTN (top of right panel) ── */
-        .pause-btn-inline {
-            width: 100%;
-            font-size: .75rem !important;
-            padding: 7px 10px !important;
-            border-radius: 10px !important;
-            flex-shrink: 0;
-        }
-
-        /* ── STATUS MSG (bottom of right panel) ── */
-        .status-msg {
-            font-family: 'Bubblegum Sans', cursive;
-            font-size: clamp(.68rem, 1.8vw, .82rem);
-            min-height: 1.4em;
-            text-align: center;
-            transition: all .3s;
-            line-height: 1.3;
-            word-break: break-word;
-            margin-top: auto;
-            padding-top: 4px;
-        }
-
-        .status-msg.dizzy {
-            color: var(--red);
-            text-shadow: 0 0 8px var(--red);
-        }
-
-        .status-msg.good {
-            color: var(--neon-green);
-            text-shadow: 0 0 8px var(--neon-green);
-        }
-
-        .status-msg.info {
-            color: var(--neon-blue);
-        }
-
         /* ════════════════════════════════════
-           DESKTOP / LARGE SCREEN fallback
-           (>= 768px wide — revert to portrait stacked)
+           DESKTOP fallback (>= 960px): revert to stacked portrait
         ════════════════════════════════════ */
-        @media (min-width: 768px) and (orientation: landscape) {
-            /* keep landscape layout as-is, just cap canvas size */
-            .canvas-wrapper {
-                height: min(calc(100vh - 16px), calc(100vw - 220px - 16px));
-                width: min(calc(100vh - 16px), calc(100vw - 220px - 16px));
-            }
-            .game-info-col { width: 200px; }
-        }
-
         @media (min-width: 960px) {
-            /* On large desktop, stack vertically like original */
             #game-screen {
                 flex-direction: column;
                 align-items: center;
                 padding: 12px 12px 24px;
                 overflow: auto;
+                width: auto;
+            }
+            .game-left-col {
+                flex: none; width: 100%; max-width: 520px;
+                flex-direction: row; flex-wrap: wrap;
+                padding: 0; border: none; gap: 8px;
+                order: 2;
             }
             .game-canvas-col {
-                width: 100%;
-                max-width: 520px;
-                padding: 0;
+                flex: none; width: 100%; max-width: 520px;
+                padding: 0; order: 1;
             }
-            .canvas-wrapper {
-                height: auto;
-                width: 100%;
-                max-width: 520px;
+            .game-right-col {
+                flex: none; width: 100%; max-width: 520px;
+                flex-direction: row; justify-content: center;
+                padding: 0; border: none; order: 3;
             }
-            .game-info-col {
-                width: 100%;
-                max-width: 520px;
-                padding: 0;
-                flex-direction: row;
-                flex-wrap: wrap;
-            }
-            .hud {
-                flex-direction: row;
-                justify-content: space-between;
-                width: 100%;
-            }
+            .canvas-wrapper { width: 100%; height: auto; max-width: 520px; }
+            .hud { flex-direction: row; justify-content: space-between; width: 100%; }
             .target-bar { width: 100%; }
-            .dpad-float { display: grid; margin: 10px auto 0; align-self: center; }
+            .dpad-float { margin: 8px 0; }
             #pause-btn { display: inline-flex; }
             .pause-btn-inline { display: none; }
-            .status-msg { width: 100%; text-align: center; font-size: 1rem; }
+            .status-msg { width: 100%; margin-top: 0; font-size: 1rem; }
         }
 
         /* ════════════════════════════════════
@@ -1011,19 +979,9 @@
     <!-- ══════════════ SCREEN 2: GAME ══════════════ -->
     <div class="screen" id="game-screen">
 
-        <!-- LEFT: Canvas -->
-        <div class="game-canvas-col">
-            <div class="canvas-wrapper" id="canvas-wrapper">
-                <canvas id="gameCanvas"></canvas>
-                <div class="dizzy-overlay" id="dizzy-overlay"></div>
-                <div class="word-flash" id="word-flash"></div>
-            </div>
-        </div>
+        <!-- LEFT 25%: Info panel -->
+        <div class="game-left-col">
 
-        <!-- RIGHT: Info panel -->
-        <div class="game-info-col">
-
-            <!-- HUD pills stacked -->
             <div class="hud">
                 <div class="hud-pill">
                     <span class="label">SKOR</span>
@@ -1039,29 +997,37 @@
                 </div>
             </div>
 
-            <!-- Target word -->
             <div class="target-bar">
                 <div class="target-label">🎯 Eja kata ini:</div>
                 <div class="target-letters" id="target-letters"></div>
                 <div class="target-hint" id="target-hint"></div>
             </div>
 
-            <!-- Pause button inline -->
             <button class="btn btn-outline pause-btn-inline" onclick="pauseGame()" id="pause-btn-inline">⏸ Pause</button>
 
-            <!-- Status message -->
             <div class="status-msg info" id="status-msg">Swipe atau pakai tombol arah!</div>
+        </div>
 
-            <!-- D-Pad inside info column -->
-            <div class="dpad-float" id="dpad-float">
-                <button class="dpad-btn" data-dir="UP" ontouchstart="dpadPress('UP')" onclick="dpadPress('UP')">▲</button>
-                <button class="dpad-btn" data-dir="LEFT" ontouchstart="dpadPress('LEFT')" onclick="dpadPress('LEFT')">◀</button>
-                <button class="dpad-btn" data-dir="RIGHT" ontouchstart="dpadPress('RIGHT')" onclick="dpadPress('RIGHT')">▶</button>
-                <button class="dpad-btn" data-dir="DOWN" ontouchstart="dpadPress('DOWN')" onclick="dpadPress('DOWN')">▼</button>
+        <!-- CENTER 50%: Snake canvas -->
+        <div class="game-canvas-col">
+            <div class="canvas-wrapper" id="canvas-wrapper">
+                <canvas id="gameCanvas"></canvas>
+                <div class="dizzy-overlay" id="dizzy-overlay"></div>
+                <div class="word-flash" id="word-flash"></div>
             </div>
         </div>
 
-        <!-- Legacy stubs kept for JS references -->
+        <!-- RIGHT 25%: D-Pad only -->
+        <div class="game-right-col">
+            <div class="dpad-float" id="dpad-float">
+                <button class="dpad-btn" data-dir="UP"    ontouchstart="dpadPress('UP')"    onclick="dpadPress('UP')">▲</button>
+                <button class="dpad-btn" data-dir="LEFT"  ontouchstart="dpadPress('LEFT')"  onclick="dpadPress('LEFT')">◀</button>
+                <button class="dpad-btn" data-dir="RIGHT" ontouchstart="dpadPress('RIGHT')" onclick="dpadPress('RIGHT')">▶</button>
+                <button class="dpad-btn" data-dir="DOWN"  ontouchstart="dpadPress('DOWN')"  onclick="dpadPress('DOWN')">▼</button>
+            </div>
+        </div>
+
+        <!-- Legacy stubs for JS references -->
         <div class="dpad"></div>
         <button class="btn btn-outline hidden" onclick="pauseGame()" id="pause-btn">⏸ Pause</button>
     </div>
