@@ -388,12 +388,12 @@
         /* Right: info panel */
         .game-info-col {
             flex: 0 0 auto;
-            width: clamp(130px, 26vw, 200px);
+            width: clamp(170px, 30vw, 210px);
             display: flex;
             flex-direction: column;
             padding: 8px 8px 8px 0;
             gap: 6px;
-            position: relative;
+            overflow: hidden;
         }
 
         /* ── TOP HUD (inside right panel) ── */
@@ -592,29 +592,27 @@
             100% { opacity: 0; transform: scale(.9); }
         }
 
-        /* ── FLOATING D-PAD (bottom-right of game screen) ── */
+        /* ── D-PAD (inside right info column, bottom) ── */
         .dpad-float {
-            position: fixed;
-            bottom: 12px;
-            right: 12px;
-            z-index: 50;
+            position: static;
             display: grid;
             grid-template-areas: ". up ." "left . right" ". down .";
-            gap: 3px;
+            gap: 4px;
+            margin-top: auto;
+            align-self: center;
         }
 
         /* Hide the old dpad placeholder */
         .dpad { display: none !important; }
 
         .dpad-btn {
-            width: 54px;
-            height: 54px;
-            border-radius: 14px;
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
             border: 2px solid rgba(57, 255, 20, .4);
             background: rgba(10, 10, 26, .85);
-            backdrop-filter: blur(6px);
             color: var(--neon-green);
-            font-size: 1.5rem;
+            font-size: 1.3rem;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -622,7 +620,7 @@
             transition: background .1s, transform .1s, box-shadow .1s;
             -webkit-tap-highlight-color: transparent;
             user-select: none;
-            box-shadow: 0 0 10px rgba(57, 255, 20, .15), 0 4px 12px rgba(0,0,0,.5);
+            box-shadow: 0 0 10px rgba(57, 255, 20, .15), 0 3px 8px rgba(0,0,0,.5);
         }
 
         .dpad-btn:active,
@@ -717,7 +715,7 @@
                 width: 100%;
             }
             .target-bar { width: 100%; }
-            .dpad-float { position: static; display: grid; margin: 10px auto 0; }
+            .dpad-float { display: grid; margin: 10px auto 0; align-self: center; }
             #pause-btn { display: inline-flex; }
             .pause-btn-inline { display: none; }
             .status-msg { width: 100%; text-align: center; font-size: 1rem; }
@@ -1053,14 +1051,14 @@
 
             <!-- Status message -->
             <div class="status-msg info" id="status-msg">Swipe atau pakai tombol arah!</div>
-        </div>
 
-        <!-- Floating D-Pad (bottom-right corner) -->
-        <div class="dpad-float" id="dpad-float">
-            <button class="dpad-btn" data-dir="UP" ontouchstart="dpadPress('UP')" onclick="dpadPress('UP')">▲</button>
-            <button class="dpad-btn" data-dir="LEFT" ontouchstart="dpadPress('LEFT')" onclick="dpadPress('LEFT')">◀</button>
-            <button class="dpad-btn" data-dir="RIGHT" ontouchstart="dpadPress('RIGHT')" onclick="dpadPress('RIGHT')">▶</button>
-            <button class="dpad-btn" data-dir="DOWN" ontouchstart="dpadPress('DOWN')" onclick="dpadPress('DOWN')">▼</button>
+            <!-- D-Pad inside info column -->
+            <div class="dpad-float" id="dpad-float">
+                <button class="dpad-btn" data-dir="UP" ontouchstart="dpadPress('UP')" onclick="dpadPress('UP')">▲</button>
+                <button class="dpad-btn" data-dir="LEFT" ontouchstart="dpadPress('LEFT')" onclick="dpadPress('LEFT')">◀</button>
+                <button class="dpad-btn" data-dir="RIGHT" ontouchstart="dpadPress('RIGHT')" onclick="dpadPress('RIGHT')">▶</button>
+                <button class="dpad-btn" data-dir="DOWN" ontouchstart="dpadPress('DOWN')" onclick="dpadPress('DOWN')">▼</button>
+            </div>
         </div>
 
         <!-- Legacy stubs kept for JS references -->
