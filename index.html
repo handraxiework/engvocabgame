@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -7,252 +8,113 @@
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Bubblegum+Sans&display=swap" rel="stylesheet">
   <style>
     :root {
-      --pink: #FF6EB4;
-      --yellow: #FFD93D;
-      --mint: #6BCFB5;
-      --purple: #9B5DE5;
-      --sky: #4CC9F0;
-      --orange: #FF9A3C;
-      --red: #FF4757;
-      --bg: #FFF5F9;
+      --pink: #FF6EB4; --yellow: #FFD93D; --mint: #6BCFB5; --purple: #9B5DE5;
+      --sky: #4CC9F0; --orange: #FF9A3C; --red: #FF4757; --bg: #FFF5F9;
+      --adventure: #FF7043; --adventure2: #FF5252;
     }
-
     * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Nunito', sans-serif; background: var(--bg); min-height: 100vh; overflow-x: hidden; }
 
-    body {
-      font-family: 'Nunito', sans-serif;
-      background: var(--bg);
-      min-height: 100vh;
-      overflow-x: hidden;
-    }
-
-    /* === BG STARS === */
     .bg-stars { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
-    .star {
-      position: absolute; border-radius: 50%;
-      animation: float-star 6s infinite ease-in-out; opacity: 0.4;
-    }
-    @keyframes float-star {
-      0%, 100% { transform: translateY(0) scale(1); opacity: 0.4; }
-      50% { transform: translateY(-20px) scale(1.3); opacity: 0.7; }
-    }
+    .star { position: absolute; border-radius: 50%; animation: float-star 6s infinite ease-in-out; opacity: 0.4; }
+    @keyframes float-star { 0%,100%{transform:translateY(0) scale(1);opacity:.4;} 50%{transform:translateY(-20px) scale(1.3);opacity:.7;} }
 
-    /* === MAIN LAYOUT === */
-    .page {
-      position: relative; z-index: 1;
-      display: flex; flex-direction: column; align-items: center;
-      min-height: 100vh; padding: 32px 16px 60px;
-      animation: fadeIn 0.5s ease;
-    }
+    .page { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; min-height: 100vh; padding: 32px 16px 60px; animation: fadeIn 0.5s ease; }
+    @keyframes fadeIn { from{opacity:0;transform:translateY(20px);} to{opacity:1;transform:none;} }
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: none; }
-    }
+    .logo { font-family:'Bubblegum Sans',cursive; font-size:clamp(2.6rem,11vw,4.5rem); color:var(--purple); text-shadow:4px 4px 0 var(--pink),8px 8px 0 rgba(155,93,229,.15); letter-spacing:2px; text-align:center; line-height:1; margin-bottom:6px; }
+    .logo-sub { font-size:clamp(0.9rem,3.2vw,1.15rem); color:var(--pink); font-weight:800; letter-spacing:1px; margin-bottom:10px; text-align:center; }
+    .logo-sub2 { font-size:clamp(0.8rem,2.8vw,1rem); color:#AAA; font-weight:700; margin-bottom:40px; text-align:center; }
 
-    /* === LOGO === */
-    .logo {
-      font-family: 'Bubblegum Sans', cursive;
-      font-size: clamp(2.6rem, 11vw, 4.5rem);
-      color: var(--purple);
-      text-shadow: 4px 4px 0 var(--pink), 8px 8px 0 rgba(155, 93, 229, 0.15);
-      letter-spacing: 2px; text-align: center; line-height: 1;
-      margin-bottom: 6px;
-    }
+    .games-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:24px; width:100%; max-width:680px; margin-bottom:32px; }
 
-    .logo-sub {
-      font-size: clamp(0.9rem, 3.2vw, 1.15rem);
-      color: var(--pink); font-weight: 800; letter-spacing: 1px;
-      margin-bottom: 10px; text-align: center;
-    }
+    /* Wide card for Adventure Word */
+    .games-grid-full { display:grid; grid-template-columns:1fr; gap:24px; width:100%; max-width:680px; margin-bottom:32px; }
 
-    .logo-sub2 {
-      font-size: clamp(0.8rem, 2.8vw, 1rem);
-      color: #AAA; font-weight: 700; margin-bottom: 40px; text-align: center;
-    }
+    .game-card { background:white; border-radius:28px; padding:32px 24px; box-shadow:0 8px 40px rgba(155,93,229,.12),0 2px 8px rgba(0,0,0,.06); cursor:pointer; text-align:center; transition:transform .2s cubic-bezier(.34,1.56,.64,1),box-shadow .2s; text-decoration:none; display:block; position:relative; overflow:hidden; }
+    .game-card::before { content:''; position:absolute; inset:0; opacity:0; transition:opacity .2s; border-radius:28px; }
+    .game-card:hover { transform:translateY(-6px) scale(1.02); }
+    .game-card:hover::before { opacity:1; }
+    .game-card:active { transform:scale(.97); }
 
-    /* === GAME CARDS === */
-    .games-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    .game-card.card-guess::before { background:linear-gradient(135deg,rgba(155,93,229,.06),rgba(255,110,180,.06)); }
+    .game-card.card-puzzle::before { background:linear-gradient(135deg,rgba(107,207,181,.06),rgba(76,201,240,.06)); }
+    .game-card.card-snake::before { background:linear-gradient(135deg,rgba(57,255,20,.06),rgba(76,201,240,.06)); }
+    .game-card.card-adventure::before { background:linear-gradient(135deg,rgba(255,112,67,.06),rgba(255,82,82,.06)); }
+
+    .game-icon { font-size:clamp(3.5rem,13vw,5rem); display:block; margin-bottom:16px; filter:drop-shadow(0 6px 16px rgba(0,0,0,.12)); animation:icon-float 3s ease-in-out infinite alternate; }
+    .card-puzzle .game-icon { animation-delay:.5s; }
+    .card-snake .game-icon { animation-delay:1s; }
+    .card-adventure .game-icon { animation-delay:.3s; }
+
+    @keyframes icon-float { from{transform:translateY(0);} to{transform:translateY(-10px);} }
+
+    .game-badge { position:absolute; top:16px; right:16px; font-size:.7rem; font-weight:900; letter-spacing:.5px; padding:4px 10px; border-radius:50px; text-transform:uppercase; }
+    .badge-popular { background:linear-gradient(135deg,var(--pink),var(--purple)); color:white; }
+    .badge-new { background:linear-gradient(135deg,var(--mint),var(--sky)); color:white; }
+    .badge-snake { background:linear-gradient(135deg,#39FF14,#00C853); color:#0A1A00; }
+    .badge-adventure { background:linear-gradient(135deg,#FF7043,#FF5252); color:white; }
+
+    .game-title { font-family:'Bubblegum Sans',cursive; font-size:clamp(1.4rem,5vw,1.8rem); color:var(--purple); margin-bottom:8px; }
+    .card-puzzle .game-title { color:var(--mint); }
+    .card-snake .game-title { color:#1A8A00; }
+    .card-adventure .game-title { color:#D84315; }
+
+    .game-desc { font-size:clamp(.82rem,2.8vw,.95rem); color:#888; font-weight:700; line-height:1.6; margin-bottom:20px; }
+
+    .game-tags { display:flex; gap:6px; flex-wrap:wrap; justify-content:center; }
+    .tag { font-size:.72rem; font-weight:800; padding:4px 10px; border-radius:50px; }
+    .tag-purple{background:#F3E8FF;color:var(--purple);}
+    .tag-mint{background:#E6FFF9;color:var(--mint);}
+    .tag-pink{background:#FFF0F8;color:var(--pink);}
+    .tag-green{background:#EFFFEE;color:#1A7A00;}
+    .tag-sky{background:#E8F8FF;color:var(--sky);}
+    .tag-orange{background:#FFF3EE;color:#D84315;}
+    .tag-red{background:#FFF0F0;color:#D32F2F;}
+
+    .game-cta { display:inline-flex; align-items:center; gap:6px; margin-top:20px; padding:12px 24px; border-radius:50px; font-family:'Nunito',sans-serif; font-weight:900; font-size:clamp(.9rem,3vw,1rem); border:none; cursor:pointer; transition:transform .15s,box-shadow .15s; text-decoration:none; }
+    .game-card:hover .game-cta { transform:translateY(-2px); }
+    .cta-purple{background:linear-gradient(135deg,var(--purple),var(--pink));color:white;box-shadow:0 6px 20px rgba(155,93,229,.35);}
+    .cta-mint{background:linear-gradient(135deg,var(--mint),var(--sky));color:white;box-shadow:0 6px 20px rgba(107,207,181,.35);}
+    .cta-green{background:linear-gradient(135deg,#39FF14,#00C853);color:#0A1A00;box-shadow:0 6px 20px rgba(57,255,20,.35);}
+    .cta-adventure{background:linear-gradient(135deg,#FF7043,#FF5252);color:white;box-shadow:0 6px 20px rgba(255,112,67,.4);}
+
+    /* Adventure card - wide layout */
+    .card-adventure {
+      display: flex !important;
+      flex-direction: row;
+      text-align: left;
+      align-items: center;
       gap: 24px;
-      width: 100%; max-width: 680px;
-      margin-bottom: 32px;
+      padding: 28px 28px;
     }
+    .card-adventure .game-icon { margin-bottom: 0; flex-shrink: 0; }
+    .card-adventure .game-content { flex: 1; }
+    .card-adventure .game-title { font-size: clamp(1.5rem,5vw,2rem); }
+    .card-adventure .game-tags { justify-content: flex-start; }
+    .card-adventure .game-cta { margin-top: 16px; }
 
-    .game-card {
-      background: white;
-      border-radius: 28px;
-      padding: 32px 24px;
-      box-shadow: 0 8px 40px rgba(155, 93, 229, 0.12), 0 2px 8px rgba(0,0,0,0.06);
-      cursor: pointer;
-      text-align: center;
-      transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s;
-      text-decoration: none;
-      display: block;
-      position: relative;
-      overflow: hidden;
-    }
+    /* Stage preview chips */
+    .stage-preview { display:flex; gap:5px; flex-wrap:wrap; margin-top:12px; }
+    .stage-chip { width:24px; height:24px; border-radius:50%; background:#FFDDD5; display:flex; align-items:center; justify-content:center; font-size:0.6rem; font-weight:900; color:#D84315; }
+    .stage-chip.done { background:#FF7043; color:white; }
 
-    .game-card::before {
-      content: '';
-      position: absolute; inset: 0;
-      opacity: 0; transition: opacity 0.2s;
-      border-radius: 28px;
-    }
+    .section-label { font-family:'Bubblegum Sans',cursive; font-size:1rem; color:#CCC; letter-spacing:2px; margin:8px 0 24px; text-align:center; text-transform:uppercase; }
+    .footer { text-align:center; color:#CCAAE0; font-weight:700; font-size:.8rem; margin-top:8px; }
 
-    .game-card:hover { transform: translateY(-6px) scale(1.02); }
-    .game-card:hover::before { opacity: 1; }
-    .game-card:active { transform: scale(0.97); }
+    .floating-deco { position:fixed; pointer-events:none; z-index:0; font-size:clamp(2rem,6vw,3.5rem); opacity:.07; animation:float-deco 8s ease-in-out infinite; }
+    @keyframes float-deco { 0%,100%{transform:translateY(0) rotate(-5deg);} 50%{transform:translateY(-30px) rotate(5deg);} }
 
-    .game-card.card-guess::before {
-      background: linear-gradient(135deg, rgba(155,93,229,0.06), rgba(255,110,180,0.06));
-    }
-    .game-card.card-puzzle::before {
-      background: linear-gradient(135deg, rgba(107,207,181,0.06), rgba(76,201,240,0.06));
-    }
-    .game-card.card-soon::before {
-      background: linear-gradient(135deg, rgba(255,217,61,0.06), rgba(255,154,60,0.06));
-    }
-
-    .game-card.card-soon {
-      opacity: 0.7; cursor: default; pointer-events: none;
-    }
-
-    .game-icon {
-      font-size: clamp(3.5rem, 13vw, 5rem);
-      display: block; margin-bottom: 16px;
-      filter: drop-shadow(0 6px 16px rgba(0,0,0,0.12));
-      animation: icon-float 3s ease-in-out infinite alternate;
-    }
-
-    .card-puzzle .game-icon { animation-delay: 0.5s; }
-    .card-soon .game-icon { animation-delay: 1s; animation: none; }
-
-    @keyframes icon-float {
-      from { transform: translateY(0); }
-      to { transform: translateY(-10px); }
-    }
-
-    .game-badge {
-      position: absolute; top: 16px; right: 16px;
-      font-size: 0.7rem; font-weight: 900; letter-spacing: 0.5px;
-      padding: 4px 10px; border-radius: 50px; text-transform: uppercase;
-    }
-
-    .badge-popular {
-      background: linear-gradient(135deg, var(--pink), var(--purple));
-      color: white;
-    }
-    .badge-new {
-      background: linear-gradient(135deg, var(--mint), var(--sky));
-      color: white;
-    }
-    .badge-soon {
-      background: #EEE; color: #AAA;
-    }
-
-    .game-title {
-      font-family: 'Bubblegum Sans', cursive;
-      font-size: clamp(1.4rem, 5vw, 1.8rem);
-      color: var(--purple); margin-bottom: 8px;
-    }
-
-    .card-puzzle .game-title { color: var(--mint); }
-    .card-snake::before {
-      background: linear-gradient(135deg, rgba(57,255,20,0.06), rgba(76,201,240,0.06));
-    }
-    .badge-snake {
-      background: linear-gradient(135deg, #39FF14, #00C853);
-      color: #0A1A00;
-    }
-    .tag-green { background: #EFFFEE; color: #1A7A00; }
-    .cta-green {
-      background: linear-gradient(135deg, #39FF14, #00C853);
-      color: #0A1A00; box-shadow: 0 6px 20px rgba(57,255,20,0.35);
-    }
-    .card-snake .game-title { color: #1A8A00; }
-
-    .game-desc {
-      font-size: clamp(0.82rem, 2.8vw, 0.95rem);
-      color: #888; font-weight: 700; line-height: 1.6; margin-bottom: 20px;
-    }
-
-    .game-tags {
-      display: flex; gap: 6px; flex-wrap: wrap; justify-content: center;
-    }
-
-    .tag {
-      font-size: 0.72rem; font-weight: 800; padding: 4px 10px;
-      border-radius: 50px;
-    }
-
-    .tag-purple { background: #F3E8FF; color: var(--purple); }
-    .tag-mint { background: #E6FFF9; color: var(--mint); }
-    .tag-pink { background: #FFF0F8; color: var(--pink); }
-    .tag-yellow { background: #FFFDE7; color: #E6A817; }
-    .tag-sky { background: #E8F8FF; color: var(--sky); }
-
-    .game-cta {
-      display: inline-flex; align-items: center; gap: 6px;
-      margin-top: 20px; padding: 12px 24px; border-radius: 50px;
-      font-family: 'Nunito', sans-serif; font-weight: 900;
-      font-size: clamp(0.9rem, 3vw, 1rem); border: none; cursor: pointer;
-      transition: transform 0.15s, box-shadow 0.15s; text-decoration: none;
-    }
-
-    .cta-purple {
-      background: linear-gradient(135deg, var(--purple), var(--pink));
-      color: white; box-shadow: 0 6px 20px rgba(155,93,229,0.35);
-    }
-
-    .cta-mint {
-      background: linear-gradient(135deg, var(--mint), var(--sky));
-      color: white; box-shadow: 0 6px 20px rgba(107,207,181,0.35);
-    }
-
-    .cta-yellow {
-      background: linear-gradient(135deg, var(--yellow), var(--orange));
-      color: #7A4200; box-shadow: 0 6px 20px rgba(255,217,61,0.35);
-    }
-
-    .game-card:hover .game-cta { transform: translateY(-2px); }
-
-    /* === DIVIDER === */
-    .section-label {
-      font-family: 'Bubblegum Sans', cursive;
-      font-size: 1rem; color: #CCC; letter-spacing: 2px;
-      margin: 8px 0 24px; text-align: center; text-transform: uppercase;
-    }
-
-    /* === FOOTER === */
-    .footer {
-      text-align: center; color: #CCAAE0; font-weight: 700;
-      font-size: 0.8rem; margin-top: 8px;
-    }
-
-    /* === FLOATING DECORATION === */
-    .floating-deco {
-      position: fixed; pointer-events: none; z-index: 0;
-      font-size: clamp(2rem, 6vw, 3.5rem); opacity: 0.07;
-      animation: float-deco 8s ease-in-out infinite;
-    }
-    @keyframes float-deco {
-      0%, 100% { transform: translateY(0) rotate(-5deg); }
-      50% { transform: translateY(-30px) rotate(5deg); }
-    }
-
-    /* === RESPONSIVE === */
-    @media (max-width: 480px) {
-      .games-grid { grid-template-columns: 1fr; }
+    @media (max-width:580px) {
+      .games-grid { grid-template-columns:1fr; }
+      .card-adventure { flex-direction:column; text-align:center; }
+      .card-adventure .game-tags { justify-content:center; }
     }
   </style>
 </head>
+
 <body>
-
   <div class="bg-stars" id="bgStars"></div>
-
-  <!-- Floating decorations -->
   <div class="floating-deco" style="top:8%;left:5%;animation-delay:0s">🌸</div>
   <div class="floating-deco" style="top:20%;right:4%;animation-delay:2s">⭐</div>
   <div class="floating-deco" style="bottom:20%;left:3%;animation-delay:4s">🌺</div>
@@ -263,16 +125,36 @@
     <div class="logo-sub">✨ Belajar Kosakata Bahasa Inggris ✨</div>
     <div class="logo-sub2">Pilih mini game favoritmu!</div>
 
-    <div class="games-grid">
+    <!-- FEATURED: Adventure Word -->
+    <div class="games-grid-full">
+      <a class="game-card card-adventure" href="adventure-word.html">
+        <span class="game-badge badge-adventure">🗺️ Petualangan!</span>
+        <span class="game-icon">🗺️</span>
+        <div class="game-content">
+          <div class="game-title">Adventure Word!</div>
+          <div class="game-desc">
+            Pilih kelasmu (Kelas 1–6) dan selesaikan setiap stage dengan kata-kata yang berbeda! Kumpulkan bintang di setiap stage!
+          </div>
+          <div class="game-tags">
+            <span class="tag tag-orange">🏆 Stage-based</span>
+            <span class="tag tag-orange">⭐ Star Rating</span>
+            <span class="tag tag-orange">🎓 Kelas 1–6</span>
+            <span class="tag tag-red">🔓 Buka Stage</span>
+          </div>
+          <div class="game-cta cta-adventure">Mulai Petualangan! 🗺️</div>
+        </div>
+      </a>
+    </div>
 
+    <div class="section-label">✦ Mini Games Lainnya ✦</div>
+
+    <div class="games-grid">
       <!-- GAME 1: Word Guess -->
       <a class="game-card card-guess" href="vocabulary-game.html">
         <span class="game-badge badge-popular">⭐ Favorit</span>
         <span class="game-icon">🃏</span>
         <div class="game-title">Tebak Kata!</div>
-        <div class="game-desc">
-          Hafal kartu bergambar karakter Sanrio & Harry Potter, lalu tebak kata Bahasa Inggrisnya!
-        </div>
+        <div class="game-desc">Hafal kartu bergambar karakter Sanrio & Harry Potter, lalu tebak kata Bahasa Inggrisnya!</div>
         <div class="game-tags">
           <span class="tag tag-purple">🧠 Menghafal</span>
           <span class="tag tag-pink">🌸 Sanrio</span>
@@ -286,26 +168,21 @@
         <span class="game-badge badge-new">✨ Baru!</span>
         <span class="game-icon">🔍</span>
         <div class="game-title">Word Puzzle!</div>
-        <div class="game-desc">
-          Temukan kata Bahasa Inggris tersembunyi di dalam grid! Cari ke kanan, bawah, atau diagonal!
-        </div>
+        <div class="game-desc">Temukan kata Bahasa Inggris tersembunyi di dalam grid! Cari ke kanan, bawah, atau diagonal!</div>
         <div class="game-tags">
           <span class="tag tag-mint">👁️ Mencari</span>
           <span class="tag tag-sky">↔️ Horizontal</span>
           <span class="tag tag-mint">↕️ Vertikal</span>
-          <span class="tag tag-sky">↗️ Diagonal</span>
         </div>
         <div class="game-cta cta-mint">Main Sekarang 🔍</div>
       </a>
 
       <!-- GAME 3: Snake Spell -->
       <a class="game-card card-snake" href="snake-spell.html">
-        <span class="game-badge badge-snake">🐍 Baru!</span>
+        <span class="game-badge badge-snake">🐍 Seru!</span>
         <span class="game-icon">🐍</span>
         <div class="game-title">Snake Spell!</div>
-        <div class="game-desc">
-          Kendalikan ular dan makan huruf dalam urutan yang benar untuk mengeja kata!
-        </div>
+        <div class="game-desc">Kendalikan ular dan makan huruf dalam urutan yang benar untuk mengeja kata!</div>
         <div class="game-tags">
           <span class="tag tag-green">🐍 Snake</span>
           <span class="tag tag-green">✍️ Mengeja</span>
@@ -313,28 +190,19 @@
         </div>
         <div class="game-cta cta-green">Main Sekarang 🐍</div>
       </a>
-
     </div>
 
     <div class="section-label">✦ ✦ ✦</div>
-
     <div class="footer">🌟 WordQuest · Belajar Bahasa Inggris dengan Menyenangkan! 🌟</div>
   </div>
 
   <script>
-    // Generate floating background stars
     const container = document.getElementById("bgStars");
-    const colors = ["#FFD93D", "#FF6EB4", "#9B5DE5", "#6BCFB5", "#4CC9F0", "#FF9A3C"];
+    const colors = ["#FFD93D","#FF6EB4","#9B5DE5","#6BCFB5","#4CC9F0","#FF9A3C"];
     for (let i = 0; i < 25; i++) {
       const s = document.createElement("div");
       s.className = "star";
-      s.style.cssText = `
-        left:${Math.random() * 100}%;top:${Math.random() * 100}%;
-        background:${colors[i % colors.length]};
-        animation-delay:${Math.random() * 6}s;
-        animation-duration:${4 + Math.random() * 4}s;
-        width:${5 + Math.random() * 8}px;height:${5 + Math.random() * 8}px;
-      `;
+      s.style.cssText = `left:${Math.random()*100}%;top:${Math.random()*100}%;background:${colors[i%colors.length]};animation-delay:${Math.random()*6}s;animation-duration:${4+Math.random()*4}s;width:${5+Math.random()*8}px;height:${5+Math.random()*8}px;`;
       container.appendChild(s);
     }
   </script>
