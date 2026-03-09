@@ -36,6 +36,115 @@ easy | 🎨 | Color      | /ˈkʌl.ər/       | Warna
 easy | 🏠 | House      | /haʊs/          | Rumah
 easy | 🚗 | Car        | /kɑːr/          | Mobil
 easy | 🍦 | Ice Cream  | /ˈaɪs kriːm/    | Es Krim
+easy | 👋 | hello | /həˈloʊ/ | halo
+easy | 🙋 | hi | /haɪ/ | hai
+easy | 🌅 | good morning | /ɡʊd ˈmɔːrnɪŋ/ | selamat pagi
+easy | 🌤️ | good afternoon | /ɡʊd ˌæftərˈnuːn/ | selamat siang
+easy | 🌙 | good evening | /ɡʊd ˈiːvnɪŋ/ | selamat malam
+easy | 👋 | goodbye | /ˌɡʊdˈbaɪ/ | selamat tinggal
+easy | 🤝 | friend | /frend/ | teman
+easy | 🙋‍♂️ | name | /neɪm/ | nama
+
+easy | 👂 | listen | /ˈlɪs.ən/ | dengarkan
+easy | 🗣️ | speak | /spiːk/ | berbicara
+easy | ✍️ | write | /raɪt/ | menulis
+easy | 📖 | read | /riːd/ | membaca
+easy | 🧍 | stand | /stænd/ | berdiri
+easy | 🪑 | sit | /sɪt/ | duduk
+easy | 🚶 | walk | /wɔːk/ | berjalan
+easy | 👀 | look | /lʊk/ | melihat
+easy | ✋ | stop | /stɑːp/ | berhenti
+easy | 📢 | repeat | /rɪˈpiːt/ | ulangi
+
+easy | 1️⃣ | one | /wʌn/ | satu
+easy | 2️⃣ | two | /tuː/ | dua
+easy | 3️⃣ | three | /θriː/ | tiga
+easy | 4️⃣ | four | /fɔːr/ | empat
+easy | 5️⃣ | five | /faɪv/ | lima
+easy | 6️⃣ | six | /sɪks/ | enam
+easy | 7️⃣ | seven | /ˈsev.ən/ | tujuh
+easy | 8️⃣ | eight | /eɪt/ | delapan
+easy | 9️⃣ | nine | /naɪn/ | sembilan
+easy | 🔟 | ten | /ten/ | sepuluh
+
+easy | 🎒 | bag | /bæɡ/ | tas
+easy | 📘 | book | /bʊk/ | buku
+easy | 📓 | notebook | /ˈnoʊt.bʊk/ | buku catatan
+easy | ✏️ | pencil | /ˈpen.səl/ | pensil
+easy | 🖊️ | pen | /pen/ | pulpen
+easy | 📏 | ruler | /ˈruː.lər/ | penggaris
+easy | 🎨 | crayon | /ˈkreɪ.ɑːn/ | krayon
+easy | 🧽 | eraser | /ɪˈreɪ.sər/ | penghapus
+easy | 🪑 | chair | /tʃer/ | kursi
+easy | 🧑‍🏫 | teacher | /ˈtiː.tʃər/ | guru
+easy | 🏫 | school | /skuːl/ | sekolah
+easy | 🧑‍🎓 | student | /ˈstuː.dənt/ | murid
+easy | 🧰 | desk | /desk/ | meja belajar
+
+easy | 🔴 | red | /red/ | merah
+easy | 🔵 | blue | /bluː/ | biru
+easy | 🟡 | yellow | /ˈjel.oʊ/ | kuning
+easy | 🟢 | green | /ɡriːn/ | hijau
+easy | ⚫ | black | /blæk/ | hitam
+easy | ⚪ | white | /waɪt/ | putih
+easy | 🟣 | purple | /ˈpɜːr.pəl/ | ungu
+easy | 🟤 | brown | /braʊn/ | cokelat
+
+easy | 🔺 | triangle | /ˈtraɪ.æŋ.ɡəl/ | segitiga
+easy | ⬛ | square | /skwer/ | persegi
+easy | ⚪ | circle | /ˈsɝː.kəl/ | lingkaran
+easy | ❤️ | heart | /hɑːrt/ | hati
+easy | ⭐ | star | /stɑːr/ | bintang
+easy | ⬟ | pentagon | /ˈpen.tə.ɡɑːn/ | segilima
+
+easy | 🐯 | tiger | /ˈtaɪ.ɡər/ | harimau
+easy | 🐘 | elephant | /ˈel.ɪ.fənt/ | gajah
+easy | 🐻 | bear | /ber/ | beruang
+easy | 🐒 | monkey | /ˈmʌŋ.ki/ | monyet
+easy | 🐍 | snake | /sneɪk/ | ular
+easy | 🦅 | eagle | /ˈiː.ɡəl/ | elang
+easy | 🦎 | iguana | /ɪˈɡwɑː.nə/ | iguana
+easy | 🐦 | bird | /bɜːrd/ | burung
+easy | 🐟 | fish | /fɪʃ/ | ikan
+
+easy | 🐶 | dog | /dɔːɡ/ | anjing
+easy | 🐱 | cat | /kæt/ | kucing
+easy | 🐰 | rabbit | /ˈræb.ɪt/ | kelinci
+easy | 🐢 | turtle | /ˈtɜːr.təl/ | kura-kura
+easy | 🐷 | pig | /pɪɡ/ | babi
+easy | 🐄 | cow | /kaʊ/ | sapi
+easy | 🐎 | horse | /hɔːrs/ | kuda
+easy | 🐔 | hen | /hen/ | ayam
+easy | 🦆 | duck | /dʌk/ | bebek
+easy | 🐥 | chick | /tʃɪk/ | anak ayam
+easy | 🪿 | goose | /ɡuːs/ | angsa
+
+easy | 🍎 | apple | /ˈæp.əl/ | apel
+easy | 🍌 | banana | /bəˈnæn.ə/ | pisang
+easy | 🍇 | grape | /ɡreɪp/ | anggur
+easy | 🍓 | strawberry | /ˈstrɔː.bər.i/ | stroberi
+easy | 🍍 | pineapple | /ˈpaɪnˌæp.əl/ | nanas
+easy | 🍊 | orange | /ˈɔːr.ɪndʒ/ | jeruk
+easy | 🍉 | watermelon | /ˈwɔː.tərˌmel.ən/ | semangka
+easy | 🥭 | mango | /ˈmæŋ.ɡoʊ/ | mangga
+easy | 🍐 | pear | /per/ | pir
+easy | 🍒 | cherry | /ˈtʃer.i/ | ceri
+
+easy | 😋 | sweet | /swiːt/ | manis
+easy | 😖 | sour | /ˈsaʊər/ | asam
+easy | 👅 | taste | /teɪst/ | rasa
+easy | 🍏 | fresh | /freʃ/ | segar
+
+easy | 🥕 | carrot | /ˈkær.ət/ | wortel
+easy | 🥦 | broccoli | /ˈbrɑː.kə.li/ | brokoli
+easy | 🥬 | cabbage | /ˈkæb.ɪdʒ/ | kubis
+easy | 🌽 | corn | /kɔːrn/ | jagung
+easy | 🥔 | potato | /pəˈteɪ.toʊ/ | kentang
+easy | 🍅 | tomato | /təˈmeɪ.toʊ/ | tomat
+easy | 🧅 | onion | /ˈʌn.jən/ | bawang
+easy | 🥒 | cucumber | /ˈkjuː.kʌm.bər/ | mentimun
+easy | 🫑 | pepper | /ˈpep.ər/ | paprika
+easy | 🥬 | lettuce | /ˈlet.ɪs/ | selada
 
 
 # ------------------------------------------------------------
