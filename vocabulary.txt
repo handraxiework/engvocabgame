@@ -4,11 +4,6 @@
 # Format setiap baris:
 #   LEVEL | EMOJI | English | /fonetik/ | Bahasa Indonesia
 #
-# Level yang tersedia:
-#   easy   = Umur 4-5 tahun
-#   medium = Umur 6-7 tahun
-#   hard   = Umur 8-10 tahun
-#
 # Aturan penulisan:
 #   - Gunakan tanda | sebagai pemisah kolom
 #   - Baris yang diawali # adalah komentar (diabaikan)
@@ -19,169 +14,381 @@
 
 
 # ------------------------------------------------------------
-# EASY — Umur 4-5 tahun
+# KELAS1 — Umur 4-5 tahun
 # ------------------------------------------------------------
-easy | 🍎 | Apple      | /ˈæp.əl/       | Apel
-easy | 🐱 | Cat        | /kæt/           | Kucing
-easy | 🐶 | Dog        | /dɒɡ/           | Anjing
-easy | 🌸 | Flower     | /ˈflaʊ.ər/      | Bunga
-easy | 🌙 | Moon       | /muːn/          | Bulan
-easy | ☀️ | Sun        | /sʌn/           | Matahari
-easy | 🐟 | Fish       | /fɪʃ/           | Ikan
-easy | 🌳 | Tree       | /triː/          | Pohon
-easy | 🍌 | Banana     | /bəˈnɑː.nə/     | Pisang
-easy | 🎈 | Balloon    | /bəˈluːn/       | Balon
-easy | 📚 | Book       | /bʊk/           | Buku
-easy | 🎨 | Color      | /ˈkʌl.ər/       | Warna
-easy | 🏠 | House      | /haʊs/          | Rumah
-easy | 🚗 | Car        | /kɑːr/          | Mobil
-easy | 🍦 | Ice Cream  | /ˈaɪs kriːm/    | Es Krim
-easy | 👋 | hello | /həˈloʊ/ | halo
-easy | 🙋 | hi | /haɪ/ | hai
-easy | 🌅 | good morning | /ɡʊd ˈmɔːrnɪŋ/ | selamat pagi
-easy | 🌤️ | good afternoon | /ɡʊd ˌæftərˈnuːn/ | selamat siang
-easy | 🌙 | good evening | /ɡʊd ˈiːvnɪŋ/ | selamat malam
-easy | 👋 | goodbye | /ˌɡʊdˈbaɪ/ | selamat tinggal
-easy | 🤝 | friend | /frend/ | teman
-easy | 🙋‍♂️ | name | /neɪm/ | nama
+KELAS1 | 🍎 | Apple      | /ˈæp.əl/       | Apel
+KELAS1 | 🐱 | Cat        | /kæt/           | Kucing
+KELAS1 | 🐶 | Dog        | /dɒɡ/           | Anjing
+KELAS1 | 🌸 | Flower     | /ˈflaʊ.ər/      | Bunga
+KELAS1 | 🌙 | Moon       | /muːn/          | Bulan
+KELAS1 | ☀️ | Sun        | /sʌn/           | Matahari
+KELAS1 | 🐟 | Fish       | /fɪʃ/           | Ikan
+KELAS1 | 🌳 | Tree       | /triː/          | Pohon
+KELAS1 | 🍌 | Banana     | /bəˈnɑː.nə/     | Pisang
+KELAS1 | 🎈 | Balloon    | /bəˈluːn/       | Balon
+KELAS1 | 📚 | Book       | /bʊk/           | Buku
+KELAS1 | 🎨 | Color      | /ˈkʌl.ər/       | Warna
+KELAS1 | 🏠 | House      | /haʊs/          | Rumah
+KELAS1 | 🚗 | Car        | /kɑːr/          | Mobil
+KELAS1 | 🍦 | Ice Cream  | /ˈaɪs kriːm/    | Es Krim
+KELAS1 | 👋 | hello | /həˈloʊ/ | halo
+KELAS1 | 🙋 | hi | /haɪ/ | hai
+KELAS1 | 🌅 | good morning | /ɡʊd ˈmɔːrnɪŋ/ | selamat pagi
+KELAS1 | 🌤️ | good afternoon | /ɡʊd ˌæftərˈnuːn/ | selamat siang
+KELAS1 | 🌙 | good evening | /ɡʊd ˈiːvnɪŋ/ | selamat malam
+KELAS1 | 👋 | goodbye | /ˌɡʊdˈbaɪ/ | selamat tinggal
+KELAS1 | 🤝 | friend | /frend/ | teman
+KELAS1 | 🙋‍♂️ | name | /neɪm/ | nama
 
-easy | 👂 | listen | /ˈlɪs.ən/ | dengarkan
-easy | 🗣️ | speak | /spiːk/ | berbicara
-easy | ✍️ | write | /raɪt/ | menulis
-easy | 📖 | read | /riːd/ | membaca
-easy | 🧍 | stand | /stænd/ | berdiri
-easy | 🪑 | sit | /sɪt/ | duduk
-easy | 🚶 | walk | /wɔːk/ | berjalan
-easy | 👀 | look | /lʊk/ | melihat
-easy | ✋ | stop | /stɑːp/ | berhenti
-easy | 📢 | repeat | /rɪˈpiːt/ | ulangi
+KELAS1 | 👂 | listen | /ˈlɪs.ən/ | dengarkan
+KELAS1 | 🗣️ | speak | /spiːk/ | berbicara
+KELAS1 | ✍️ | write | /raɪt/ | menulis
+KELAS1 | 📖 | read | /riːd/ | membaca
+KELAS1 | 🧍 | stand | /stænd/ | berdiri
+KELAS1 | 🪑 | sit | /sɪt/ | duduk
+KELAS1 | 🚶 | walk | /wɔːk/ | berjalan
+KELAS1 | 👀 | look | /lʊk/ | melihat
+KELAS1 | ✋ | stop | /stɑːp/ | berhenti
+KELAS1 | 📢 | repeat | /rɪˈpiːt/ | ulangi
 
-easy | 1️⃣ | one | /wʌn/ | satu
-easy | 2️⃣ | two | /tuː/ | dua
-easy | 3️⃣ | three | /θriː/ | tiga
-easy | 4️⃣ | four | /fɔːr/ | empat
-easy | 5️⃣ | five | /faɪv/ | lima
-easy | 6️⃣ | six | /sɪks/ | enam
-easy | 7️⃣ | seven | /ˈsev.ən/ | tujuh
-easy | 8️⃣ | eight | /eɪt/ | delapan
-easy | 9️⃣ | nine | /naɪn/ | sembilan
-easy | 🔟 | ten | /ten/ | sepuluh
+KELAS1 | 1️⃣ | one | /wʌn/ | satu
+KELAS1 | 2️⃣ | two | /tuː/ | dua
+KELAS1 | 3️⃣ | three | /θriː/ | tiga
+KELAS1 | 4️⃣ | four | /fɔːr/ | empat
+KELAS1 | 5️⃣ | five | /faɪv/ | lima
+KELAS1 | 6️⃣ | six | /sɪks/ | enam
+KELAS1 | 7️⃣ | seven | /ˈsev.ən/ | tujuh
+KELAS1 | 8️⃣ | eight | /eɪt/ | delapan
+KELAS1 | 9️⃣ | nine | /naɪn/ | sembilan
+KELAS1 | 🔟 | ten | /ten/ | sepuluh
 
-easy | 🎒 | bag | /bæɡ/ | tas
-easy | 📘 | book | /bʊk/ | buku
-easy | 📓 | notebook | /ˈnoʊt.bʊk/ | buku catatan
-easy | ✏️ | pencil | /ˈpen.səl/ | pensil
-easy | 🖊️ | pen | /pen/ | pulpen
-easy | 📏 | ruler | /ˈruː.lər/ | penggaris
-easy | 🎨 | crayon | /ˈkreɪ.ɑːn/ | krayon
-easy | 🧽 | eraser | /ɪˈreɪ.sər/ | penghapus
-easy | 🪑 | chair | /tʃer/ | kursi
-easy | 🧑‍🏫 | teacher | /ˈtiː.tʃər/ | guru
-easy | 🏫 | school | /skuːl/ | sekolah
-easy | 🧑‍🎓 | student | /ˈstuː.dənt/ | murid
-easy | 🧰 | desk | /desk/ | meja belajar
+KELAS1 | 🎒 | bag | /bæɡ/ | tas
+KELAS1 | 📘 | book | /bʊk/ | buku
+KELAS1 | 📓 | notebook | /ˈnoʊt.bʊk/ | buku catatan
+KELAS1 | ✏️ | pencil | /ˈpen.səl/ | pensil
+KELAS1 | 🖊️ | pen | /pen/ | pulpen
+KELAS1 | 📏 | ruler | /ˈruː.lər/ | penggaris
+KELAS1 | 🎨 | crayon | /ˈkreɪ.ɑːn/ | krayon
+KELAS1 | 🧽 | eraser | /ɪˈreɪ.sər/ | penghapus
+KELAS1 | 🪑 | chair | /tʃer/ | kursi
+KELAS1 | 🧑‍🏫 | teacher | /ˈtiː.tʃər/ | guru
+KELAS1 | 🏫 | school | /skuːl/ | sekolah
+KELAS1 | 🧑‍🎓 | student | /ˈstuː.dənt/ | murid
+KELAS1 | 🧰 | desk | /desk/ | meja belajar
 
-easy | 🔴 | red | /red/ | merah
-easy | 🔵 | blue | /bluː/ | biru
-easy | 🟡 | yellow | /ˈjel.oʊ/ | kuning
-easy | 🟢 | green | /ɡriːn/ | hijau
-easy | ⚫ | black | /blæk/ | hitam
-easy | ⚪ | white | /waɪt/ | putih
-easy | 🟣 | purple | /ˈpɜːr.pəl/ | ungu
-easy | 🟤 | brown | /braʊn/ | cokelat
+KELAS1 | 🔴 | red | /red/ | merah
+KELAS1 | 🔵 | blue | /bluː/ | biru
+KELAS1 | 🟡 | yellow | /ˈjel.oʊ/ | kuning
+KELAS1 | 🟢 | green | /ɡriːn/ | hijau
+KELAS1 | ⚫ | black | /blæk/ | hitam
+KELAS1 | ⚪ | white | /waɪt/ | putih
+KELAS1 | 🟣 | purple | /ˈpɜːr.pəl/ | ungu
+KELAS1 | 🟤 | brown | /braʊn/ | cokelat
 
-easy | 🔺 | triangle | /ˈtraɪ.æŋ.ɡəl/ | segitiga
-easy | ⬛ | square | /skwer/ | persegi
-easy | ⚪ | circle | /ˈsɝː.kəl/ | lingkaran
-easy | ❤️ | heart | /hɑːrt/ | hati
-easy | ⭐ | star | /stɑːr/ | bintang
-easy | ⬟ | pentagon | /ˈpen.tə.ɡɑːn/ | segilima
+KELAS1 | 🔺 | triangle | /ˈtraɪ.æŋ.ɡəl/ | segitiga
+KELAS1 | ⬛ | square | /skwer/ | persegi
+KELAS1 | ⚪ | circle | /ˈsɝː.kəl/ | lingkaran
+KELAS1 | ❤️ | heart | /hɑːrt/ | hati
+KELAS1 | ⭐ | star | /stɑːr/ | bintang
+KELAS1 | ⬟ | pentagon | /ˈpen.tə.ɡɑːn/ | segilima
 
-easy | 🐯 | tiger | /ˈtaɪ.ɡər/ | harimau
-easy | 🐘 | elephant | /ˈel.ɪ.fənt/ | gajah
-easy | 🐻 | bear | /ber/ | beruang
-easy | 🐒 | monkey | /ˈmʌŋ.ki/ | monyet
-easy | 🐍 | snake | /sneɪk/ | ular
-easy | 🦅 | eagle | /ˈiː.ɡəl/ | elang
-easy | 🦎 | iguana | /ɪˈɡwɑː.nə/ | iguana
-easy | 🐦 | bird | /bɜːrd/ | burung
-easy | 🐟 | fish | /fɪʃ/ | ikan
+KELAS1 | 🐯 | tiger | /ˈtaɪ.ɡər/ | harimau
+KELAS1 | 🐘 | elephant | /ˈel.ɪ.fənt/ | gajah
+KELAS1 | 🐻 | bear | /ber/ | beruang
+KELAS1 | 🐒 | monkey | /ˈmʌŋ.ki/ | monyet
+KELAS1 | 🐍 | snake | /sneɪk/ | ular
+KELAS1 | 🦅 | eagle | /ˈiː.ɡəl/ | elang
+KELAS1 | 🦎 | iguana | /ɪˈɡwɑː.nə/ | iguana
+KELAS1 | 🐦 | bird | /bɜːrd/ | burung
+KELAS1 | 🐟 | fish | /fɪʃ/ | ikan
 
-easy | 🐶 | dog | /dɔːɡ/ | anjing
-easy | 🐱 | cat | /kæt/ | kucing
-easy | 🐰 | rabbit | /ˈræb.ɪt/ | kelinci
-easy | 🐢 | turtle | /ˈtɜːr.təl/ | kura-kura
-easy | 🐷 | pig | /pɪɡ/ | babi
-easy | 🐄 | cow | /kaʊ/ | sapi
-easy | 🐎 | horse | /hɔːrs/ | kuda
-easy | 🐔 | hen | /hen/ | ayam
-easy | 🦆 | duck | /dʌk/ | bebek
-easy | 🐥 | chick | /tʃɪk/ | anak ayam
-easy | 🪿 | goose | /ɡuːs/ | angsa
+KELAS1 | 🐶 | dog | /dɔːɡ/ | anjing
+KELAS1 | 🐱 | cat | /kæt/ | kucing
+KELAS1 | 🐰 | rabbit | /ˈræb.ɪt/ | kelinci
+KELAS1 | 🐢 | turtle | /ˈtɜːr.təl/ | kura-kura
+KELAS1 | 🐷 | pig | /pɪɡ/ | babi
+KELAS1 | 🐄 | cow | /kaʊ/ | sapi
+KELAS1 | 🐎 | horse | /hɔːrs/ | kuda
+KELAS1 | 🐔 | hen | /hen/ | ayam
+KELAS1 | 🦆 | duck | /dʌk/ | bebek
+KELAS1 | 🐥 | chick | /tʃɪk/ | anak ayam
+KELAS1 | 🪿 | goose | /ɡuːs/ | angsa
 
-easy | 🍎 | apple | /ˈæp.əl/ | apel
-easy | 🍌 | banana | /bəˈnæn.ə/ | pisang
-easy | 🍇 | grape | /ɡreɪp/ | anggur
-easy | 🍓 | strawberry | /ˈstrɔː.bər.i/ | stroberi
-easy | 🍍 | pineapple | /ˈpaɪnˌæp.əl/ | nanas
-easy | 🍊 | orange | /ˈɔːr.ɪndʒ/ | jeruk
-easy | 🍉 | watermelon | /ˈwɔː.tərˌmel.ən/ | semangka
-easy | 🥭 | mango | /ˈmæŋ.ɡoʊ/ | mangga
-easy | 🍐 | pear | /per/ | pir
-easy | 🍒 | cherry | /ˈtʃer.i/ | ceri
+KELAS1 | 🍎 | apple | /ˈæp.əl/ | apel
+KELAS1 | 🍌 | banana | /bəˈnæn.ə/ | pisang
+KELAS1 | 🍇 | grape | /ɡreɪp/ | anggur
+KELAS1 | 🍓 | strawberry | /ˈstrɔː.bər.i/ | stroberi
+KELAS1 | 🍍 | pineapple | /ˈpaɪnˌæp.əl/ | nanas
+KELAS1 | 🍊 | orange | /ˈɔːr.ɪndʒ/ | jeruk
+KELAS1 | 🍉 | watermelon | /ˈwɔː.tərˌmel.ən/ | semangka
+KELAS1 | 🥭 | mango | /ˈmæŋ.ɡoʊ/ | mangga
+KELAS1 | 🍐 | pear | /per/ | pir
+KELAS1 | 🍒 | cherry | /ˈtʃer.i/ | ceri
 
-easy | 😋 | sweet | /swiːt/ | manis
-easy | 😖 | sour | /ˈsaʊər/ | asam
-easy | 👅 | taste | /teɪst/ | rasa
-easy | 🍏 | fresh | /freʃ/ | segar
+KELAS1 | 😋 | sweet | /swiːt/ | manis
+KELAS1 | 😖 | sour | /ˈsaʊər/ | asam
+KELAS1 | 👅 | taste | /teɪst/ | rasa
+KELAS1 | 🍏 | fresh | /freʃ/ | segar
 
-easy | 🥕 | carrot | /ˈkær.ət/ | wortel
-easy | 🥦 | broccoli | /ˈbrɑː.kə.li/ | brokoli
-easy | 🥬 | cabbage | /ˈkæb.ɪdʒ/ | kubis
-easy | 🌽 | corn | /kɔːrn/ | jagung
-easy | 🥔 | potato | /pəˈteɪ.toʊ/ | kentang
-easy | 🍅 | tomato | /təˈmeɪ.toʊ/ | tomat
-easy | 🧅 | onion | /ˈʌn.jən/ | bawang
-easy | 🥒 | cucumber | /ˈkjuː.kʌm.bər/ | mentimun
-easy | 🫑 | pepper | /ˈpep.ər/ | paprika
-easy | 🥬 | lettuce | /ˈlet.ɪs/ | selada
-
-
-# ------------------------------------------------------------
-# MEDIUM — Umur 6-7 tahun
-# ------------------------------------------------------------
-medium | 🦋 | Butterfly  | /ˈbʌt.ə.flaɪ/   | Kupu-kupu
-medium | 🌈 | Rainbow    | /ˈreɪn.bəʊ/     | Pelangi
-medium | ✈️ | Airplane   | /ˈeər.pleɪn/    | Pesawat
-medium | 🏖️ | Beach      | /biːtʃ/          | Pantai
-medium | 🦁 | Lion       | /ˈlaɪ.ən/       | Singa
-medium | 🐘 | Elephant   | /ˈel.ɪ.fənt/    | Gajah
-medium | ⭐ | Star       | /stɑːr/          | Bintang
-medium | 🏔️ | Mountain   | /ˈmaʊn.tɪn/     | Gunung
-medium | 🍓 | Strawberry | /ˈstrɔː.bər.i/  | Stroberi
-medium | 🎵 | Music      | /ˈmjuː.zɪk/     | Musik
-medium | 🚀 | Rocket     | /ˈrɒk.ɪt/       | Roket
-medium | 🌊 | Ocean      | /ˈoʊ.ʃən/       | Samudra
-medium | 🦜 | Parrot     | /ˈpær.ət/       | Burung Beo
-medium | 🍕 | Pizza      | /ˈpiːt.sə/      | Pizza
-medium | 🌵 | Cactus     | /ˈkæk.təs/      | Kaktus
+KELAS1 | 🥕 | carrot | /ˈkær.ət/ | wortel
+KELAS1 | 🥦 | broccoli | /ˈbrɑː.kə.li/ | brokoli
+KELAS1 | 🥬 | cabbage | /ˈkæb.ɪdʒ/ | kubis
+KELAS1 | 🌽 | corn | /kɔːrn/ | jagung
+KELAS1 | 🥔 | potato | /pəˈteɪ.toʊ/ | kentang
+KELAS1 | 🍅 | tomato | /təˈmeɪ.toʊ/ | tomat
+KELAS1 | 🧅 | onion | /ˈʌn.jən/ | bawang
+KELAS1 | 🥒 | cucumber | /ˈkjuː.kʌm.bər/ | mentimun
+KELAS1 | 🫑 | pepper | /ˈpep.ər/ | paprika
+KELAS1 | 🥬 | lettuce | /ˈlet.ɪs/ | selada
 
 
 # ------------------------------------------------------------
-# HARD — Umur 8-10 tahun
+# KELAS2 — Umur 6-7 tahun
 # ------------------------------------------------------------
-hard | 🔭 | Telescope  | /ˈtel.ɪ.skəʊp/  | Teleskop
-hard | 🌋 | Volcano    | /vɒlˈkeɪ.nəʊ/   | Gunung Berapi
-hard | 🦊 | Fox        | /fɒks/           | Rubah
-hard | 🧲 | Magnet     | /ˈmæɡ.nɪt/      | Magnet
-hard | 🌿 | Forest     | /ˈfɒr.ɪst/       | Hutan
-hard | 💎 | Diamond    | /ˈdaɪ.ə.mənd/   | Berlian
-hard | 🦅 | Eagle      | /ˈiː.ɡəl/        | Elang
-hard | 🌍 | Earth      | /ɜːrθ/           | Bumi
-hard | 🎭 | Theater    | /ˈθɪə.tər/       | Teater
-hard | 🧬 | Science    | /ˈsaɪ.əns/       | Sains
-hard | 🏛️ | Museum     | /mjuːˈziː.əm/    | Museum
-hard | 🦒 | Giraffe    | /dʒɪˈrɑːf/       | Jerapah
-hard | 🧪 | Experiment | /ɪkˈsper.ɪ.mənt/ | Eksperimen
-hard | 🌐 | Geography  | /dʒiˈɒɡ.rə.fi/  | Geografi
-hard | 🦈 | Shark      | /ʃɑːrk/          | Ikan Hiu
+KELAS2 | 🦋 | Butterfly  | /ˈbʌt.ə.flaɪ/   | Kupu-kupu
+KELAS2 | 🌈 | Rainbow    | /ˈreɪn.bəʊ/     | Pelangi
+KELAS2 | ✈️ | Airplane   | /ˈeər.pleɪn/    | Pesawat
+KELAS2 | 🏖️ | Beach      | /biːtʃ/          | Pantai
+KELAS2 | 🦁 | Lion       | /ˈlaɪ.ən/       | Singa
+KELAS2 | 🐘 | Elephant   | /ˈel.ɪ.fənt/    | Gajah
+KELAS2 | ⭐ | Star       | /stɑːr/          | Bintang
+KELAS2 | 🏔️ | Mountain   | /ˈmaʊn.tɪn/     | Gunung
+KELAS2 | 🍓 | Strawberry | /ˈstrɔː.bər.i/  | Stroberi
+KELAS2 | 🎵 | Music      | /ˈmjuː.zɪk/     | Musik
+KELAS2 | 🚀 | Rocket     | /ˈrɒk.ɪt/       | Roket
+KELAS2 | 🌊 | Ocean      | /ˈoʊ.ʃən/       | Samudra
+KELAS2 | 🦜 | Parrot     | /ˈpær.ət/       | Burung Beo
+KELAS2 | 🍕 | Pizza      | /ˈpiːt.sə/      | Pizza
+KELAS2 | 🌵 | Cactus     | /ˈkæk.təs/      | Kaktus
+
+
+# ------------------------------------------------------------
+# KELAS3 — Umur 8-10 tahun
+# ------------------------------------------------------------
+KELAS3 | 🔭 | Telescope  | /ˈtel.ɪ.skəʊp/  | Teleskop
+KELAS3 | 🌋 | Volcano    | /vɒlˈkeɪ.nəʊ/   | Gunung Berapi
+KELAS3 | 🦊 | Fox        | /fɒks/           | Rubah
+KELAS3 | 🧲 | Magnet     | /ˈmæɡ.nɪt/      | Magnet
+KELAS3 | 🌿 | Forest     | /ˈfɒr.ɪst/       | Hutan
+KELAS3 | 💎 | Diamond    | /ˈdaɪ.ə.mənd/   | Berlian
+KELAS3 | 🦅 | Eagle      | /ˈiː.ɡəl/        | Elang
+KELAS3 | 🌍 | Earth      | /ɜːrθ/           | Bumi
+KELAS3 | 🎭 | Theater    | /ˈθɪə.tər/       | Teater
+KELAS3 | 🧬 | Science    | /ˈsaɪ.əns/       | Sains
+KELAS3 | 🏛️ | Museum     | /mjuːˈziː.əm/    | Museum
+KELAS3 | 🦒 | Giraffe    | /dʒɪˈrɑːf/       | Jerapah
+KELAS3 | 🧪 | Experiment | /ɪkˈsper.ɪ.mənt/ | Eksperimen
+KELAS3 | 🌐 | Geography  | /dʒiˈɒɡ.rə.fi/  | Geografi
+KELAS3 | 🦈 | Shark      | /ʃɑːrk/          | Ikan Hiu
+
+
+# ══════════════ KELAS 1 ══════════════
+# Tubuh & Keluarga
+KELAS1 | 👁️  | EYE        | /aɪ/            | Mata
+KELAS1 | 👂  | EAR        | /ɪər/           | Telinga
+KELAS1 | 👃  | NOSE       | /noʊz/          | Hidung
+KELAS1 | 👄  | MOUTH      | /maʊθ/          | Mulut
+KELAS1 | 🤚  | HAND       | /hænd/          | Tangan
+KELAS1 | 🦶  | FOOT       | /fʊt/           | Kaki
+KELAS1 | 👶  | BABY       | /ˈbeɪbi/        | Bayi
+KELAS1 | 👨  | FATHER     | /ˈfɑːðər/       | Ayah
+KELAS1 | 👩  | MOTHER     | /ˈmʌðər/        | Ibu
+KELAS1 | 👦  | BOY        | /bɔɪ/           | Anak laki-laki
+# Hewan
+KELAS1 | 🐱  | CAT        | /kæt/           | Kucing
+KELAS1 | 🐶  | DOG        | /dɒg/           | Anjing
+KELAS1 | 🐔  | HEN        | /hɛn/           | Ayam betina
+KELAS1 | 🐟  | FISH       | /fɪʃ/           | Ikan
+KELAS1 | 🐮  | COW        | /kaʊ/           | Sapi
+KELAS1 | 🐷  | PIG        | /pɪg/           | Babi
+KELAS1 | 🐑  | SHEEP      | /ʃiːp/          | Domba
+KELAS1 | 🐸  | FROG       | /frɒg/          | Katak
+KELAS1 | 🦆  | DUCK       | /dʌk/           | Bebek
+KELAS1 | 🐦  | BIRD       | /bɜːrd/         | Burung
+# Benda & Warna
+KELAS1 | 🔴  | RED        | /rɛd/           | Merah
+KELAS1 | 🔵  | BLUE       | /bluː/          | Biru
+KELAS1 | 🟡  | YELLOW     | /ˈjɛloʊ/        | Kuning
+KELAS1 | 🟢  | GREEN      | /ɡriːn/         | Hijau
+KELAS1 | ⚫  | BLACK      | /blæk/          | Hitam
+KELAS1 | ⚪  | WHITE      | /waɪt/          | Putih
+KELAS1 | 🍎  | APPLE      | /ˈæpl/          | Apel
+KELAS1 | 🍌  | BANANA     | /bəˈnɑːnə/      | Pisang
+KELAS1 | 🏠  | HOUSE      | /haʊs/          | Rumah
+KELAS1 | ⭐  | STAR       | /stɑːr/         | Bintang
+
+# ══════════════ KELAS 2 ══════════════
+# Makanan
+KELAS2 | 🍚  | RICE       | /raɪs/          | Nasi
+KELAS2 | 🍞  | BREAD      | /brɛd/          | Roti
+KELAS2 | 🥛  | MILK       | /mɪlk/          | Susu
+KELAS2 | 🥚  | EGG        | /ɛg/            | Telur
+KELAS2 | 🍊  | ORANGE     | /ˈɒrɪndʒ/       | Jeruk
+KELAS2 | 🍇  | GRAPE      | /ɡreɪp/         | Anggur
+KELAS2 | 🍉  | WATERMELON | /ˈwɔːtərˌmɛlən/ | Semangka
+KELAS2 | 🥕  | CARROT     | /ˈkærət/        | Wortel
+KELAS2 | 🧅  | ONION      | /ˈʌnjən/        | Bawang
+KELAS2 | 🍅  | TOMATO     | /təˈmeɪtoʊ/     | Tomat
+# Transportasi
+KELAS2 | 🚗  | CAR        | /kɑːr/          | Mobil
+KELAS2 | 🚌  | BUS        | /bʌs/           | Bus
+KELAS2 | 🚂  | TRAIN      | /treɪn/         | Kereta
+KELAS2 | ✈️   | PLANE      | /pleɪn/         | Pesawat
+KELAS2 | 🚢  | SHIP       | /ʃɪp/           | Kapal
+KELAS2 | 🚲  | BICYCLE    | /ˈbaɪsɪkl/      | Sepeda
+KELAS2 | 🛵  | MOTORBIKE  | /ˈmoʊtərbaɪk/   | Motor
+KELAS2 | 🚁  | HELICOPTER | /ˈhɛlɪkɒptər/   | Helikopter
+KELAS2 | ⛵  | BOAT       | /boʊt/          | Perahu
+KELAS2 | 🚀  | ROCKET     | /ˈrɒkɪt/        | Roket
+# Tempat
+KELAS2 | 🏫  | SCHOOL     | /skuːl/         | Sekolah
+KELAS2 | 🏥  | HOSPITAL   | /ˈhɒspɪtl/      | Rumah sakit
+KELAS2 | 🏪  | SHOP       | /ʃɒp/           | Toko
+KELAS2 | 🌳  | PARK       | /pɑːrk/         | Taman
+KELAS2 | 🕌  | MOSQUE     | /mɒsk/          | Mesjid
+KELAS2 | 📚  | LIBRARY    | /ˈlaɪbrəri/     | Perpustakaan
+KELAS2 | 🏖️  | BEACH      | /biːtʃ/         | Pantai
+KELAS2 | ⛰️  | MOUNTAIN   | /ˈmaʊntɪn/      | Gunung
+KELAS2 | 🌾  | FIELD      | /fiːld/         | Sawah
+KELAS2 | 🌊  | SEA        | /siː/           | Laut
+
+# ══════════════ KELAS 3 ══════════════
+# Profesi
+KELAS3 | 👨‍🏫  | TEACHER    | /ˈtiːtʃər/      | Guru
+KELAS3 | 👨‍⚕️  | DOCTOR     | /ˈdɒktər/       | Dokter
+KELAS3 | 👮  | POLICE     | /pəˈliːs/       | Polisi
+KELAS3 | 🧑‍🍳  | COOK       | /kʊk/           | Koki/Juru masak
+KELAS3 | 👩‍🌾  | FARMER     | /ˈfɑːrmər/      | Petani
+KELAS3 | 🧑‍✈️  | PILOT      | /ˈpaɪlət/       | Pilot
+KELAS3 | 🧑‍🔧  | ENGINEER   | /ˌɛndʒɪˈnɪər/   | Insinyur
+KELAS3 | 🧑‍💼  | WORKER     | /ˈwɜːrkər/      | Pekerja
+KELAS3 | 🧑‍🎨  | ARTIST     | /ˈɑːrtɪst/      | Seniman
+KELAS3 | 🏋️  | ATHLETE    | /ˈæθliːt/       | Atlet
+# Alam
+KELAS3 | ☀️   | SUN        | /sʌn/           | Matahari
+KELAS3 | 🌙  | MOON       | /muːn/          | Bulan
+KELAS3 | 🌧️  | RAIN       | /reɪn/          | Hujan
+KELAS3 | ⛄  | SNOW       | /snoʊ/          | Salju
+KELAS3 | 🌪️  | WIND       | /wɪnd/          | Angin
+KELAS3 | 🌈  | RAINBOW    | /ˈreɪnboʊ/      | Pelangi
+KELAS3 | 🌋  | VOLCANO    | /vɒlˈkeɪnoʊ/    | Gunung berapi
+KELAS3 | 🏜️  | DESERT     | /ˈdɛzərt/       | Gurun
+KELAS3 | 🌲  | FOREST     | /ˈfɒrɪst/       | Hutan
+KELAS3 | 🦋  | BUTTERFLY  | /ˈbʌtərflaɪ/    | Kupu-kupu
+# Sifat/Kata sifat
+KELAS3 | 😊  | HAPPY      | /ˈhæpi/         | Bahagia
+KELAS3 | 😢  | SAD        | /sæd/           | Sedih
+KELAS3 | 💪  | STRONG     | /strɒŋ/         | Kuat
+KELAS3 | 🌟  | BRIGHT     | /braɪt/         | Cerah/Terang
+KELAS3 | 🐢  | SLOW       | /sloʊ/          | Lambat
+KELAS3 | 🐆  | FAST       | /fæst/          | Cepat
+KELAS3 | 🔥  | HOT        | /hɒt/           | Panas
+KELAS3 | ❄️   | COLD       | /koʊld/         | Dingin
+KELAS3 | 🏔️  | HIGH       | /haɪ/           | Tinggi
+KELAS3 | 🌊  | DEEP       | /diːp/          | Dalam
+
+# ══════════════ KELAS 4 ══════════════
+# Teknologi & Sekolah
+KELAS4 | 💻  | COMPUTER   | /kəmˈpjuːtər/   | Komputer
+KELAS4 | 📱  | PHONE      | /foʊn/          | Telepon
+KELAS4 | 📺  | TELEVISION | /ˈtɛlɪvɪʒən/    | Televisi
+KELAS4 | 📷  | CAMERA     | /ˈkæmərə/       | Kamera
+KELAS4 | 🎵  | MUSIC      | /ˈmjuːzɪk/      | Musik
+KELAS4 | 🎨  | COLOR      | /ˈkʌlər/        | Warna
+KELAS4 | ✏️   | PENCIL     | /ˈpɛnsɪl/       | Pensil
+KELAS4 | 📏  | RULER      | /ˈruːlər/       | Penggaris
+KELAS4 | 📖  | TEXTBOOK   | /ˈtɛkstbʊk/     | Buku pelajaran
+KELAS4 | 🎒  | BACKPACK   | /ˈbækpæk/       | Ransel
+# Kegiatan/Verba
+KELAS4 | 🏃  | RUN        | /rʌn/           | Berlari
+KELAS4 | 🏊  | SWIM       | /swɪm/          | Berenang
+KELAS4 | 🎸  | PLAY       | /pleɪ/          | Bermain
+KELAS4 | 📖  | READ       | /riːd/          | Membaca
+KELAS4 | ✍️   | WRITE      | /raɪt/          | Menulis
+KELAS4 | 🎤  | SING       | /sɪŋ/           | Menyanyi
+KELAS4 | 💃  | DANCE      | /dæns/          | Menari
+KELAS4 | 🍳  | COOK       | /kʊk/           | Memasak
+KELAS4 | 🌱  | PLANT      | /plænt/         | Menanam
+KELAS4 | 🧹  | CLEAN      | /kliːn/         | Membersihkan
+# Waktu
+KELAS4 | ⏰  | MORNING    | /ˈmɔːrnɪŋ/      | Pagi
+KELAS4 | 🌤️  | AFTERNOON  | /ˌæftərˈnuːn/   | Siang/Sore
+KELAS4 | 🌇  | EVENING    | /ˈiːvnɪŋ/       | Malam awal
+KELAS4 | 🌙  | NIGHT      | /naɪt/          | Malam
+KELAS4 | 📅  | WEEK       | /wiːk/          | Minggu
+KELAS4 | 📆  | MONTH      | /mʌnθ/          | Bulan
+KELAS4 | 🎊  | YEAR       | /jɪər/          | Tahun
+KELAS4 | ⏱️  | MINUTE     | /ˈmɪnɪt/        | Menit
+KELAS4 | 🕐  | HOUR       | /aʊər/          | Jam
+KELAS4 | 📅  | HOLIDAY    | /ˈhɒlɪdeɪ/      | Hari libur
+
+# ══════════════ KELAS 5 ══════════════
+# Geografi & Negara
+KELAS5 | 🌏  | CONTINENT  | /ˈkɒntɪnənt/    | Benua
+KELAS5 | 🌍  | COUNTRY    | /ˈkʌntri/       | Negara
+KELAS5 | 🏙️  | CITY       | /ˈsɪti/         | Kota
+KELAS5 | 🏘️  | VILLAGE    | /ˈvɪlɪdʒ/       | Desa
+KELAS5 | 🌐  | GLOBE      | /ɡloʊb/         | Bola dunia
+KELAS5 | 🧭  | COMPASS    | /ˈkʌmpəs/       | Kompas
+KELAS5 | 🗺️  | MAP        | /mæp/           | Peta
+KELAS5 | 🏞️  | VALLEY     | /ˈvæli/         | Lembah
+KELAS5 | 🏝️  | ISLAND     | /ˈaɪlənd/       | Pulau
+KELAS5 | 🌉  | BRIDGE     | /brɪdʒ/         | Jembatan
+# Sains & Matematika
+KELAS5 | 🔬  | SCIENCE    | /ˈsaɪəns/       | Sains/IPA
+KELAS5 | 🧪  | EXPERIMENT | /ɪkˈspɛrɪmənt/  | Percobaan
+KELAS5 | 🔭  | TELESCOPE  | /ˈtɛlɪskoʊp/    | Teleskop
+KELAS5 | 🧲  | MAGNET     | /ˈmægnɪt/       | Magnet
+KELAS5 | ⚡  | ENERGY     | /ˈɛnərdʒi/      | Energi
+KELAS5 | 💧  | LIQUID     | /ˈlɪkwɪd/       | Cair/Zat cair
+KELAS5 | 🪨  | SOLID      | /ˈsɒlɪd/        | Padat
+KELAS5 | 💨  | GAS        | /ɡæs/           | Gas
+KELAS5 | 🌡️  | TEMPERATURE| /ˈtɛmprɪtʃər/   | Suhu
+KELAS5 | ♻️   | RECYCLE    | /ˌriːˈsaɪkl/   | Daur ulang
+# Kata sambung & Ekspresi
+KELAS5 | 🤔  | BECAUSE    | /bɪˈkɒz/        | Karena
+KELAS5 | ➕  | ALSO       | /ˈɔːlsoʊ/       | Juga
+KELAS5 | 🔄  | HOWEVER    | /haʊˈɛvər/      | Namun/Akan tetapi
+KELAS5 | 🤝  | ALTHOUGH   | /ɔːlˈðoʊ/       | Meskipun
+KELAS5 | ⬅️  | BEFORE     | /bɪˈfɔːr/       | Sebelum
+KELAS5 | ➡️  | AFTER      | /ˈæftər/        | Setelah
+KELAS5 | 🏁  | FINALLY    | /ˈfaɪnəli/      | Akhirnya
+KELAS5 | 💡  | THEREFORE  | /ˈðɛərfɔːr/     | Oleh karena itu
+KELAS5 | 🔁  | ALWAYS     | /ˈɔːlweɪz/      | Selalu
+KELAS5 | ❌  | NEVER      | /ˈnɛvər/        | Tidak pernah
+
+# ══════════════ KELAS 6 ══════════════
+# Tata bahasa lanjutan & Kosakata akademik
+KELAS6 | 📝  | PARAGRAPH  | /ˈpærəɡrɑːf/    | Paragraf
+KELAS6 | 📜  | ESSAY      | /ˈɛseɪ/         | Esai/Karangan
+KELAS6 | 🗣️  | ARGUMENT   | /ˈɑːrɡjumənt/   | Argumen
+KELAS6 | 🏛️  | DEMOCRACY  | /dɪˈmɒkrəsi/    | Demokrasi
+KELAS6 | ⚖️  | JUSTICE    | /ˈdʒʌstɪs/      | Keadilan
+KELAS6 | 🌱  | ENVIRONMENT| /ɪnˈvaɪrənmənt/ | Lingkungan
+KELAS6 | 🤲  | COMMUNITY  | /kəˈmjuːnɪti/   | Komunitas/Masyarakat
+KELAS6 | 🏆  | ACHIEVEMENT| /əˈtʃiːvmənt/   | Pencapaian/Prestasi
+KELAS6 | 🔍  | RESEARCH   | /rɪˈsɜːrtʃ/     | Penelitian
+KELAS6 | 💬  | DISCUSSION | /dɪˈskʌʃən/     | Diskusi
+# Ilmu pengetahuan lanjutan
+KELAS6 | 🧬  | BIOLOGY    | /baɪˈɒlədʒi/    | Biologi
+KELAS6 | ⚗️   | CHEMISTRY  | /ˈkɛmɪstri/     | Kimia
+KELAS6 | 🌌  | ASTRONOMY  | /əˈstrɒnəmi/    | Astronomi
+KELAS6 | 🖥️  | TECHNOLOGY | /tɛkˈnɒlədʒi/   | Teknologi
+KELAS6 | 🤖  | ROBOT      | /ˈroʊbɒt/       | Robot
+KELAS6 | 💉  | VACCINE    | /vækˈsiːn/      | Vaksin
+KELAS6 | 🧠  | BRAIN      | /breɪn/         | Otak
+KELAS6 | 🫀  | HEART      | /hɑːrt/         | Jantung
+KELAS6 | 🌿  | ECOSYSTEM  | /ˈiːkoʊˌsɪstəm/ | Ekosistem
+KELAS6 | 🔋  | ELECTRICITY| /ɪˌlɛkˈtrɪsɪti/ | Listrik
+# Kata sifat lanjutan
+KELAS6 | 🎓  | INTELLIGENT| /ɪnˈtɛlɪdʒənt/  | Cerdas
+KELAS6 | 🌟  | EXCELLENT  | /ˈɛksələnt/     | Sangat bagus
+KELAS6 | 🙏  | GRATEFUL   | /ˈɡreɪtfəl/     | Bersyukur
+KELAS6 | 🤗  | GENEROUS   | /ˈdʒɛnərəs/     | Dermawan
+KELAS6 | 💪  | PERSISTENT | /pərˈsɪstənt/   | Gigih/Tekun
+KELAS6 | 🏅  | SUCCESSFUL | /səkˈsɛsfəl/    | Berhasil/Sukses
+KELAS6 | 🌍  | GLOBAL     | /ˈɡloʊbəl/      | Global
+KELAS6 | 🔬  | SCIENTIFIC | /ˌsaɪənˈtɪfɪk/  | Ilmiah
+KELAS6 | 📡  | DIGITAL    | /ˈdɪdʒɪtl/      | Digital
+KELAS6 | 🧩  | CREATIVE   | /kriˈeɪtɪv/     | Kreatif
+
