@@ -1,6 +1,10 @@
-
 // Vocabulary — loaded from vocabulary.txt at runtime
-let VOCAB = { easy: [], medium: [], hard: [] };
+// Supports both legacy (easy/medium/hard) and new (kelas1–kelas6) format
+
+let VOCAB = { 
+  easy: [], medium: [], hard: [],
+  kelas1: [], kelas2: [], kelas3: [], kelas4: [], kelas5: [], kelas6: []
+};
 
 const FALLBACK = [
     { emoji: "🐱", en: "CAT", phonetic: "/kæt/", id: "Kucing" },
@@ -19,7 +23,10 @@ const FALLBACK = [
 
 // ===================== VOCAB LOADER =====================
 function parseVocabTxt(text) {
-    const result = { easy: [], medium: [], hard: [] };
+    const result = { 
+        easy: [], medium: [], hard: [],
+        kelas1: [], kelas2: [], kelas3: [], kelas4: [], kelas5: [], kelas6: []
+    };
     const lines = text.split("\n");
     for (let raw of lines) {
         const line = raw.trim();
@@ -27,9 +34,13 @@ function parseVocabTxt(text) {
         const parts = line.split("|").map(p => p.trim());
         if (parts.length < 5) continue;                   // skip malformed lines
         const [level, emoji, en, phonetic, id] = parts;
-        const key = level.toLowerCase();
-        if (!result[key]) continue;                       // skip unknown levels
-        result[key].push({ emoji, en, phonetic, id });
+        // Normalize: "KELAS1" -> "kelas1", "easy" -> "easy"
+        const key = level.toLowerCase().replace(/\s+/g, '');
+        if (result[key] !== undefined) {
+            result[key].push({ emoji, en, phonetic, id });
+        } else {
+            console.warn(`Unknown level key: "${level}"`);
+        }
     }
     return result;
 }
@@ -39,23 +50,47 @@ async function loadVocab() {
         const res = await fetch("vocabulary.txt");
         if (!res.ok) throw new Error("File tidak ditemukan");
         const text = await res.text();
-        VOCAB = parseVocabTxt(text);
-        // Validate minimum 9 words per level
-        for (const level of ["easy", "medium", "hard"]) {
-            if (VOCAB[level].length < 9) {
-                console.warn(`⚠️ Level "${level}" hanya punya ${VOCAB[level].length} kata (minimal 9)`);
-            }
+        const parsed = parseVocabTxt(text);
+        VOCAB = parsed;
+
+        // Validate minimum words
+        const kelasList = ["kelas1","kelas2","kelas3","kelas4","kelas5","kelas6"];
+        const legacyList = ["easy","medium","hard"];
+        const hasKelas = kelasList.some(k => VOCAB[k].length > 0);
+        const hasLegacy = legacyList.some(k => VOCAB[k].length > 0);
+
+        if (hasKelas) {
+            kelasList.forEach(k => {
+                if (VOCAB[k].length < 10) {
+                    console.warn(`⚠️ Level "${k}" hanya punya ${VOCAB[k].length} kata (minimal 10 untuk 1 stage)`);
+                }
+            });
+            console.log(`✅ Kosakata dimuat (format kelas):`,
+                kelasList.map(k => `${k}=${VOCAB[k].length}`).join(', '));
+        } else if (hasLegacy) {
+            // Backward compatibility: map easy→kelas1, medium→kelas2, hard→kelas3
+            VOCAB.kelas1 = VOCAB.easy;
+            VOCAB.kelas2 = VOCAB.medium;
+            VOCAB.kelas3 = VOCAB.hard;
+            console.warn("⚠️ Menggunakan format lama (easy/medium/hard). Disarankan migrasi ke format KELAS1-6.");
+            legacyList.forEach(k => {
+                if (VOCAB[k].length < 9) {
+                    console.warn(`⚠️ Level "${k}" hanya punya ${VOCAB[k].length} kata (minimal 9)`);
+                }
+            });
+            console.log(`✅ Kosakata dimuat (format lama): easy=${VOCAB.easy.length}, medium=${VOCAB.medium.length}, hard=${VOCAB.hard.length}`);
+        } else {
+            throw new Error("Tidak ada kata yang berhasil dimuat");
         }
-        console.log(`✅ Kosakata dimuat: easy=${VOCAB.easy.length}, medium=${VOCAB.medium.length}, hard=${VOCAB.hard.length}`);
     } catch (err) {
         console.error("Gagal memuat vocabulary.txt:", err);
         VOCAB.easy = FALLBACK;
+        VOCAB.kelas1 = FALLBACK;
         showVocabLoadError();
     }
 }
 
 function showVocabLoadError() {
-    // Show a friendly warning banner on the intro screen
     const banner = document.createElement("div");
     banner.style.cssText = `
     position:fixed; bottom:16px; left:50%; transform:translateX(-50%);
@@ -64,7 +99,7 @@ function showVocabLoadError() {
     z-index:999; text-align:center; box-shadow:0 4px 16px rgba(255,71,87,0.4);
     max-width:90vw;
   `;
-    banner.textContent = "⚠️ File vocabulary.txt tidak ditemukan! Pastikan file ada di folder yang sama dengan vocabulary-game.html";
+    banner.textContent = "⚠️ File vocabulary.txt tidak ditemukan! Menggunakan kata bawaan. Pastikan format: KELAS1 | 🎨 | Color | /ˈkʌl.ər/ | Warna";
     document.body.appendChild(banner);
-    setTimeout(() => banner.remove(), 8000);
+    setTimeout(() => banner.remove(), 10000);
 }
