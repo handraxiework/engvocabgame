@@ -343,9 +343,19 @@
         }
 
         @keyframes rotate-hint {
-            0%, 100% { transform: rotate(0deg); }
-            40% { transform: rotate(90deg); }
-            60% { transform: rotate(90deg); }
+
+            0%,
+            100% {
+                transform: rotate(0deg);
+            }
+
+            40% {
+                transform: rotate(90deg);
+            }
+
+            60% {
+                transform: rotate(90deg);
+            }
         }
 
         #rotate-prompt p {
@@ -441,9 +451,20 @@
             letter-spacing: .5px;
         }
 
-        .hud-score  { color: var(--neon-yellow); text-shadow: 0 0 8px var(--neon-yellow); }
-        .hud-timer  { color: var(--neon-green);  text-shadow: 0 0 8px var(--neon-green); }
-        .hud-words  { color: var(--neon-purple); text-shadow: 0 0 8px var(--neon-purple); }
+        .hud-score {
+            color: var(--neon-yellow);
+            text-shadow: 0 0 8px var(--neon-yellow);
+        }
+
+        .hud-timer {
+            color: var(--neon-green);
+            text-shadow: 0 0 8px var(--neon-green);
+        }
+
+        .hud-words {
+            color: var(--neon-purple);
+            text-shadow: 0 0 8px var(--neon-purple);
+        }
 
         .hud-timer.danger {
             color: var(--red);
@@ -451,7 +472,11 @@
             animation: blink .4s infinite alternate;
         }
 
-        @keyframes blink { to { opacity: .5; } }
+        @keyframes blink {
+            to {
+                opacity: .5;
+            }
+        }
 
         /* ── TARGET WORD (left panel) ── */
         .target-bar {
@@ -522,7 +547,10 @@
         }
 
         @keyframes pulse-next {
-            to { transform: scale(1.08); box-shadow: 0 0 16px var(--neon-yellow); }
+            to {
+                transform: scale(1.08);
+                box-shadow: 0 0 16px var(--neon-yellow);
+            }
         }
 
         /* ── PAUSE BTN (left panel) ── */
@@ -549,9 +577,19 @@
             border: 1px solid rgba(76, 201, 240, .1);
         }
 
-        .status-msg.dizzy { color: var(--red);       text-shadow: 0 0 8px var(--red); }
-        .status-msg.good  { color: var(--neon-green); text-shadow: 0 0 8px var(--neon-green); }
-        .status-msg.info  { color: var(--neon-blue); }
+        .status-msg.dizzy {
+            color: var(--red);
+            text-shadow: 0 0 8px var(--red);
+        }
+
+        .status-msg.good {
+            color: var(--neon-green);
+            text-shadow: 0 0 8px var(--neon-green);
+        }
+
+        .status-msg.info {
+            color: var(--neon-blue);
+        }
 
         /* ── CANVAS WRAPPER (center, square, fills 50% col height) ── */
         .canvas-wrapper {
@@ -561,7 +599,7 @@
             box-shadow: 0 0 40px rgba(57, 255, 20, .15), 0 0 80px rgba(76, 201, 240, .08);
             border: 2px solid rgba(57, 255, 20, .2);
             /* Square: constrained by both the 50vw width and 100vh height */
-            width:  min(50vw - 16px, 100vh - 16px);
+            width: min(50vw - 16px, 100vh - 16px);
             height: min(50vw - 16px, 100vh - 16px);
         }
 
@@ -588,7 +626,11 @@
             animation: dizzy-pulse .4s infinite alternate;
         }
 
-        @keyframes dizzy-pulse { to { background: rgba(255, 71, 87, .22); } }
+        @keyframes dizzy-pulse {
+            to {
+                background: rgba(255, 71, 87, .22);
+            }
+        }
 
         /* Word complete flash */
         .word-flash {
@@ -606,13 +648,30 @@
             border-radius: 10px;
         }
 
-        .word-flash.show { animation: flash-word .9s ease forwards; }
+        .word-flash.show {
+            animation: flash-word .9s ease forwards;
+        }
 
         @keyframes flash-word {
-            0%   { opacity: 0; transform: scale(.7); }
-            20%  { opacity: 1; transform: scale(1.1); }
-            70%  { opacity: 1; transform: scale(1); }
-            100% { opacity: 0; transform: scale(.9); }
+            0% {
+                opacity: 0;
+                transform: scale(.7);
+            }
+
+            20% {
+                opacity: 1;
+                transform: scale(1.1);
+            }
+
+            70% {
+                opacity: 1;
+                transform: scale(1);
+            }
+
+            100% {
+                opacity: 0;
+                transform: scale(.9);
+            }
         }
 
         /* ── D-PAD (right panel, centered) ── */
@@ -622,7 +681,9 @@
             gap: 6px;
         }
 
-        .dpad { display: none !important; }
+        .dpad {
+            display: none !important;
+        }
 
         .dpad-btn {
             width: clamp(44px, 7vw, 64px);
@@ -639,7 +700,7 @@
             transition: background .1s, transform .1s, box-shadow .1s;
             -webkit-tap-highlight-color: transparent;
             user-select: none;
-            box-shadow: 0 0 12px rgba(57, 255, 20, .2), 0 4px 10px rgba(0,0,0,.6);
+            box-shadow: 0 0 12px rgba(57, 255, 20, .2), 0 4px 10px rgba(0, 0, 0, .6);
         }
 
         .dpad-btn:active,
@@ -649,10 +710,21 @@
             box-shadow: 0 0 24px rgba(57, 255, 20, .5);
         }
 
-        .dpad-btn[data-dir="UP"]    { grid-area: up; }
-        .dpad-btn[data-dir="LEFT"]  { grid-area: left; }
-        .dpad-btn[data-dir="RIGHT"] { grid-area: right; }
-        .dpad-btn[data-dir="DOWN"]  { grid-area: down; }
+        .dpad-btn[data-dir="UP"] {
+            grid-area: up;
+        }
+
+        .dpad-btn[data-dir="LEFT"] {
+            grid-area: left;
+        }
+
+        .dpad-btn[data-dir="RIGHT"] {
+            grid-area: right;
+        }
+
+        .dpad-btn[data-dir="DOWN"] {
+            grid-area: down;
+        }
 
         /* ════════════════════════════════════
            DESKTOP fallback (>= 960px): revert to stacked portrait
@@ -665,28 +737,71 @@
                 overflow: auto;
                 width: auto;
             }
+
             .game-left-col {
-                flex: none; width: 100%; max-width: 520px;
-                flex-direction: row; flex-wrap: wrap;
-                padding: 0; border: none; gap: 8px;
+                flex: none;
+                width: 100%;
+                max-width: 520px;
+                flex-direction: row;
+                flex-wrap: wrap;
+                padding: 0;
+                border: none;
+                gap: 8px;
                 order: 2;
             }
+
             .game-canvas-col {
-                flex: none; width: 100%; max-width: 520px;
-                padding: 0; order: 1;
+                flex: none;
+                width: 100%;
+                max-width: 520px;
+                padding: 0;
+                order: 1;
             }
+
             .game-right-col {
-                flex: none; width: 100%; max-width: 520px;
-                flex-direction: row; justify-content: center;
-                padding: 0; border: none; order: 3;
+                flex: none;
+                width: 100%;
+                max-width: 520px;
+                flex-direction: row;
+                justify-content: center;
+                padding: 0;
+                border: none;
+                order: 3;
             }
-            .canvas-wrapper { width: 100%; height: auto; max-width: 520px; }
-            .hud { flex-direction: row; justify-content: space-between; width: 100%; }
-            .target-bar { width: 100%; }
-            .dpad-float { margin: 8px 0; }
-            #pause-btn { display: inline-flex; }
-            .pause-btn-inline { display: none; }
-            .status-msg { width: 100%; margin-top: 0; font-size: 1rem; }
+
+            .canvas-wrapper {
+                width: 100%;
+                height: auto;
+                max-width: 520px;
+            }
+
+            .hud {
+                flex-direction: row;
+                justify-content: space-between;
+                width: 100%;
+            }
+
+            .target-bar {
+                width: 100%;
+            }
+
+            .dpad-float {
+                margin: 8px 0;
+            }
+
+            #pause-btn {
+                display: inline-flex;
+            }
+
+            .pause-btn-inline {
+                display: none;
+            }
+
+            .status-msg {
+                width: 100%;
+                margin-top: 0;
+                font-size: 1rem;
+            }
         }
 
         /* ════════════════════════════════════
@@ -1003,7 +1118,8 @@
                 <div class="target-hint" id="target-hint"></div>
             </div>
 
-            <button class="btn btn-outline pause-btn-inline" onclick="pauseGame()" id="pause-btn-inline">⏸ Pause</button>
+            <button class="btn btn-outline pause-btn-inline" onclick="pauseGame()" id="pause-btn-inline">⏸
+                Pause</button>
 
             <div class="status-msg info" id="status-msg">Swipe atau pakai tombol arah!</div>
         </div>
@@ -1020,10 +1136,14 @@
         <!-- RIGHT 25%: D-Pad only -->
         <div class="game-right-col">
             <div class="dpad-float" id="dpad-float">
-                <button class="dpad-btn" data-dir="UP"    ontouchstart="dpadPress('UP')"    onclick="dpadPress('UP')">▲</button>
-                <button class="dpad-btn" data-dir="LEFT"  ontouchstart="dpadPress('LEFT')"  onclick="dpadPress('LEFT')">◀</button>
-                <button class="dpad-btn" data-dir="RIGHT" ontouchstart="dpadPress('RIGHT')" onclick="dpadPress('RIGHT')">▶</button>
-                <button class="dpad-btn" data-dir="DOWN"  ontouchstart="dpadPress('DOWN')"  onclick="dpadPress('DOWN')">▼</button>
+                <button class="dpad-btn" data-dir="UP" ontouchstart="dpadPress('UP')"
+                    onclick="dpadPress('UP')">▲</button>
+                <button class="dpad-btn" data-dir="LEFT" ontouchstart="dpadPress('LEFT')"
+                    onclick="dpadPress('LEFT')">◀</button>
+                <button class="dpad-btn" data-dir="RIGHT" ontouchstart="dpadPress('RIGHT')"
+                    onclick="dpadPress('RIGHT')">▶</button>
+                <button class="dpad-btn" data-dir="DOWN" ontouchstart="dpadPress('DOWN')"
+                    onclick="dpadPress('DOWN')">▼</button>
             </div>
         </div>
 
@@ -1064,54 +1184,13 @@
         </div>
     </div>
 
+
+    <script src="script/vocab.js"></script>
     <script>
         // ═══════════════════════════════════════════════════
         //  DATA
         // ═══════════════════════════════════════════════════
-        let VOCAB = { easy: [], medium: [], hard: [] };
 
-        const FALLBACK = [
-            { emoji: "🐱", en: "CAT", phonetic: "/kæt/", id: "Kucing" },
-            { emoji: "🐶", en: "DOG", phonetic: "/dɒg/", id: "Anjing" },
-            { emoji: "🐠", en: "FISH", phonetic: "/fɪʃ/", id: "Ikan" },
-            { emoji: "🌸", en: "FLOWER", phonetic: "/ˈflaʊər/", id: "Bunga" },
-            { emoji: "🌳", en: "TREE", phonetic: "/triː/", id: "Pohon" },
-            { emoji: "📚", en: "BOOK", phonetic: "/bʊk/", id: "Buku" },
-            { emoji: "🏡", en: "HOUSE", phonetic: "/haʊs/", id: "Rumah" },
-            { emoji: "🌈", en: "RAINBOW", phonetic: "/ˈreɪnboʊ/", id: "Pelangi" },
-            { emoji: "⭐", en: "STAR", phonetic: "/stɑːr/", id: "Bintang" },
-            { emoji: "🌙", en: "MOON", phonetic: "/muːn/", id: "Bulan" },
-            { emoji: "☀️", en: "SUN", phonetic: "/sʌn/", id: "Matahari" },
-            { emoji: "🍎", en: "APPLE", phonetic: "/ˈæpl/", id: "Apel" },
-        ];
-
-        function parseVocabTxt(text) {
-            const result = { easy: [], medium: [], hard: [] };
-            for (let raw of text.split('\n')) {
-                const line = raw.trim();
-                if (!line || line.startsWith('#')) continue;
-                const parts = line.split('|').map(p => p.trim());
-                if (parts.length < 5) continue;
-                const [level, emoji, en, phonetic, id] = parts;
-                const key = level.toLowerCase();
-                if (!result[key]) continue;
-                result[key].push({ emoji, en: en.toUpperCase(), phonetic, id });
-            }
-            return result;
-        }
-
-        async function loadVocab() {
-            try {
-                const res = await fetch('vocabulary.txt');
-                if (!res.ok) throw new Error('not found');
-                VOCAB = parseVocabTxt(await res.text());
-                const total = VOCAB.easy.length + VOCAB.medium.length + VOCAB.hard.length;
-                if (total < 5) throw new Error('too few');
-            } catch (e) {
-                console.warn('Using fallback vocab');
-                VOCAB.easy = FALLBACK;
-            }
-        }
 
         // ═══════════════════════════════════════════════════
         //  CANVAS + GRID SETUP
@@ -1729,14 +1808,14 @@
             clearTimeout(G.gameLoopId);
             document.getElementById('pause-overlay').classList.remove('hidden');
             document.getElementById('pause-btn').textContent = '⏸ Dijeda';
-            const pbi = document.getElementById('pause-btn-inline'); if(pbi) pbi.textContent = '⏸ Dijeda';
+            const pbi = document.getElementById('pause-btn-inline'); if (pbi) pbi.textContent = '⏸ Dijeda';
         }
 
         function resumeGame() {
             G.paused = false;
             document.getElementById('pause-overlay').classList.add('hidden');
             document.getElementById('pause-btn').textContent = '⏸ Pause';
-            const pbi2 = document.getElementById('pause-btn-inline'); if(pbi2) pbi2.textContent = '⏸ Pause';
+            const pbi2 = document.getElementById('pause-btn-inline'); if (pbi2) pbi2.textContent = '⏸ Pause';
             scheduleLoop();
         }
 
