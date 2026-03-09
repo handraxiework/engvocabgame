@@ -978,6 +978,9 @@
     </div>
   </div>
 
+
+
+  <script src="script/vocab.js"></script>
   <script>
     // ===================== DATA =====================
     const HIGHLIGHT_COLORS = [
@@ -991,49 +994,7 @@
       { name: "Kuromi", emoji: "💜" }, { name: "Keroppi", emoji: "🐸" },
     ];
 
-    // Vocabulary — will be loaded from vocabulary.txt
-    let VOCAB = { easy: [], medium: [], hard: [] };
 
-    function parseVocabTxt(text) {
-      const result = { easy: [], medium: [], hard: [] };
-      for (let raw of text.split("\n")) {
-        const line = raw.trim();
-        if (!line || line.startsWith("#")) continue;
-        const parts = line.split("|").map(p => p.trim());
-        if (parts.length < 5) continue;
-        const [level, emoji, en, phonetic, id] = parts;
-        const key = level.toLowerCase();
-        if (!result[key]) continue;
-        result[key].push({ emoji, en: en.toUpperCase(), phonetic, id });
-      }
-      return result;
-    }
-
-    // Fallback vocabulary in case file not found
-    const FALLBACK_VOCAB = [
-      { emoji: "🐱", en: "CAT", phonetic: "/kæt/", id: "Kucing" },
-      { emoji: "🐶", en: "DOG", phonetic: "/dɒg/", id: "Anjing" },
-      { emoji: "🐠", en: "FISH", phonetic: "/fɪʃ/", id: "Ikan" },
-      { emoji: "🌸", en: "FLOWER", phonetic: "/ˈflaʊər/", id: "Bunga" },
-      { emoji: "🌳", en: "TREE", phonetic: "/triː/", id: "Pohon" },
-      { emoji: "📚", en: "BOOK", phonetic: "/bʊk/", id: "Buku" },
-      { emoji: "✏️", en: "PEN", phonetic: "/pɛn/", id: "Pena" },
-      { emoji: "🏡", en: "HOUSE", phonetic: "/haʊs/", id: "Rumah" },
-      { emoji: "🌈", en: "RAINBOW", phonetic: "/ˈreɪnboʊ/", id: "Pelangi" },
-      { emoji: "⭐", en: "STAR", phonetic: "/stɑːr/", id: "Bintang" },
-    ];
-
-    async function loadVocab() {
-      try {
-        const res = await fetch("vocabulary.txt");
-        if (!res.ok) throw new Error("not found");
-        VOCAB = parseVocabTxt(await res.text());
-        if (VOCAB.easy.length + VOCAB.medium.length + VOCAB.hard.length < 5) throw new Error("too few");
-      } catch (e) {
-        console.warn("Using fallback vocabulary:", e);
-        VOCAB.easy = FALLBACK_VOCAB;
-      }
-    }
 
     // ===================== STATE =====================
     let state = {
